@@ -10,7 +10,7 @@ export function PrivateRoute({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!loading && user === null) {  
       router.replace("/signin");
     }
   }, [user, loading, router]);
@@ -20,7 +20,7 @@ export function PrivateRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (!user) {
-    return <FullScreenLoader text="Redirecionando..." />;
+    return <FullScreenLoader text="Redirecionando para login..." />;
   }
 
   return <>{children}</>;

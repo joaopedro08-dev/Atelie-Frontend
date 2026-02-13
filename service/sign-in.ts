@@ -22,17 +22,12 @@ export const SignIn = () => {
         try {
             const response = await fetch(API_BASE, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include", 
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
                 body: JSON.stringify({
                     query: SIGN_IN_MUTATION,
                     variables: {
-                        input: {
-                            email: data.email,
-                            password: data.password
-                        }
+                        input: { email: data.email, password: data.password }
                     },
                 }),
             });
@@ -40,8 +35,7 @@ export const SignIn = () => {
             const result = await response.json();
 
             if (result.errors) {
-                const errorMsg = result.errors[0].message;
-                toast.error(errorMsg, { id: toastId });
+                toast.error(result.errors[0].message, { id: toastId });
                 return;
             }
 
@@ -49,19 +43,18 @@ export const SignIn = () => {
 
             if (success) {
                 toast.success(message, { id: toastId });
-                
+
                 setTimeout(() => {
                     window.location.href = "/admin";
-                }, 1000);
+                }, 800);
             } else {
                 toast.error(message || "Falha na autenticação", { id: toastId });
             }
 
         } catch (error) {
-            toast.error("Erro de rede: verifique sua conexão com o servidor.", { id: toastId });
-            console.error("Erro de rede ou servidor:", error);
+            toast.error("Erro de rede.", { id: toastId });
         }
     };
 
-    return { signIn }; 
+    return { signIn };
 }
