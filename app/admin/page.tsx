@@ -8,7 +8,7 @@ import {
     CardTitle
 } from "@/components/ui/card";
 import { LayoutDashboard, Calendar, Clock } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 export default function PageHome() {
     const { user } = useAuth();
@@ -40,23 +40,23 @@ export default function PageHome() {
         ? user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase()
         : "Admin";
 
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.1, 
+                staggerChildren: 0.1,
             },
         },
     };
 
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: { y: 20, opacity: 0 },
         visible: {
             y: 0,
             opacity: 1,
             transition: {
-                type: "spring",
+                type: "spring", 
                 stiffness: 100,
                 damping: 15,
             },
@@ -64,7 +64,7 @@ export default function PageHome() {
     };
 
     return (
-        <motion.div 
+        <motion.div
             className="flex flex-col gap-6"
             variants={containerVariants}
             initial="hidden"
@@ -87,7 +87,7 @@ export default function PageHome() {
                 </div>
             </motion.header>
 
-            <motion.div 
+            <motion.div
                 className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
                 variants={itemVariants}
             >
