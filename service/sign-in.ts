@@ -2,8 +2,10 @@ import { API_BASE } from "@/routes/api";
 import { ValidationInputs } from "./validations/validation-inputs";
 import { z } from "zod";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation"; 
 
 export const SignIn = () => {
+    const router = useRouter(); 
     const validateSignIn = ValidationInputs.signIn;
 
     const SIGN_IN_MUTATION = `
@@ -23,7 +25,7 @@ export const SignIn = () => {
             const response = await fetch(API_BASE, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                credentials: "include",
+                credentials: "include", 
                 body: JSON.stringify({
                     query: SIGN_IN_MUTATION,
                     variables: {
@@ -43,10 +45,10 @@ export const SignIn = () => {
 
             if (success) {
                 toast.success(message, { id: toastId });
-
+                
                 setTimeout(() => {
                     window.location.href = "/admin";
-                }, 800);
+                }, 1000);
             } else {
                 toast.error(message || "Falha na autenticação", { id: toastId });
             }
@@ -56,5 +58,5 @@ export const SignIn = () => {
         }
     };
 
-    return { signIn };
+    return { signIn }; 
 }
