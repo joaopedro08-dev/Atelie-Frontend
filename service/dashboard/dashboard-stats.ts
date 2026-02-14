@@ -22,6 +22,10 @@ export const DashboardStats = () => {
                       status
                       dateOrder
                 }
+                listAllCategory {
+                     category
+                     quantity
+                }
             }
         }
     `;

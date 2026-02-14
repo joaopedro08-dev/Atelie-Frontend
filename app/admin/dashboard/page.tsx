@@ -14,9 +14,9 @@ import {
     Loader2,
     CreditCard
 } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, Pie, PieChart, Cell, Label } from "recharts";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,6 +41,10 @@ const chartConfig = {
         label: "Pedidos",
         color: "var(--primary)",
     },
+    st: { label: "ST", color: "var(--primary)" },
+    mrru: { label: "MRRU", color: "var(--chart-5)" },
+    outros: { label: "Outros", color: "var(--chart-1)" },
+    ni: { label: "N/I", color: "var(--muted)" },
 } satisfies ChartConfig;
 
 const paymentTranslations: Record<string, string> = {
@@ -101,6 +105,52 @@ function OrderChart({ data }: { data: any[] }) {
                     barSize={40}
                 />
             </BarChart>
+        </ChartContainer>
+    );
+}
+
+function CategoryPieChart({ data }: { data: any[] }) {
+    const getColor = (name: string) => {
+        if (name === "ST") return "var(--primary)";
+        if (name === "MRRU") return "var(--chart-5)";
+        if (name === "Outros") return "var(--chart-1)";
+        return "var(--muted)";
+    };
+
+    const totalItens = data?.reduce((acc, curr) => acc + curr.quantity, 0) || 0;
+
+    return (
+        <ChartContainer config={chartConfig} className="mx-auto aspect-square h-64">
+            <PieChart>
+                <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                <Pie
+                    data={data}
+                    dataKey="quantity"
+                    nameKey="category"
+                    innerRadius={60}
+                    strokeWidth={5}
+                >
+                    {data?.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={getColor(entry.category)} />
+                    ))}
+                    <Label
+                        content={({ viewBox }) => {
+                            if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                                return (
+                                    <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
+                                        <tspan x={viewBox.cx} y={viewBox.cy} className="fill-foreground text-3xl font-bold">
+                                            {totalItens}
+                                        </tspan>
+                                        <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} className="fill-muted-foreground text-xs uppercase">
+                                            Total
+                                        </tspan>
+                                    </text>
+                                );
+                            }
+                        }}
+                    />
+                </Pie>
+            </PieChart>
         </ChartContainer>
     );
 }
@@ -228,6 +278,9 @@ export default function DashboardPage() {
                 <Card className="col-span-4 bg-card/10 border-muted/20">
                     <CardHeader>
                         <CardTitle className="text-foreground">Fluxo de Pedidos</CardTitle>
+                        <CardDescription className="text-xs text-muted-foreground">
+                            Volume de pedidos processados nos últimos 7 dias
+                        </CardDescription>
                     </CardHeader>
                     <CardContent className="pt-2">
                         {loading ? (
@@ -245,9 +298,14 @@ export default function DashboardPage() {
                 </Card>
 
                 <Card className="col-span-4 lg:col-span-3 bg-card/10 border-muted/20 w-full">
-                    <CardHeader className="flex flex-row items-center justify-between">
-                        <CardTitle className="text-foreground">Atividade Recente</CardTitle>
-                        <ShoppingBag className="size-4 text-muted-foreground" />
+                    <CardHeader className="flex flex-col">
+                        <div className="flex flex-row items-center gap-2">
+                            <CardTitle className="text-foreground">Atividade Recente</CardTitle>
+                            <ShoppingBag className="size-4 text-muted-foreground" />
+                        </div>
+                        <CardDescription className="text-xs text-muted-foreground">
+                            Últimas atualizações de status e pagamentos
+                        </CardDescription>
                     </CardHeader>
                     <CardContent className="w-full">
                         <ScrollArea className="h-77.5 pr-4">
@@ -299,6 +357,48 @@ export default function DashboardPage() {
                             </div>
                         </ScrollArea>
                     </CardContent>
+                </Card>
+
+                <Card className="col-span-4 lg:col-span-3 bg-card/10 border-muted/20 w-full">
+                    <CardHeader className="items-center pb-0">
+                        <CardTitle>Distribuição de Itens</CardTitle>
+                        <CardDescription className="text-xs text-muted-foreground">
+                            Análise por prefixo e comprimento dos códigos selecionados
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex-1 pb-0">
+                        {loading ? (
+                            <div className="h-64 flex items-center justify-center">
+                                <Loader2 className="animate-spin size-8 text-primary" />
+                            </div>
+                        ) : stats?.listAllCategory?.length > 0 ? (
+                            <CategoryPieChart data={stats.listAllCategory} />
+                        ) : (
+                            <div className="h-64 flex items-center justify-center border-2 border-dashed border-zinc-800 rounded-lg m-4">
+                                <p className="text-muted-foreground text-sm italic">Sem dados de categorias.</p>
+                            </div>
+                        )}
+                    </CardContent>
+                    <div className="flex flex-col gap-2 p-4 pt-0">
+                        <div className="flex items-center justify-center gap-4 text-xs font-medium">
+                            <div className="flex items-center gap-1.5">
+                                <div className="size-2 rounded-full" style={{ backgroundColor: "var(--primary)" }} />
+                                <span>ST</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <div className="size-2 rounded-full" style={{ backgroundColor: "var(--chart-5)" }} />
+                                <span>MRRU</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <div className="size-2 rounded-full" style={{ backgroundColor: "var(--chart-1)" }} />
+                                <span>Outros</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <div className="size-2 rounded-full" style={{ backgroundColor: "var(--muted)" }} />
+                                <span>N/I</span>
+                            </div>
+                        </div>
+                    </div>
                 </Card>
             </div>
         </motion.div>

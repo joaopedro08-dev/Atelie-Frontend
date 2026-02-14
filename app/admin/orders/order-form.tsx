@@ -70,7 +70,7 @@ export function OrderForm({ onSuccess }: OrderFormProps) {
         >
             <motion.div layout className="rounded-lg border bg-card p-6 shadow-sm">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         <div className="space-y-2">
                             <Label className="flex items-center gap-2">
                                 <CalendarDays className="h-4 w-4 text-primary" /> Data do Pedido
@@ -85,6 +85,28 @@ export function OrderForm({ onSuccess }: OrderFormProps) {
                             {errors.dateOrder && (
                                 <p className="text-xs text-destructive font-medium">{errors.dateOrder.message}</p>
                             )}
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label className="flex items-center gap-2">
+                                <CalendarClock className="h-4 w-4 text-primary" /> Vencimento
+                            </Label>
+                            <Controller
+                                name="dueDate"
+                                control={control}
+                                render={({ field }) => (
+                                    <Select onValueChange={field.onChange} value={field.value}>
+                                        <SelectTrigger className={`w-full errors.dueDate ? "border-destructive" : ""`}>
+                                            <SelectValue placeholder="Dia" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="1">Dia 01</SelectItem>
+                                            <SelectItem value="10">Dia 10</SelectItem>
+                                            <SelectItem value="20">Dia 20</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            />
                         </div>
 
                         <div className="space-y-2">
@@ -183,6 +205,29 @@ export function OrderForm({ onSuccess }: OrderFormProps) {
 
                         <div className="space-y-2">
                             <Label className="flex items-center gap-2">
+                                <Percent className="h-4 w-4 text-primary" /> Desconto (R$)
+                            </Label>
+                            <Controller
+                                name="discount"
+                                control={control}
+                                render={({ field }) => (
+                                    <Input
+                                        type="number"
+                                        step="0.01"
+                                        placeholder="0,00"
+                                        value={field.value}
+                                        onChange={(e) => field.onChange(Number(e.target.value))}
+                                        className={errors.discount ? "border-destructive" : ""}
+                                    />
+                                )}
+                            />
+                            {errors.discount && (
+                                <p className="text-xs text-destructive font-medium">{errors.discount.message}</p>
+                            )}
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label className="flex items-center gap-2">
                                 <Activity className="h-4 w-4 text-primary" /> Status
                             </Label>
                             <Controller
@@ -210,51 +255,6 @@ export function OrderForm({ onSuccess }: OrderFormProps) {
                             {errors.status && (
                                 <p className="text-xs text-destructive font-medium">{errors.status.message}</p>
                             )}
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label className="flex items-center gap-2">
-                                <Percent className="h-4 w-4 text-primary" /> Desconto (R$)
-                            </Label>
-                            <Controller
-                                name="discount"
-                                control={control}
-                                render={({ field }) => (
-                                    <Input
-                                        type="number"
-                                        step="0.01"
-                                        placeholder="0,00"
-                                        value={field.value}
-                                        onChange={(e) => field.onChange(Number(e.target.value))}
-                                        className={errors.discount ? "border-destructive" : ""}
-                                    />
-                                )}
-                            />
-                            {errors.discount && (
-                                <p className="text-xs text-destructive font-medium">{errors.discount.message}</p>
-                            )}
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label className="flex items-center gap-2">
-                                <CalendarClock className="h-4 w-4 text-primary" /> Vencimento
-                            </Label>
-                            <Controller
-                                name="dueDate"
-                                control={control}
-                                render={({ field }) => (
-                                    <Select onValueChange={field.onChange} value={field.value}>
-                                        <SelectTrigger className={`w-full errors.dueDate ? "border-destructive" : ""`}>
-                                            <SelectValue placeholder="Dia" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="1">Dia 01</SelectItem>
-                                            <SelectItem value="10">Dia 10</SelectItem>
-                                            <SelectItem value="20">Dia 20</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                )}
-                            />
                         </div>
                     </div>
 

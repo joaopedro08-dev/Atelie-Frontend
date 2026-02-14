@@ -78,7 +78,7 @@ export function ComboboxItem({ selectedIds = [], onChange }: ComboboxItemProps) 
                                     )
                                 })
                             ) : (
-                                <span className="text-muted-foreground">Selecione os itens...</span>
+                                <span>Selecione os itens...</span>
                             )}
                         </div>
                         <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 ml-2" />
