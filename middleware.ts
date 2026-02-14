@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { cookies } from 'next/headers'
 
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-  const cookieStore = await cookies()
-  const token = cookieStore.get('jwtToken')?.value
-  const refreshToken = cookieStore.get('refreshToken')?.value
+  const token = request.cookies.get('jwtToken')?.value
+  const refreshToken = request.cookies.get('refreshToken')?.value
   const hasAuth = !!(token || refreshToken)  
 
   const response = NextResponse.next()
