@@ -82,46 +82,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const authenticatedRequest = useCallback(async (query: string, variables = {}) => {
     try {
       let response = await baseFetch(query, variables);
-      let result = await response.json();
 
-      if (result.errors?.some((e: any) => e.message.includes("Access Denied") || e.message.includes("Unauthorized"))) {
+      if (response.status === 401) {
         const refreshed = await handleRefresh();
 
         if (refreshed) {
           response = await baseFetch(query, variables);
-          result = await response.json();
         } else {
           setUser(null);
-          return { data: null, errors: result.errors };
+          return { data: null, errors: [{ message: "Unauthorized" }] };
         }
       }
-      return result;
-    } catch (error) {
+
+      return await response.json();
+
+    } catch {
       return { data: null, errors: [{ message: "Network Error" }] };
     }
   }, [baseFetch]);
 
   const fetchUser = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
+
     try {
       const result = await authenticatedRequest(GET_USER_INFO);
-      if (result?.data?.getUserInfo) {
-        setUser(result.data.getUserInfo);
-      } else {
-        const refreshed = await handleRefresh();
-        if (refreshed) {
-          const retry = await authenticatedRequest(GET_USER_INFO);
-          setUser(retry?.data?.getUserInfo || null);
-        } else {
-          setUser(null);
-        }
-      }
-    } catch (error) {
+      setUser(result?.data?.getUserInfo || null);
+    } catch {
       setUser(null);
     } finally {
       setLoading(false);
     }
   }, [authenticatedRequest]);
+
 
   const logout = async () => {
     try {
