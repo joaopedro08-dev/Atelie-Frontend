@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from "react";
 import { API_BASE } from "@/routes/api";
 
 interface User {
@@ -59,6 +59,8 @@ const LOGOUT_MUTATION = `
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const isRefreshing = useRef(false);
+  const refreshPromise = useRef<Promise<boolean> | null>(null);
 
   const baseFetch = useCallback(async (query: string, variables = {}) => {
     return fetch(API_BASE, {
@@ -70,13 +72,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const handleRefresh = async () => {
-    try {
-      const response = await baseFetch(REFRESH_TOKEN_MUTATION);
-      const result = await response.json();
-      return !!result.data?.refreshToken?.success;
-    } catch {
-      return false;
+    if (isRefreshing.current) {
+      return refreshPromise.current; 
     }
+
+    isRefreshing.current = true;
+    refreshPromise.current = (async () => {
+      try {
+        const response = await baseFetch(REFRESH_TOKEN_MUTATION);
+        const result = await response.json();
+        const success = !!result.data?.refreshToken?.success;
+
+        if (!success) {
+          setUser(null); 
+        }
+        return success;
+      } catch {
+        setUser(null);
+        return false;
+      } finally {
+        isRefreshing.current = false;
+        refreshPromise.current = null;
+      }
+    })();
+
+    return refreshPromise.current;
   };
 
   const authenticatedRequest = useCallback(async (query: string, variables = {}) => {

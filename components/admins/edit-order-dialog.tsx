@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { UpdateOrder } from "@/service/orders/update-order";
 import { ComboboxItem } from "@/components/admins/combobox/combobox-item";
 import { ComboboxClient } from "@/components/admins/combobox/combobox-client";
@@ -41,8 +42,6 @@ export function EditOrderDialog({ order, open, onOpenChange, onSuccess }: EditOr
             const rawValue = String(order.itemIds || "");
             const cleanedValue = rawValue.replace(/[\[\]\s]/g, "");
             const idsArray = cleanedValue ? cleanedValue.split(",") : [];
-
-            // Tenta pegar o dia da data de vencimento atual
             const initialDay = order.dueDate ? new Date(order.dueDate).getDate().toString() : "10";
 
             setFormData({
@@ -89,16 +88,16 @@ export function EditOrderDialog({ order, open, onOpenChange, onSuccess }: EditOr
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-200 p-0 overflow-hidden border-none shadow-2xl bg-card">
-                <DialogHeader className="p-6 bg-muted/20 border-b">
+            <DialogContent className="sm:max-w-4xl p-0 overflow-hidden border-none shadow-2xl bg-card flex flex-col max-h-[90vh]">
+                <DialogHeader className="p-6 bg-muted/20 border-b shrink-0">
                     <DialogTitle className="text-xl flex items-center gap-2">
                         Editar Pedido <span className="text-primary">#{String(order?.clientId).slice(-5)}</span>
                     </DialogTitle>
                     <DialogDescription>Ajuste as informações abaixo para atualizar o registro.</DialogDescription>
                 </DialogHeader>
 
-                <div className="p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="flex-1 w-full p-6 overflow-y-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-4">
                         <div className="space-y-2">
                             <Label className="text-xs font-semibold uppercase text-muted-foreground">Cliente</Label>
                             <ComboboxClient value={formData.clientId} onChange={(val) => setFormData({ ...formData, clientId: val })} />
@@ -118,12 +117,7 @@ export function EditOrderDialog({ order, open, onOpenChange, onSuccess }: EditOr
                             <Label className="text-xs font-semibold uppercase text-muted-foreground">Status</Label>
                             <Select value={formData.status} onValueChange={(val) => setFormData({ ...formData, status: val || "" })}>
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Selecione o status" >
-                                        {formData.status === "PENDING" ? "PENDENTE" :
-                                            formData.status === "IN_PROGRESS" ? "EM PRODUÇÃO" :
-                                                formData.status === "COMPLETED" ? "CONCLUÍDO" :
-                                                    formData.status === "CANCELED" ? "CANCELADO" : formData.status}
-                                    </SelectValue>
+                                    <SelectValue placeholder="Selecione o status" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="PENDING">Pendente</SelectItem>
@@ -136,14 +130,13 @@ export function EditOrderDialog({ order, open, onOpenChange, onSuccess }: EditOr
 
                         <div className="space-y-2">
                             <Label className="text-xs font-semibold uppercase text-muted-foreground flex items-center gap-1">
-                                <DollarSign className="h-3 w-3" /> Valor Total (R$)
+                                <DollarSign className="h-3 w-3" /> Valor (R$)
                             </Label>
                             <Input
                                 type="number"
                                 step="0.01"
                                 value={formData.totalPrice}
                                 onChange={(e) => setFormData({ ...formData, totalPrice: Number(e.target.value) })}
-                                placeholder="0.00 para automático"
                             />
                         </div>
 
@@ -159,6 +152,7 @@ export function EditOrderDialog({ order, open, onOpenChange, onSuccess }: EditOr
                                     <SelectItem value="1">Dia 01</SelectItem>
                                     <SelectItem value="10">Dia 10</SelectItem>
                                     <SelectItem value="20">Dia 20</SelectItem>
+                                    <SelectItem value="30">Dia 30</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -167,12 +161,7 @@ export function EditOrderDialog({ order, open, onOpenChange, onSuccess }: EditOr
                             <Label className="text-xs font-semibold uppercase text-muted-foreground">Pagamento</Label>
                             <Select value={formData.methodPayment} onValueChange={(val) => setFormData({ ...formData, methodPayment: val || "", installments: 1 })}>
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Forma de Pagamento" >
-                                        {formData.methodPayment === "SYSTEM" ? "PIX" :
-                                            formData.methodPayment === "CARD" ? "CARTÃO" :
-                                                formData.methodPayment === "INSTALLMENT_PLAN" ? "CREDIÁRIO" :
-                                                    formData.methodPayment === "LOYAL_CUSTOMER" ? "CLIENTE FIDELIZADO" : formData.methodPayment}
-                                    </SelectValue>
+                                    <SelectValue placeholder="Forma de Pagamento" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="SYSTEM">Pix</SelectItem>
@@ -204,11 +193,11 @@ export function EditOrderDialog({ order, open, onOpenChange, onSuccess }: EditOr
                     </div>
                 </div>
 
-                <DialogFooter className="p-6 bg-muted/10 border-t flex gap-3">
+                <DialogFooter className="p-6 bg-muted/10 border-t shrink-0 flex gap-3">
                     <Button variant="ghost" onClick={() => onOpenChange(false)} className="gap-2">
                         <X className="h-4 w-4" /> Cancelar
                     </Button>
-                    <Button onClick={handleSave} disabled={isLoading} className="gap-2 bg-primary min-w-[140px]">
+                    <Button onClick={handleSave} disabled={isLoading} className="gap-2 bg-primary min-w-35">
                         {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
                         Salvar Alterações
                     </Button>

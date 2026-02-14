@@ -3,19 +3,21 @@
 import { useAuth } from "@/contexts/auth-context";
 import { FullScreenLoader } from "@/components/full-screen-loader";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!loading && !user && !isRedirecting) {
+      setIsRedirecting(true);
       router.replace("/signin");
     }
-  }, [user, loading, router]);
+  }, [user, loading, router, isRedirecting]);
 
-  if (loading) {
+  if (loading || (isRedirecting && !user)) {
     return <FullScreenLoader text="Verificando autenticação..." />;
   }
 

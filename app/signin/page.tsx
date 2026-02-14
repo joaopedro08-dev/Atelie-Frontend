@@ -32,7 +32,7 @@ export default function SignInPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-muted/50 px-4">
+        <div className="flex min-h-dvh items-center justify-center bg-muted/50 px-4 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

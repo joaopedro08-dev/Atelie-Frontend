@@ -103,6 +103,7 @@ export function OrderForm({ onSuccess }: OrderFormProps) {
                                             <SelectItem value="1">Dia 01</SelectItem>
                                             <SelectItem value="10">Dia 10</SelectItem>
                                             <SelectItem value="20">Dia 20</SelectItem>
+                                            <SelectItem value="30">Dia 30</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 )}

@@ -7,7 +7,8 @@ import {
     SidebarHeader,
     SidebarMenu,
     SidebarMenuItem,
-    SidebarMenuButton
+    SidebarMenuButton,
+    useSidebar
 } from "@/components/ui/sidebar";
 import {
     ChevronsUpDown,
@@ -17,18 +18,39 @@ import {
     ShoppingCart,
     Users,
     Settings,
-    LogOut,
     StoreIcon,
     ChevronDown
 } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuItem,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import Logout from "../logout";
+
+const navigation = [
+    {
+        category: "Principal",
+        items: [
+            { label: "Dashboard", link: "/admin/dashboard", icon: LayoutDashboard },
+            { label: "Gerenciar Itens", link: "/admin/itens", icon: Gem },
+        ]
+    },
+    {
+        category: "Vendas",
+        items: [
+            { label: "Pedidos", link: "/admin/orders", icon: ShoppingCart },
+            { label: "Clientes", link: "/admin/clients", icon: Users },
+        ]
+    },
+    {
+        category: "Sistema",
+        items: [
+            { label: "Configurações", link: "/admin/settings", icon: Settings },
+        ]
+    }
+];
 
 interface AppSidebarProps {
     username: string;
@@ -36,24 +58,21 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ username, role }: AppSidebarProps) {
+    const { isMobile, setOpenMobile } = useSidebar();
+
+    const closeSidebar = () => {
+        if (isMobile) setOpenMobile(false);
+    };
+
     const getFormattedName = (fullName: string) => {
         if (!fullName) return "Usuário";
-
         const nameParts = fullName.trim().split(/\s+/);
-
-        if (nameParts.length <= 2) {
-            return nameParts.join(" ");
-        }
-
+        if (nameParts.length <= 2) return nameParts.join(" ");
         const firstTwo = nameParts.slice(0, 2).join(" ");
-
-        const initials = nameParts
-            .slice(2)
-            .map(name => `${name.charAt(0).toUpperCase()}.`)
-            .join(" ");
-
+        const initials = nameParts.slice(2).map(n => `${n.charAt(0).toUpperCase()}.`).join(" ");
         return `${firstTwo} ${initials}`;
     };
+
     const formattedRole = role.charAt(0).toUpperCase() + role.slice(1).toLowerCase();
 
     return (
@@ -61,85 +80,46 @@ export function AppSidebar({ username, role }: AppSidebarProps) {
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger render={
-                                <SidebarMenuButton size="lg" className="hover:bg-transparent">
-                                    <Link href="/admin" className="flex gap-2 justify-start items-center w-full">
-                                        <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                                            <StoreIcon className="size-4" />
-                                        </div>
-                                        <div className="flex flex-col gap-0.5 leading-none ml-2">
-                                            <span className="font-semibold">Ateliê</span>
-                                            <span className="text-xs text-muted-foreground">Painel do Admin</span>
-                                        </div>
-                                        <ChevronsUpDown className="ml-auto opacity-50" />
-                                    </Link>
-                                </SidebarMenuButton>
-                            }>
-                            </DropdownMenuTrigger>
-                        </DropdownMenu>
+                        <SidebarMenuButton size="lg" render={
+                            <Link href="/admin" onClick={closeSidebar}>
+                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                                    <StoreIcon className="size-4" />
+                                </div>
+                                <div className="flex flex-col gap-0.5 leading-none ml-2">
+                                    <span className="font-semibold">Ateliê</span>
+                                    <span className="text-xs text-muted-foreground">Painel do Admin</span>
+                                </div>
+                            </Link>
+                        } className="hover:bg-transparent" />
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
 
             <SidebarContent>
-                <SidebarGroup>
-                    <SidebarGroupLabel>Principal</SidebarGroupLabel>
-                    <SidebarMenu>
-                        <SidebarMenuItem className="mb-2">
-                            <SidebarMenuButton tooltip="Dashboard">
-                                <Link href="/admin/dashboard" className="flex gap-2 justify-start items-center w-full">
-                                    <LayoutDashboard />
-                                    <span>Dashboard</span>
-                                </Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton tooltip="Produtos">
-                                <Link href="/admin/itens" className="flex gap-2 justify-start items-center w-full">
-                                    <Gem />
-                                    <span>Gerenciar Itens</span>
-                                </Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    </SidebarMenu>
-                </SidebarGroup>
-
-                <SidebarGroup>
-                    <SidebarGroupLabel>Vendas</SidebarGroupLabel>
-                    <SidebarMenu>
-                        <SidebarMenuItem className="mb-2">
-                            <SidebarMenuButton tooltip="Pedidos">
-                                <Link href="/admin/orders" className="flex gap-2 justify-start items-center w-full">
-                                    <ShoppingCart />
-                                    <span>Pedidos</span>
-                                </Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton tooltip="Clientes">
-                                <Link href="/admin/clients" className="flex gap-2 justify-start items-center w-full">
-                                    <Users />
-                                    <span>Clientes</span>
-                                </Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    </SidebarMenu>
-                </SidebarGroup>
-
-                <SidebarGroup>
-                    <SidebarGroupLabel>Sistema</SidebarGroupLabel>
-                    <SidebarMenu>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton tooltip="Configurações">
-                                <Link href="/admin/settings" className="flex gap-2 justify-start items-center w-full">
-                                    <Settings />
-                                    <span>Configurações</span>
-                                </Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    </SidebarMenu>
-                </SidebarGroup>
+                {navigation.map((group) => (
+                    <SidebarGroup key={group.category}>
+                        <SidebarGroupLabel>{group.category}</SidebarGroupLabel>
+                        <SidebarMenu>
+                            {group.items.map((item) => {
+                                const Icon = item.icon;
+                                return (
+                                    <SidebarMenuItem key={item.link}>
+                                        <SidebarMenuButton tooltip={item.label}>
+                                            <Link
+                                                href={item.link}
+                                                onClick={closeSidebar}
+                                                className="flex items-center flex-row justify-start gap-2 w-full"
+                                            >
+                                                {Icon && <Icon className="size-4" />}
+                                                <span>{item.label}</span>
+                                            </Link>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                );
+                            })}
+                        </SidebarMenu>
+                    </SidebarGroup>
+                ))}
             </SidebarContent>
 
             <SidebarFooter className="border-t border-border/50">
@@ -155,8 +135,7 @@ export function AppSidebar({ username, role }: AppSidebarProps) {
                                     </div>
                                     <ChevronDown className="ml-auto opacity-50" />
                                 </SidebarMenuButton>
-                            }>
-                            </DropdownMenuTrigger>
+                            } />
                             <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
                                 <Logout />
                             </DropdownMenuContent>
@@ -165,5 +144,5 @@ export function AppSidebar({ username, role }: AppSidebarProps) {
                 </SidebarMenu>
             </SidebarFooter>
         </Sidebar>
-    )
+    );
 }

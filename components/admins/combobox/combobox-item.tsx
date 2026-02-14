@@ -38,7 +38,7 @@ export function ComboboxItem({ selectedIds = [], onChange }: ComboboxItemProps) 
             }
         }
         fetchItems()
-    }, [selectedIds.length]); 
+    }, [selectedIds.length]);
 
     const handleSelect = (id: string) => {
         const newSelection = selectedIds.includes(id)
@@ -52,6 +52,10 @@ export function ComboboxItem({ selectedIds = [], onChange }: ComboboxItemProps) 
         onChange?.(selectedIds.filter((item) => item !== id))
     }
 
+    const truncateCode = (code: string) => {
+        return code.length > 10 ? `${code.substring(0, 10)}...` : code;
+    }
+
     return (
         <div className="flex flex-col gap-2">
             <Popover open={open} onOpenChange={setOpen}>
@@ -59,32 +63,37 @@ export function ComboboxItem({ selectedIds = [], onChange }: ComboboxItemProps) 
                     <Button
                         variant="outline"
                         role="combobox"
-                        className="w-full justify-between h-auto text-left"
+                        className="w-full justify-between text-left"
                         disabled={loading}
                     >
-                        <div className="flex flex-wrap gap-1 py-1">
+                        <div className="flex flex-wrap gap-1 items-center overflow-hidden">
                             {selectedIds.length > 0 ? (
                                 selectedIds.map((id) => {
                                     const item = items.find((i) => String(i.id).trim() === String(id).trim())
+                                    const displayLabel = item ? truncateCode(item.itemCode) : `ID: ${id}`
 
                                     return (
-                                        <Badge key={id} variant="secondary" className="flex items-center gap-1">
-                                            {item ? item.itemCode : `ID: ${id}`}
+                                        <Badge
+                                            key={id}
+                                            variant="secondary"
+                                            className="flex items-center gap-1 max-w-37.5 truncate"
+                                        >
+                                            <span className="truncate">{displayLabel}</span>
                                             <X
-                                                className="h-3 w-3 cursor-pointer hover:text-destructive"
+                                                className="h-3 w-3 shrink-0 cursor-pointer hover:text-destructive"
                                                 onClick={(e) => removeSelection(id, e)}
                                             />
                                         </Badge>
                                     )
                                 })
                             ) : (
-                                <span>Selecione os itens...</span>
+                                <span className="text-muted-foreground">Selecione os itens...</span>
                             )}
                         </div>
                         <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 ml-2" />
                     </Button>
                 } />
-                <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
                     <Command>
                         <CommandInput placeholder="Buscar código..." />
                         <CommandList>
@@ -99,19 +108,26 @@ export function ComboboxItem({ selectedIds = [], onChange }: ComboboxItemProps) 
                                                 key={item.id}
                                                 value={item.itemCode}
                                                 onSelect={() => handleSelect(itemId)}
-                                                className="flex justify-between"
+                                                className="flex items-center justify-between py-2" 
                                             >
-                                                <div className="flex items-center">
+                                                <div className="flex items-center min-w-0 flex-1 mr-2">
                                                     <div className={cn(
-                                                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                                                        "mr-2 flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border border-primary",
                                                         isSelected ? "bg-primary text-primary-foreground" : "opacity-50"
                                                     )}>
                                                         {isSelected && <Check className="h-3 w-3" />}
                                                     </div>
-                                                    <Package className="mr-2 h-4 w-4 opacity-50" />
-                                                    {item.itemCode}
+                                                    <Package className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+                                                    <span className="truncate font-semibold text-sm">
+                                                        {item.itemCode}
+                                                    </span>
                                                 </div>
-                                                <Badge variant="outline">x{item.quantity}</Badge>
+                                                <Badge
+                                                    variant="secondary"
+                                                    className="ml-auto shrink-0 bg-secondary/50 text-[10px] px-1.5 h-5 min-w-8 justify-center"
+                                                >
+                                                    x{item.quantity}
+                                                </Badge>
                                             </CommandItem>
                                         )
                                     })}
@@ -121,6 +137,6 @@ export function ComboboxItem({ selectedIds = [], onChange }: ComboboxItemProps) 
                     </Command>
                 </PopoverContent>
             </Popover>
-        </div >
+        </div>
     )
 }
