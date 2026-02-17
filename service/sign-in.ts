@@ -13,7 +13,6 @@ export const SignIn = () => {
             signIn(input: $input) {
                 message
                 success
-                token 
             }
         }
     `;

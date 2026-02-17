@@ -42,7 +42,6 @@ const REFRESH_TOKEN_MUTATION = `
     refreshToken {
       message
       success
-      token
     }
   }
 `;
