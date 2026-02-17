@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MapPin, ShieldCheck, CreditCard, ShoppingBag, Mail } from "lucide-react";
+import { MapPin, ShieldCheck, ShoppingBag, Mail } from "lucide-react";
 import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 
 export default function Footer() {
@@ -18,10 +18,10 @@ export default function Footer() {
                             Beleza e bem-estar em um só lugar.
                         </p>
                         <div className="flex gap-4 mt-2">
-                            <Link target="_blank" href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                            <Link rel="noopener noreferrer" target="_blank" href="https://www.instagram.com/store_encantosdoarcanjo" className="text-muted-foreground hover:text-primary transition-colors">
                                 <FaInstagram size={20} />
                             </Link>
-                            <Link target="_blank" href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                            <Link rel="noopener noreferrer" target="_blank" href="https://wa.me/5514997476755" className="text-muted-foreground hover:text-primary transition-colors">
                                 <FaWhatsapp size={20} />
                             </Link>
                         </div>
@@ -30,10 +30,10 @@ export default function Footer() {
                     <div className="flex flex-col gap-4">
                         <h4 className="font-semibold text-foreground italic">Institucional</h4>
                         <nav className="flex flex-col gap-2 text-sm text-muted-foreground">
-                            <Link href="/produtos-categorias" className="hover:text-primary transition-colors">Produtos/Categorias</Link>
-                            <Link href="/quem-somos" className="hover:text-primary transition-colors">Quem Somos</Link>
-                            <Link href="/politica-trocas" className="hover:text-primary transition-colors">Política de Trocas/Devoluções</Link>
-                            <Link href="/fale-conosco" className="hover:text-primary transition-colors">Fale Conosco</Link>
+                            <Link href="#produtos-categorias" className="hover:text-primary transition-colors">Produtos/Categorias</Link>
+                            <Link href="#quem-somos" className="hover:text-primary transition-colors">Quem Somos</Link>
+                            <Link href="#politica-trocas" className="hover:text-primary transition-colors">Política de Trocas/Devoluções</Link>
+                            <Link href="#fale-conosco" className="hover:text-primary transition-colors">Fale Conosco</Link>
                         </nav>
                     </div>
 

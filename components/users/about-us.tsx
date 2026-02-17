@@ -1,50 +1,42 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Sparkles, Hammer, Crown } from "lucide-react"
+import { Hammer, Crown } from "lucide-react"
+
+const features = [
+    {
+        icon: <Hammer className="w-6 h-6" />,
+        title: "Produtos Oficiais",
+        description: "Trabalhamos apenas com peças autorizadas, garantindo originalidade, qualidade e procedência."
+    },
+    {
+        icon: <Crown className="w-6 h-6" />,
+        title: "Curadoria Premium",
+        description: "Selecionamos produtos que se destacam no mercado, trazendo tendências e itens de alta procura."
+    }
+];
 
 export default function AboutUs() {
-    const features = [
-        {
-            icon: <Hammer className="w-6 h-6" />,
-            title: "Produção Artesanal",
-            description: "Cada peça é moldada à mão, respeitando o tempo e a delicadeza dos metais nobres."
-        },
-        {
-            icon: <Sparkles className="w-6 h-6" />,
-            title: "Pedras Selecionadas",
-            description: "Garantimos a procedência e o brilho eterno de cada gema presente em nossas coleções."
-        },
-        {
-            icon: <Crown className="w-6 h-6" />,
-            title: "Design Exclusivo",
-            description: "Criamos joias autorais que não apenas adornam, mas contam a sua própria história."
-        }
-    ]
-
     return (
         <section id="quem-somos" className="py-24 bg-background relative overflow-hidden">
             <div className="container mx-auto px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
-                        className="relative group h-full"
+                        className="relative w-full flex justify-center items-center"
                     >
-                        <div className="relative z-10 rounded-2xl overflow-hidden border border-primary/20 aspect-square bg-muted">
-                            <div className="absolute inset-0 z-20 bg-linear-to-t from-background/90 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity duration-700 pointer-events-none" />
-
-                            <div
-                                className="w-full h-full bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-1000 ease-in-out scale-110 group-hover:scale-100"
-                                style={{ backgroundImage: "url('/atelie.jpeg')" }}
+                        <div className="w-full max-w-125 aspect-square">
+                            <img
+                                src="/atelie.jpeg"
+                                alt="Ateliê Encantos do Arcanjo"
+                                className="w-full h-full object-cover rounded-full shadow-xl"
                             />
                         </div>
-
-                        <div className="absolute -top-4 -left-4 w-32 h-32 border-t-2 border-l-2 border-primary/20 rounded-tl-2xl -z-10 group-hover:-top-2 group-hover:-left-2 transition-all duration-500" />
                     </motion.div>
+
 
                     <motion.div
                         initial={{ opacity: 0, x: 50 }}
@@ -53,12 +45,12 @@ export default function AboutUs() {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="flex flex-col gap-6"
                     >
-                        <h2 className="text-primary font-medium tracking-[0.2em] uppercase text-sm">Nossa Essência</h2>
-                        <h3 className="text-3xl md:text-5xl font-bold leading-tight">
-                            Unindo a tradição do martelo à <span className="text-primary italic">visão</span> do amanhã.
+                        <h2 className="text-primary font-medium tracking-[0.2em] uppercase text-sm text-center md:text-start">Quem somos</h2>
+                        <h3 className="text-4xl md:text-6xl font-bold tracking-tight bg-linear-to-r from-foreground to-foreground/70 bg-clip-text text-transparent text-center md:text-start">
+                            Compromisso com Qualidade e Autenticidade
                         </h3>
                         <p className="text-muted-foreground text-lg leading-relaxed">
-                            O Ateliê nasceu do desejo de resgatar o valor do que é feito à mão. Em um mundo de produções em massa, escolhemos o caminho da exclusividade. Cada curva, cada polimento e cada cravação é feita com a atenção que uma joia eterna merece.
+                            Somos especializados na venda de produtos oficiais autorizados e também no desenvolvimento de peças próprias. Nosso objetivo é oferecer qualidade, autenticidade e exclusividade, unindo curadoria de mercado com criações que carregam nossa identidade.
                         </p>
 
                         <div className="grid grid-cols-1 gap-6 mt-4">

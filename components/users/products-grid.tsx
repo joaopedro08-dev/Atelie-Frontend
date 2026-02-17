@@ -1,132 +1,112 @@
 "use client"
 
 import { motion, Variants } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { ShoppingBag, Star } from "lucide-react"
+import { ShoppingBag } from "lucide-react"
+
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
+}
+
+const products = [
+  { id: 1, category: "Dalla Déa", image: "/collection/atelie-img-01.jpeg" },
+  { id: 2, category: "Dalla Déa", image: "/collection/atelie-img-02.jpeg" },
+  { id: 3, category: "Dalla Déa", image: "/collection/atelie-img-03.jpeg" },
+  { id: 4, category: "Dalla Déa", image: "/collection/atelie-img-04.jpeg" },
+  { id: 5, category: "Dalla Déa", image: "/collection/atelie-img-05.jpeg" },
+  { id: 6, category: "Sarah Trevisan", image: "/collection/atelie-img-06.jpeg" },
+  { id: 7, category: "Sarah Trevisan", image: "/collection/atelie-img-07.jpeg" },
+  { id: 8, category: "Sarah Trevisan", image: "/collection/atelie-img-08.jpeg" },
+  { id: 9, category: "Sarah Trevisan", image: "/collection/atelie-img-09.jpeg" },
+  { id: 10, category: "Dalla Déa", image: "/collection/atelie-img-10.jpeg" },
+  { id: 11, category: "Sarah Trevisan", image: "/collection/atelie-img-11.jpeg" },
+]
 
 export default function ProductGrid() {
-  const products = [
-    {
-      id: 1,
-      name: "Anel Essência de Ouro",
-      category: "Anéis",
-      price: "R$ 4.200",
-      image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80",
-    },
-    {
-      id: 2,
-      name: "Colar Aurora Boreal",
-      category: "Colares",
-      price: "R$ 8.900",
-      image: "https://images.unsplash.com/photo-1599643478518-a744c517b228?auto=format&fit=crop&q=80",
-    },
-    {
-      id: 3,
-      name: "Brincos Gota de Cristal",
-      category: "Brincos",
-      price: "R$ 2.150",
-      image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80",
-    },
-    {
-      id: 4,
-      name: "Pulseira Infinito Real",
-      category: "Pulseiras",
-      price: "R$ 5.600",
-      image: "https://images.unsplash.com/photo-1611591437281-460bfbe157a8?auto=format&fit=crop&q=80",
-    },
-  ]
-
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 }
-    }
-  }
-
-  const cardVariants: Variants = {
-    hidden: { opacity: 0, scale: 0.95, y: 20 },
-    visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.6 } }
-  }
-
   return (
-    <section className="py-24 bg-background relative overflow-hidden">
-      <div className="container mx-auto px-6">
-        {/* Cabeçalho da Seção */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-          <div className="max-w-xl">
-            <motion.h2 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              className="text-4xl md:text-5xl font-bold mb-4"
-            >
-              Coleções <span className="text-primary italic">Atemporais</span>
-            </motion.h2>
-            <p className="text-muted-foreground">
-              Explore a seleção exclusiva do mês, onde a raridade encontra o design.
-            </p>
-          </div>
-          <Button variant="link" className="text-primary p-0 h-auto font-semibold tracking-wider uppercase text-xs">
-            Ver catálogo completo
-          </Button>
+    <section id="produtos-categoria" className="py-10 md:py-20 bg-background relative overflow-hidden">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="mb-6 md:mb-10 text-center md:text-left">
+          <motion.h2
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-2xl md:text-5xl font-bold mb-2"
+          >
+            Coleções <span className="text-primary italic">Atemporais</span>
+          </motion.h2>
+
+          <p className="text-muted-foreground text-xs md:text-base">
+            Joias artesanais exclusivas (R$50 - R$600).
+            <span className="block opacity-80">Parcelamento em até 6x no cartão.</span>
+          </p>
         </div>
 
-        {/* Grid de Produtos */}
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+        <Carousel 
+          opts={{ align: "start", loop: false }} 
+          className="w-full relative"
         >
-          {products.map((product) => (
-            <motion.div
-              key={product.id}
-              variants={cardVariants}
-              whileHover={{ y: -10 }}
-              className="group relative"
-            >
-              {/* Card de Imagem */}
-              <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-muted mb-4 border border-border/50">
-                <div 
-                  className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                  style={{ backgroundImage: `url('${product.image}')` }}
-                />
-                
-                {/* Badge de Categoria */}
-                <div className="absolute top-4 left-4 z-10">
-                  <span className="px-3 py-1 rounded-full bg-background/80 backdrop-blur-md text-[10px] uppercase tracking-widest font-bold border border-white/10">
-                    {product.category}
-                  </span>
-                </div>
+          <CarouselContent className="-ml-3 md:-ml-4">
+            {products.map((product) => (
+              <CarouselItem 
+                key={product.id} 
+                className="pl-3 md:pl-4 basis-[50%] sm:basis-1/3 lg:basis-1/4"
+              >
+                <motion.div
+                  variants={cardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  className="group flex flex-col"
+                >
+                  <div className="relative aspect-3/4 w-full rounded-xl overflow-hidden bg-foreground/50 border border-border/40 mb-3">
+                    <img
+                      src={product.image}
+                      alt={product.category}
+                      className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                      loading="lazy"
+                    />
+                    
+                    <div className="absolute top-2 left-2 z-10">
+                      <span className="px-1.5 py-0.5 rounded-sm bg-background/90 backdrop-blur-sm text-[7px] md:text-[9px] text-foreground uppercase font-bold tracking-tighter">
+                        {product.category}
+                      </span>
+                    </div>
 
-                {/* Overlay de Compra Rápida */}
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                  <Button size="icon" className="rounded-full bg-primary hover:scale-110 transition-transform">
-                    <ShoppingBag size={20} />
-                  </Button>
-                </div>
-              </div>
-
-              {/* Informações do Produto */}
-              <div className="space-y-1">
-                <div className="flex justify-between items-start">
-                  <h4 className="font-semibold text-lg leading-tight group-hover:text-primary transition-colors">
-                    {product.name}
-                  </h4>
-                  <div className="flex items-center gap-1 text-yellow-500/80">
-                    <Star size={12} fill="currentColor" />
-                    <span className="text-xs font-medium text-muted-foreground">5.0</span>
+                    <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                       <div className="p-2 bg-background rounded-full shadow-lg translate-y-4 group-hover:translate-y-0 transition-transform">
+                          <ShoppingBag size={16} className="text-primary" />
+                       </div>
+                    </div>
                   </div>
-                </div>
-                <p className="text-primary font-bold text-xl">{product.price}</p>
-              </div>
-              
-              {/* Brilho de fundo no hover (Soft Glow) */}
-              <div className="absolute -inset-2 bg-primary/5 rounded-3xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity -z-10" />
-            </motion.div>
-          ))}
-        </motion.div>
+
+                  <div className="space-y-0.5">
+                    <h3 className="text-[10px] md:text-xs text-muted-foreground font-medium truncate uppercase tracking-tight">
+                        {product.category}
+                    </h3>
+                    <p className="text-primary font-bold text-sm md:text-lg">R$ 50 - 600</p>
+                    <p className="text-[8px] md:text-[10px] text-muted-foreground/80 leading-none">
+                      À vista ou até 6x*
+                    </p>
+                  </div>
+                </motion.div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          <div className="hidden md:block">
+            <CarouselPrevious className="-left-4 bg-background/10 border-none hover:bg-foreground/50" />
+            <CarouselNext className="-right-4 bg-background/10 border-none hover:bg-foreground/50" />
+          </div>
+        </Carousel>
       </div>
     </section>
   )

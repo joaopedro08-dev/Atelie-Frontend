@@ -1,11 +1,13 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { motion, Variants } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ChevronRight } from "lucide-react"
 
 export default function HeroSection() {
+    const router = useRouter()
     const [stars, setStars] = useState<Array<{
         id: number
         top: string
@@ -34,7 +36,7 @@ export default function HeroSection() {
             y: 0,
             transition: {
                 duration: 0.8,
-                ease: "easeOut" 
+                ease: "easeOut"
             }
         }
     }
@@ -96,8 +98,8 @@ export default function HeroSection() {
                     transition={{ duration: 0.9, delay: 0.2 }}
                     className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground leading-[1.1] max-w-4xl"
                 >
-                    Onde a arte se funde à{" "}
-                    <span className="text-primary">essência</span> do luxo
+                    Onde a arte se{" "}
+                    <span className="text-primary">transforma</span> em joias exclusivas
                 </motion.h1>
 
                 <motion.p
@@ -106,8 +108,8 @@ export default function HeroSection() {
                     transition={{ duration: 0.9, delay: 0.4 }}
                     className="mt-8 text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed font-light"
                 >
-                    Curadoria exclusiva de peças artesanais desenhadas para eternizar momentos.
-                    Explore uma experiência única de alta joalheria em nossa vitrine digital.
+                    Fabricamos e selecionamos joias artesanais exclusivas, unindo técnica, tradição e design autoral.
+                    Descubra uma experiência única de alta joalheria em nossa vitrine digital.
                 </motion.p>
 
                 <motion.div
@@ -117,6 +119,7 @@ export default function HeroSection() {
                     <Button
                         size="lg"
                         className="h-12 px-8 text-base font-semibold rounded-full group bg-primary hover:bg-primary/90 text-primary-foreground shadow-md shadow-primary/20 transition-all hover:shadow-primary/30"
+                        onClick={() => router.push("#produtos-categoria")}
                     >
                         Ver Produtos
                         <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -126,6 +129,7 @@ export default function HeroSection() {
                         size="lg"
                         variant="outline"
                         className="h-12 px-8 text-base font-semibold rounded-full border-primary/30 hover:bg-primary/10 hover:text-primary transition-colors"
+                        onClick={() => router.push("#quem-somos")}
                     >
                         Nossa História
                     </Button>

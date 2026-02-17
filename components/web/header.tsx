@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { StoreIcon, SprayCanIcon, Building2Icon, ShieldAlertIcon, MessageCircleIcon } from "lucide-react";
+import { StoreIcon, SprayCanIcon, Building2Icon, ShieldAlertIcon } from "lucide-react";
 import ToggleMenu from "../toggle-menu";
 import { ModeToggle } from "../mode-toggle";
 
@@ -7,8 +7,7 @@ export default function Header() {
     const categories = [
         { name: "Produtos", href: "#produtos-categoria", icon: <SprayCanIcon size={18} className="text-muted-foreground" /> },
         { name: "Quem Somos", href: "#quem-somos", icon: <Building2Icon size={18} className="text-muted-foreground" /> },
-        { name: "Políticas", href: "#politica-trocas", icon: <ShieldAlertIcon size={18} className="text-muted-foreground" /> },
-        { name: "Fale Conosco", href: "#fale-conosco", icon: <MessageCircleIcon size={18} className="text-muted-foreground" /> },
+        { name: "Política e Trocas", href: "#politica-trocas", icon: <ShieldAlertIcon size={18} className="text-muted-foreground" /> },
     ];
 
     return (
@@ -27,7 +26,7 @@ export default function Header() {
                         </Link>
                     </div>
 
-                    <nav className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-8">
+                    <nav className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-8">
                         {categories.map((cat) => (
                             <a
                                 key={cat.name}
@@ -44,7 +43,7 @@ export default function Header() {
                             <ModeToggle />
                         </div>
                         
-                        <div className="lg:hidden">
+                        <div className="md:hidden">
                             <ToggleMenu categories={categories} />
                         </div>
                     </div>
