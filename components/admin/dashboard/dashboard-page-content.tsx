@@ -11,8 +11,7 @@ import {
     FileDown,
     FileText,
     Table as TableIcon,
-    Loader2,
-    CreditCard
+    Loader2
 } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis, Pie, PieChart, Cell, Label } from "recharts";
 
@@ -141,7 +140,7 @@ export function DashboardPageContent() {
 
     const handleExport = (format: 'pdf' | 'excel') => {
         if (!stats) return;
-        format === 'pdf' 
+        format === 'pdf'
             ? exportDashboardToPDF(stats, paymentTranslations, statusTranslations)
             : exportDashboardToExcel(stats, paymentTranslations, statusTranslations);
     };
@@ -154,13 +153,17 @@ export function DashboardPageContent() {
                     <p className="text-muted-foreground">Visão geral do seu ateliê hoje.</p>
                 </div>
                 <DropdownMenu>
-                    <DropdownMenuTrigger render={<Button variant="outline" className="gap-2"><FileDown className="size-4" /> Exportar</Button>} />
+                    <DropdownMenuTrigger render={
+                        <Button disabled={loading || !stats} variant="outline" className="gap-2">
+                            <FileDown className="size-4" /> Exportar
+                        </Button>
+                    } />
                     <DropdownMenuContent align="end" className="w-52">
                         <DropdownMenuItem onClick={() => handleExport('pdf')} className="gap-2 cursor-pointer">
-                            <FileText className="size-4 text-red-500" /> Salvar como PDF
+                            <FileText className="size-4 text-red-500" /> Salvar como PDF (A4)
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleExport('excel')} className="gap-2 cursor-pointer">
-                            <TableIcon className="size-4 text-green-600" /> Salvar como Excel
+                            <TableIcon className="size-4 text-green-600" /> Salvar como Excel (.xlsx)
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
