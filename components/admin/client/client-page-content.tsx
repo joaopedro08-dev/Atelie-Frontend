@@ -4,16 +4,16 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, List, Search, X, Users, FileDown, FileText, TableIcon } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"; 
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { ClientList } from "@/app/admin/clients/client-list";
 import { ClientForm } from "@/app/admin/clients/client-form";
 import { ListAllClients } from "@/service/clients/list-all-clients";
 import { Button } from "@/components/ui/button";
-import { 
-    DropdownMenu, 
-    DropdownMenuTrigger, 
-    DropdownMenuContent, 
-    DropdownMenuItem 
+import {
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuItem
 } from "@/components/ui/dropdown-menu";
 import { exportClientsToPDF } from "@/service/export/clients/client-pdf";
 import { exportClientsToExcel } from "@/service/export/clients/client-excel";
@@ -30,16 +30,16 @@ export function ClientPageContent() {
         try {
             const data = await listClients();
             setClients(Array.isArray(data) ? data : []);
-        } catch (error) { 
-            console.error(error); 
-        } finally { 
-            setIsLoading(false); 
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
     useEffect(() => { fetchClients(); }, []);
 
-    const filteredClients = clients.filter(client => 
+    const filteredClients = clients.filter(client =>
         client.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         client.email?.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -59,22 +59,23 @@ export function ClientPageContent() {
                     </div>
                     <p className="text-muted-foreground">Gerencie sua base de clientes e orçamentos.</p>
                 </div>
-
-                <DropdownMenu>
-                    <DropdownMenuTrigger render={
-                        <Button variant="outline" className="gap-2" disabled={isLoading || filteredClients.length === 0}>
-                            <FileDown className="size-4" /> Exportar
-                        </Button>
-                    } />                        
-                    <DropdownMenuContent align="end" className="w-52">
-                        <DropdownMenuItem onClick={() => handleExport('pdf')} className="gap-2 cursor-pointer">
-                            <FileText className="size-4 text-red-500" /> Salvar como PDF (A4)
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleExport('excel')} className="gap-2 cursor-pointer">
-                            <TableIcon className="size-4 text-green-600" /> Salvar como Excel (.xlsx)
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="flex items-center gap-2">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger render={
+                            <Button variant="outline" className="gap-2" disabled={isLoading || filteredClients.length === 0}>
+                                <FileDown className="size-4" /> Exportar
+                            </Button>
+                        } />
+                        <DropdownMenuContent align="end" className="w-52">
+                            <DropdownMenuItem onClick={() => handleExport('pdf')} className="gap-2 cursor-pointer">
+                                <FileText className="size-4 text-red-500" /> Salvar como PDF (A4)
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleExport('excel')} className="gap-2 cursor-pointer">
+                                <TableIcon className="size-4 text-green-600" /> Salvar como Excel (.xlsx)
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
             </div>
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -89,8 +90,8 @@ export function ClientPageContent() {
                             <InputGroupAddon align="inline-start">
                                 <Search size={18} className="text-muted-foreground" />
                             </InputGroupAddon>
-                            <InputGroupInput 
-                                placeholder="Buscar cliente..." 
+                            <InputGroupInput
+                                placeholder="Buscar cliente..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 disabled={activeTab !== "list"}
@@ -98,7 +99,7 @@ export function ClientPageContent() {
                             <AnimatePresence>
                                 {searchTerm && (
                                     <InputGroupAddon align="inline-end">
-                                        <motion.button 
+                                        <motion.button
                                             initial={{ opacity: 0, scale: 0.8 }}
                                             animate={{ opacity: 1, scale: 1 }}
                                             exit={{ opacity: 0, scale: 0.8 }}

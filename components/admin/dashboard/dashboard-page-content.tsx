@@ -153,21 +153,23 @@ export function DashboardPageContent() {
                     <h1 className="text-3xl font-bold tracking-tight text-foreground">Painel Administrativo</h1>
                     <p className="text-muted-foreground">Visão geral do seu ateliê hoje.</p>
                 </div>
-                <DropdownMenu>
-                    <DropdownMenuTrigger render={
-                        <Button disabled={loading || !stats} variant="outline" className="gap-2">
-                            <FileDown className="size-4" /> Exportar
-                        </Button>
-                    } />
-                    <DropdownMenuContent align="end" className="w-52">
-                        <DropdownMenuItem onClick={() => handleExport('pdf')} className="gap-2 cursor-pointer">
-                            <FileText className="size-4 text-red-500" /> Salvar como PDF (A4)
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleExport('excel')} className="gap-2 cursor-pointer">
-                            <TableIcon className="size-4 text-green-600" /> Salvar como Excel (.xlsx)
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="flex items-center gap-2">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger render={
+                            <Button disabled={loading || !stats} variant="outline" className="gap-2">
+                                <FileDown className="size-4" /> Exportar
+                            </Button>
+                        } />
+                        <DropdownMenuContent align="end" className="w-52">
+                            <DropdownMenuItem onClick={() => handleExport('pdf')} className="gap-2 cursor-pointer">
+                                <FileText className="size-4 text-red-500" /> Salvar como PDF (A4)
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleExport('excel')} className="gap-2 cursor-pointer">
+                                <TableIcon className="size-4 text-green-600" /> Salvar como Excel (.xlsx)
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
