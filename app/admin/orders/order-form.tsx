@@ -11,9 +11,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { RegisterOrder } from "@/service/orders/register-order";
 import { ValidationInputs, OrderFormType } from "@/service/validations/validation-inputs";
-import { ComboboxItem } from "@/components/admins/combobox/combobox-item";
-import { ComboboxClient } from "@/components/admins/combobox/combobox-client";
-import { DatePicker } from "@/components/admins/date-picker";
+import { ComboboxItem } from "@/components/admin/actions/combobox-item";
+import { ComboboxClient } from "@/components/admin/actions/combobox-client";
+import { DatePicker } from "@/components/admin/actions/date-picker";
 
 interface OrderFormProps {
     onSuccess?: () => void;

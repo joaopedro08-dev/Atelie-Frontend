@@ -5,23 +5,33 @@ import { FullScreenLoader } from "@/components/full-screen-loader";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export function PrivateRoute({ children }: { children: React.ReactNode }) {
+type UserRole = "ADMIN" | "USER";
+
+interface PrivateRouteProps {
+  children: React.ReactNode;
+  allowedRoles?: UserRole[]; 
+}
+
+export function PrivateRoute({ children, allowedRoles }: PrivateRouteProps) {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const [isRedirecting, setIsRedirecting] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
-    if (!loading && !user && !isRedirecting) {
-      setIsRedirecting(true);
-      router.replace("/signin");
+    if (!loading) {
+      if (!user) {
+        router.replace("/signin");
+      } else if (allowedRoles && !allowedRoles.includes(user.role as UserRole)) {
+        router.replace("/unauthorized"); 
+      } else {
+        setIsAuthorized(true);
+      }
     }
-  }, [user, loading, router, isRedirecting]);
+  }, [user, loading, router, allowedRoles]);
 
-  if (loading || (isRedirecting && !user)) {
-    return <FullScreenLoader text="Verificando autenticação..." />;
+  if (loading || !isAuthorized) {
+    return <FullScreenLoader text="Verificando permissões..." />;
   }
-
-  if (!user) return null;
 
   return <>{children}</>;
 }

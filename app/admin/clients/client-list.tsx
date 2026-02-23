@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { DeleteClient } from "@/service/clients/delete-client";
-import { EditClientDialog } from "@/components/admins/edit-client-dialog";
-import { ActionDelete } from "@/components/admins/action-delete";
+import { EditClientDialog } from "@/components/admin/client/edit-client-dialog";
+import { ActionDelete } from "@/components/admin/actions/action-delete";
 
 interface ClientListProps {
     clients: any[];

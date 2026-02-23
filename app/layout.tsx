@@ -18,8 +18,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ateliê - Encantos do Arcanjo",
-  description: "Semijoias de luxo, acessórios exclusivos e linha completa Loccitane. O brilho e o cuidado que você merece.",
+  title: {
+    template: "Ateliê - %s",
+    default: "Ateliê - Encantos do Arcanjo",
+  },
+  description: "Semijoias de luxo, acessórios exclusivos e linha completa. O brilho e o cuidado que você merece.",
   icons: {
     icon: "/favicon.ico",
   },

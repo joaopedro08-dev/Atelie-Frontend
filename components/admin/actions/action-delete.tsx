@@ -35,7 +35,7 @@ export function ActionDelete({ open, onOpenChange, onConfirm, itemName }: Action
                     <AlertDialogCancel>Cancelar</AlertDialogCancel>
                     <AlertDialogAction
                         onClick={onConfirm}
-                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        className="bg-destructive text-white hover:bg-destructive/90"
                     >
                         Excluir
                     </AlertDialogAction>

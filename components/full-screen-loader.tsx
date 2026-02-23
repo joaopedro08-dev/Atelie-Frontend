@@ -9,7 +9,7 @@ export function FullScreenLoader({
     text = "Carregando..."
 }: FullScreenLoaderProps) {
     return (
-        <div className="flex h-screen flex-col items-center justify-center gap-4">
+        <div className="flex h-dvh flex-col items-center justify-center gap-4">
 
             <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}

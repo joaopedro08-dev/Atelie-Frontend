@@ -4,7 +4,7 @@ import { useState } from "react";
 import {
     Edit, Trash2, MoreHorizontal, Loader2, ChevronLeft, ChevronRight,
     CalendarIcon, CreditCard, Package, User as UserIcon,
-    Activity, ShoppingBagIcon
+    Activity
 } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
@@ -16,8 +16,8 @@ import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { EditOrderDialog } from "@/components/admins/edit-order-dialog";
-import { ActionDelete } from "@/components/admins/action-delete";
+import { EditOrderDialog } from "@/components/admin/order/edit-order-dialog";
+import { ActionDelete } from "@/components/admin/actions/action-delete";
 import { DeleteOrder } from "@/service/orders/delete-order";
 
 interface OrderListProps {

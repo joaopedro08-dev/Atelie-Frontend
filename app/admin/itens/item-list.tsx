@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { DeleteItem } from "@/service/itens/delete-item";
-import { EditItemDialog } from "@/components/admins/edit-item-dialog";
-import { ActionDelete } from "@/components/admins/action-delete";
+import { EditItemDialog } from "@/components/admin/item/edit-item-dialog";
+import { ActionDelete } from "@/components/admin/actions/action-delete";
 
 interface ItemListProps {
     items: any[];

@@ -8,7 +8,7 @@ export const exportDashboardToExcel = (
     if (!stats) return;
 
     const summaryHeader = [
-        ["RELATÓRIO DE ATIVIDADES - ATELIÊ"],
+        ["RELATÓRIO DE ATIVIDADES - ATELIÊ - ENCANTOS DO ARCANJO"],
         [`Gerado em: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`],
         [],
         ["Pedido", "Cliente", "Pagamento", "Status", "Data"]
@@ -39,7 +39,7 @@ export const exportDashboardToExcel = (
         ["INFORMAÇÕES DE SEGURANÇA"],
         ["Token de Autenticação", Math.random().toString(36).substring(2, 15).toUpperCase()],
         ["Status dos Dados", "Integridade Verificada"],
-        ["Exportado por", "Sistema de Gestão Dashboard"]
+        ["Exportado por", "Sistema de Gestão Ateliê"]
     ];
 
     const wsClosing = XLSX.utils.aoa_to_sheet(closingData);
@@ -49,5 +49,5 @@ export const exportDashboardToExcel = (
     XLSX.utils.book_append_sheet(wb, wsGeneral, "Atividades Recentes");
     XLSX.utils.book_append_sheet(wb, wsClosing, "Fechamento e Auditoria");
     
-    XLSX.writeFile(wb, `relatorio_atelie_${Date.now()}.xlsx`);
+    XLSX.writeFile(wb, `relatorio_dashboard_atelie_${Date.now()}.xlsx`);
 };

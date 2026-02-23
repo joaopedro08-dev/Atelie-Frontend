@@ -1,7 +1,7 @@
-import AboutUs from "../users/about-us"
-import HeroSection from "../users/hero-section"
-import Policies from "../users/policies"
-import ProductGrid from "../users/products-grid"
+import AboutUs from "./about-us"
+import HeroSection from "./hero-section"
+import Policies from "./policies"
+import ProductGrid from "./products-grid"
 
 export default function Main() {
     return (

@@ -6,11 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { UpdateOrder } from "@/service/orders/update-order";
-import { ComboboxItem } from "@/components/admins/combobox/combobox-item";
-import { ComboboxClient } from "@/components/admins/combobox/combobox-client";
-import { DatePicker } from "@/components/admins/date-picker";
+import { ComboboxItem } from "@/components/admin/actions/combobox-item";
+import { ComboboxClient } from "@/components/admin/actions/combobox-client";
+import { DatePicker } from "@/components/admin/actions/date-picker";
 import { Loader2, Save, X, Hash, DollarSign, CalendarRange } from "lucide-react";
 import { toast } from "sonner";
 

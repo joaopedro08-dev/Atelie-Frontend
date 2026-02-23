@@ -103,5 +103,5 @@ export const exportDashboardToPDF = (
         );
     }
 
-    doc.save(`relatorio_atelie_${Date.now()}.pdf`);
+    doc.save(`relatorio_dashboard_atelie_${Date.now()}.pdf`);
 };

@@ -1,31 +1,9 @@
-import {
-    Sidebar,
-    SidebarContent,
-    SidebarFooter,
-    SidebarGroup,
-    SidebarGroupLabel,
-    SidebarHeader,
-    SidebarMenu,
-    SidebarMenuItem,
-    SidebarMenuButton,
-    useSidebar
-} from "@/components/ui/sidebar";
-import {
-    ChevronsUpDown,
-    User2Icon,
-    LayoutDashboard,
-    Gem,
-    ShoppingCart,
-    Users,
-    Settings,
-    StoreIcon,
-    ChevronDown
-} from "lucide-react";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
+"use client";
+
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
+import { ChevronsUpDown, User2Icon, LayoutDashboard, Gem, ShoppingCart, Users, Settings, StoreIcon, ChevronDown } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Logout from "../logout";
 
@@ -59,6 +37,7 @@ interface AppSidebarProps {
 
 export function AppSidebar({ username, role }: AppSidebarProps) {
     const { isMobile, setOpenMobile } = useSidebar();
+    const pathname = usePathname();
 
     const closeSidebar = () => {
         if (isMobile) setOpenMobile(false);
@@ -82,8 +61,8 @@ export function AppSidebar({ username, role }: AppSidebarProps) {
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" render={
                             <Link href="/admin" onClick={closeSidebar}>
-                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                                    <StoreIcon className="size-4" />
+                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-foreground">
+                                    <StoreIcon className="size-4 text-white" />
                                 </div>
                                 <div className="flex flex-col gap-0.5 leading-none ml-2">
                                     <span className="font-semibold">Ateliê</span>
@@ -102,9 +81,10 @@ export function AppSidebar({ username, role }: AppSidebarProps) {
                         <SidebarMenu>
                             {group.items.map((item) => {
                                 const Icon = item.icon;
+                                const isActive = pathname === item.link;
                                 return (
-                                    <SidebarMenuItem key={item.link}>
-                                        <SidebarMenuButton tooltip={item.label}>
+                                    <SidebarMenuItem className="mb-1" key={item.link}>
+                                        <SidebarMenuButton tooltip={item.label} isActive={isActive}>
                                             <Link
                                                 href={item.link}
                                                 onClick={closeSidebar}
