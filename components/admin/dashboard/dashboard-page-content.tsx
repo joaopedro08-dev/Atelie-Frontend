@@ -11,7 +11,8 @@ import {
     FileDown,
     FileText,
     Table as TableIcon,
-    Loader2
+    Loader2,
+    CreditCard
 } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis, Pie, PieChart, Cell, Label } from "recharts";
 
@@ -187,17 +188,108 @@ export function DashboardPageContent() {
                     </CardContent>
                 </Card>
 
-                <Card className="col-span-4 lg:col-span-3 bg-card/10 border-muted/20">
-                    <CardHeader><CardTitle>Atividade Recente</CardTitle></CardHeader>
-                    <CardContent>
+                <Card className="col-span-4 lg:col-span-3 bg-card/10 border-muted/20 w-full">
+                    <CardHeader className="flex flex-col">
+                        <div className="flex flex-row items-center gap-2">
+                            <CardTitle className="text-foreground">Atividade Recente</CardTitle>
+                            <ShoppingBag className="size-4 text-muted-foreground" />
+                        </div>
+                        <CardDescription className="text-xs text-muted-foreground">
+                            Últimas atualizações de status e pagamentos
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="w-full">
                         <ScrollArea className="h-77.5 pr-4">
                             <div className="space-y-6">
-                                {stats?.listAllRecentyActivity?.map((activity: any, i: number) => (
-                                    <ActivityItem key={i} activity={activity} />
-                                ))}
+                                {loading ? (
+                                    <div className="flex justify-center py-4">
+                                        <Loader2 className="animate-spin size-6 text-primary" />
+                                    </div>
+                                ) : stats?.listAllRecentyActivity?.length > 0 ? (
+                                    stats.listAllRecentyActivity.map((activity: any, index: number) => {
+                                        const statusInfo = statusTranslations[activity.status] || { label: activity.status, color: "" };
+                                        const paymentLabel = paymentTranslations[activity.methodPayment] || activity.methodPayment;
+
+                                        return (
+                                            <div key={index} className="flex items-start sm:items-center gap-4 py-2">
+                                                <div className="size-9 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
+                                                    {activity.methodPayment === 'SYSTEM' ? (
+                                                        <DollarSign className="size-4 text-primary" />
+                                                    ) : (
+                                                        <CreditCard className="size-4 text-primary" />
+                                                    )}
+                                                </div>
+
+                                                <div className="flex-1 min-w-0 space-y-1">
+                                                    <p className="text-sm font-medium leading-none text-foreground truncate">
+                                                        {activity.name}
+                                                    </p>
+                                                    <p className="text-xs text-muted-foreground">
+                                                        Pedido #{activity.itemId} • {paymentLabel}
+                                                    </p>
+                                                </div>
+
+                                                <div className="flex flex-col items-end gap-1 shrink-0">
+                                                    <Badge variant="outline" className={`${statusInfo.color} text-[10px] sm:text-xs whitespace-nowrap`}>
+                                                        {statusInfo.label}
+                                                    </Badge>
+                                                    <p className="text-[10px] text-muted-foreground whitespace-nowrap">
+                                                        {formatDateBR(activity.dateOrder)}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        );
+                                    })
+                                ) : (
+                                    <p className="text-sm text-muted-foreground italic text-center py-4">
+                                        Nenhuma atividade encontrada.
+                                    </p>
+                                )}
                             </div>
                         </ScrollArea>
                     </CardContent>
+                </Card>
+
+                <Card className="col-span-4 lg:col-span-3 bg-card/10 border-muted/20 w-full">
+                    <CardHeader className="items-center pb-0">
+                        <CardTitle>Distribuição de Itens</CardTitle>
+                        <CardDescription className="text-xs text-muted-foreground">
+                            Análise por prefixo e comprimento dos códigos selecionados
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex-1 pb-0">
+                        {loading ? (
+                            <div className="h-64 flex items-center justify-center">
+                                <Loader2 className="animate-spin size-8 text-primary" />
+                            </div>
+                        ) : stats?.listAllCategory?.length > 0 ? (
+                            <CategoryPieChart data={stats.listAllCategory} />
+                        ) : (
+                            <div className="h-64 flex items-center justify-center border-2 border-dashed border-zinc-800 rounded-lg m-4">
+                                <p className="text-muted-foreground text-sm italic">Sem dados de categorias.</p>
+                            </div>
+                        )}
+                    </CardContent>
+                    <div className="flex flex-col gap-2 p-4 pt-0">
+                        <div className="flex items-center justify-center gap-4 text-xs font-medium">
+                            <div className="flex items-center gap-1.5">
+                                <div className="size-2 rounded-full" style={{ backgroundColor: "var(--primary)" }} />
+                                <span>ST</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <div className="size-2 rounded-full" style={{ backgroundColor: "var(--chart-5)" }} />
+                                <span>MRRU</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <div className="size-2 rounded-full" style={{ backgroundColor: "var(--chart-1)" }} />
+                                <span>Outros</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <div className="size-2 rounded-full" style={{ backgroundColor: "var(--muted)" }} />
+                                <span>N/I</span>
+                            </div>
+                        </div>
+                    </div>
                 </Card>
             </div>
         </motion.div>
