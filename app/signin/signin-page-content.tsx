@@ -18,11 +18,7 @@ export function SignInPageContent() {
     const [isLoading, setIsLoading] = useState(false);
     const { signIn } = SignIn();
     const { user, loading } = useAuth();
-
-    if (loading || user) {
-        return <FullScreenLoader text="Verificando sua sessão.." />
-    }
-
+    
     const {
         register,
         handleSubmit,
@@ -30,6 +26,10 @@ export function SignInPageContent() {
     } = useForm<SignInType>({
         resolver: zodResolver(ValidationInputs.signIn),
     });
+
+    if (loading || user) {
+        return <FullScreenLoader text="Verificando sua sessão..." />;
+    }
 
     const onSubmit = async (data: SignInType) => {
         setIsLoading(true);
