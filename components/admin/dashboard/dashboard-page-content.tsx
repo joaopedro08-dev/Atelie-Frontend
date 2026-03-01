@@ -262,7 +262,7 @@ export function DashboardPageContent() {
                     <CardContent className="flex-1 pb-0">
                         {loading ? (
                             <div className="h-64 flex items-center justify-center">
-                                <Loader2 className="animate-spin size-8 text-primary" />
+                                <Loader2 className="animate-spin size-6 text-primary" />
                             </div>
                         ) : stats?.listAllCategory?.length > 0 ? (
                             <CategoryPieChart data={stats.listAllCategory} />
@@ -306,25 +306,9 @@ function StatCard({ title, icon, value, sub, loading }: any) {
                 {icon}
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold text-foreground">{loading ? <Loader2 className="animate-spin size-4" /> : value}</div>
+                <div className="text-2xl font-bold text-foreground">{loading ? <Loader2 className="animate-spin size-6 text-primary" /> : value}</div>
                 <p className="text-xs text-muted-foreground">{sub}</p>
             </CardContent>
         </Card>
-    );
-}
-
-function ActivityItem({ activity }: any) {
-    const statusInfo = statusTranslations[activity.status] || { label: activity.status, color: "" };
-    return (
-        <div className="flex items-center gap-4 py-2">
-            <div className="size-9 rounded-full bg-primary/10 flex items-center justify-center">
-                <ShoppingBag className="size-4 text-primary" />
-            </div>
-            <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{activity.name}</p>
-                <p className="text-xs text-muted-foreground">Pedido #{activity.itemId}</p>
-            </div>
-            <Badge variant="outline" className={`${statusInfo.color} text-[10px]`}>{statusInfo.label}</Badge>
-        </div>
     );
 }
