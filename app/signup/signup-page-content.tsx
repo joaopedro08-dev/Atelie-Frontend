@@ -20,10 +20,6 @@ export function SignUpPageContent() {
     const { signUp } = SignUp();
     const { user, loading } = useAuth();
 
-    if (loading || user) {
-        return <FullScreenLoader text="Verificando sua sessão.." />
-    }
-
     const {
         register,
         handleSubmit,
@@ -31,6 +27,10 @@ export function SignUpPageContent() {
     } = useForm<SignUpType>({
         resolver: zodResolver(ValidationInputs.signUp),
     });
+
+    if (loading || user) {
+            return <FullScreenLoader text="Verificando sua sessão..." />;
+        }
 
     const onSubmit = async (data: SignUpType) => {
         setIsLoading(true);
