@@ -2,12 +2,10 @@
 
 import { usePathname } from "next/navigation";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Bell } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle"; 
 
 const routeNames: Record<string, string> = {
-  "/admin": "Home",
+  "/admin": "Início",
   "/admin/dashboard": "Dashboard",
   "/admin/clients": "Clientes",
   "/admin/itens": "Gerenciar Itens",

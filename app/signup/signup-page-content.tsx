@@ -12,10 +12,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SignUpType, ValidationInputs } from "@/service/validations/validation-inputs";
 import { SignUp } from "@/service/sign-up";
+import { useAuth } from "@/contexts/auth-context";
+import { FullScreenLoader } from "@/components/full-screen-loader";
 
 export function SignUpPageContent() {
     const [isLoading, setIsLoading] = useState(false);
     const { signUp } = SignUp();
+    const { user, loading } = useAuth();
+
+    if (loading || user) {
+        return <FullScreenLoader text="Verificando sua sessão.." />
+    }
 
     const {
         register,

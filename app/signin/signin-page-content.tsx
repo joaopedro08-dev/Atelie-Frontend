@@ -5,17 +5,23 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StoreIcon, LockKeyhole, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/contexts/auth-context";
 import { motion, AnimatePresence } from "framer-motion";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SignInType, ValidationInputs } from "@/service/validations/validation-inputs";
 import { SignIn } from "@/service/sign-in";
+import { FullScreenLoader } from "@/components/full-screen-loader";
 
 export function SignInPageContent() {
     const [isLoading, setIsLoading] = useState(false);
     const { signIn } = SignIn();
+    const { user, loading } = useAuth();
+
+    if (loading || user) {
+        return <FullScreenLoader text="Verificando sua sessão.." />
+    }
 
     const {
         register,

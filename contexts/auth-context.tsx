@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { API_BASE } from "@/routes/api";
 
 interface User {
@@ -61,6 +62,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const isRefreshing = useRef(false);
   const refreshPromise = useRef<Promise<boolean> | null>(null);
 
+  const router = useRouter();
+  const pathname = usePathname();
+
   const baseFetch = useCallback(async (query: string, variables = {}) => {
     return fetch(API_BASE, {
       method: "POST",
@@ -71,9 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const handleRefresh = async () => {
-    if (isRefreshing.current) {
-      return refreshPromise.current; 
-    }
+    if (isRefreshing.current) return refreshPromise.current;
 
     isRefreshing.current = true;
     refreshPromise.current = (async () => {
@@ -81,10 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const response = await baseFetch(REFRESH_TOKEN_MUTATION);
         const result = await response.json();
         const success = !!result.data?.refreshToken?.success;
-
-        if (!success) {
-          setUser(null); 
-        }
+        if (!success) setUser(null);
         return success;
       } catch {
         setUser(null);
@@ -94,38 +93,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         refreshPromise.current = null;
       }
     })();
-
     return refreshPromise.current;
   };
 
   const authenticatedRequest = useCallback(async (query: string, variables = {}) => {
     try {
       let response = await baseFetch(query, variables);
+      let result = await response.json();
 
-      if (response.status === 401) {
+      const isUnauthorized =
+        response.status === 401 ||
+        result.errors?.some((err: any) =>
+          err.message?.includes("Unauthorized") ||
+          err.extensions?.code === "UNAUTHENTICATED"
+        );
+
+      if (isUnauthorized) {
         const refreshed = await handleRefresh();
-
         if (refreshed) {
-          response = await baseFetch(query, variables);
+          const retryResponse = await baseFetch(query, variables);
+          return await retryResponse.json();
         } else {
           setUser(null);
-          return { data: null, errors: [{ message: "Unauthorized" }] };
+          return { data: null, errors: [{ message: "Sessão expirada." }] };
         }
       }
-
-      return await response.json();
-
-    } catch {
-      return { data: null, errors: [{ message: "Network Error" }] };
+      return result;
+    } catch (error) {
+      return { data: null, errors: [{ message: "Erro de conexão." }] };
     }
   }, [baseFetch]);
 
   const fetchUser = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
-
     try {
       const result = await authenticatedRequest(GET_USER_INFO);
-      setUser(result?.data?.getUserInfo || null);
+      if (result?.data?.getUserInfo) {
+        setUser(result.data.getUserInfo);
+      } else {
+        setUser(null);
+      }
     } catch {
       setUser(null);
     } finally {
@@ -133,6 +140,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [authenticatedRequest]);
 
+  useEffect(() => {
+    if (loading) return;
+
+    const publicRoutes = ["/signin", "/signup"];
+    const isPublicRoute = publicRoutes.includes(pathname);
+
+    if (user && isPublicRoute) {
+      window.location.href = "/admin";
+    } else if (!user && pathname.startsWith("/admin")) {
+      router.replace("/signin");
+    }
+  }, [user, loading, pathname]);
 
   const logout = async () => {
     try {
@@ -140,27 +159,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
       setUser(null);
       setLoading(false);
-      if (typeof window !== "undefined") {
-        window.location.href = "/signin";
-      }
+      router.replace("/signin");
     }
   };
 
   useEffect(() => {
     fetchUser();
-
-    const handleRevalidate = () => {
-      fetchUser(true);
-    };
-
+    const handleRevalidate = () => fetchUser(true);
     window.addEventListener("focus", handleRevalidate);
-    window.addEventListener("pageshow", (event) => {
-      if (event.persisted) handleRevalidate();
-    });
-
-    return () => {
-      window.removeEventListener("focus", handleRevalidate);
-    };
+    return () => window.removeEventListener("focus", handleRevalidate);
   }, [fetchUser]);
 
   return (

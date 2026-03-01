@@ -32,7 +32,7 @@ export default function Body({ children }: { children: React.ReactNode }) {
 
     return (
         <SidebarProvider defaultOpen={defaultOpen}>
-            <div className="flex min-h-screen w-full bg-background">
+            <div className="flex min-h-dvh w-full bg-background">
                 <motion.div
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}

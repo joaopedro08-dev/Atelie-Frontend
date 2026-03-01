@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { StoreIcon, SprayCanIcon, Building2Icon, ShieldAlertIcon } from "lucide-react";
-import ToggleMenu from "../toggle-menu";
+import ToggleMenu from "./toggle-menu";
 import { ModeToggle } from "../mode-toggle";
 
 export default function Header() {
