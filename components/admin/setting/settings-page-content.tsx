@@ -59,7 +59,7 @@ export function SettingsPageContent() {
                     name: formData.name,
                     email: formData.email
                 }
-            });
+            }) as { data?: { updateProfileAdmin?: { success: boolean; message: string } }; errors?: Array<{ message: string }> };
 
             if (result?.data?.updateProfileAdmin?.success) {
                 await refreshUser();
@@ -98,7 +98,7 @@ export function SettingsPageContent() {
                     currentPassword: passwordData.current,
                     newPassword: passwordData.new
                 }
-            });
+            }) as { data?: { changePasswordAdmin?: { success: boolean; message: string } }; errors?: Array<{ message: string }> };
 
             const data = result?.data?.changePasswordAdmin;
 
