@@ -47,7 +47,7 @@ export function OrderPageContent() {
         setIsLoading(true);
         try {
             const data = await listOrders();
-            setOrders(Array.isArray(data) ? data : []);
+            setOrders(Array.isArray(data) ? (data as OrderModel[]) : []);
         } catch (error) {
             console.error("Erro ao buscar pedidos:", error);
             setOrders([]);

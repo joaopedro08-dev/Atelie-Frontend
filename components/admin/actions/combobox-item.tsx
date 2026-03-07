@@ -32,7 +32,11 @@ export function ComboboxItem({ selectedIds = [], onChange }: ComboboxItemProps) 
             setLoading(true)
             try {
                 const data = await listAllItemsByCode(selectedIds)
-                setItems(Array.isArray(data) ? data : [])
+                const transformedData = Array.isArray(data) ? data.map(item => ({
+                    ...item,
+                    id: typeof item.id === 'string' ? parseInt(item.id, 10) : item.id
+                })) : []
+                setItems(transformedData)
             } finally {
                 setLoading(false)
             }

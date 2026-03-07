@@ -71,7 +71,7 @@ export function EditOrderDialog({ order, open, onOpenChange, onSuccess }: EditOr
                 onOpenChange(false);
                 onSuccess();
             } else {
-                toast.error(result?.message || "Erro ao atualizar pedido.");
+                toast.error((result as any)?.message || "Erro ao atualizar pedido.");
             }
         } catch (error) {
             toast.error("Erro na comunicação com o servidor.");

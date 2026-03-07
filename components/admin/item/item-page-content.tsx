@@ -32,7 +32,7 @@ export function ItemPageContent() {
     const fetchItems = async () => {
         setIsLoading(true);
         const data = await listItens();
-        setItems(data);
+        setItems(data as ItemModel[]);
         setIsLoading(false);
     };
 
