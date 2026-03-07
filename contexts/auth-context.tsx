@@ -252,10 +252,10 @@ export const useGraphQL = () => {
   const { authenticatedRequest } = useAuth();
 
   const query = useCallback(
-    <T = unknown>(gql: string, variables?: Record<string, unknown>) =>
+    <T,>(gql: string, variables?: Record<string, unknown>) =>
       authenticatedRequest<T>(gql, variables),
     [authenticatedRequest]
   );
 
   return { query };
-};
+}
