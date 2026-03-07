@@ -68,7 +68,7 @@ export default function PrivacyPage() {
                 </div>
 
                 <p className="text-[10px] text-muted-foreground pt-8 border-t">
-                    Última atualização: {today} de {monthName} de {year}.
+                    Última visualização: {today} de {monthName} de {year}.
                 </p>
             </motion.div>
         </div>

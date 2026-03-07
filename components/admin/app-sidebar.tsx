@@ -52,8 +52,6 @@ export function AppSidebar({ username, role }: AppSidebarProps) {
         return `${firstTwo} ${initials}`;
     };
 
-    const formattedRole = role.charAt(0).toUpperCase() + role.slice(1).toLowerCase();
-
     return (
         <Sidebar variant="sidebar" collapsible="icon">
             <SidebarHeader>
@@ -111,7 +109,7 @@ export function AppSidebar({ username, role }: AppSidebarProps) {
                                     <User2Icon className="size-6" />
                                     <div className="flex flex-col ml-2">
                                         <span className="text-sm font-medium">{getFormattedName(username)}</span>
-                                        <span className="text-xs text-muted-foreground">{formattedRole}</span>
+                                        <span className="text-xs text-muted-foreground">{role === "ADMIN" ? "Administrador(a)" : "Usuário"}</span>
                                     </div>
                                     <ChevronDown className="ml-auto opacity-50" />
                                 </SidebarMenuButton>
