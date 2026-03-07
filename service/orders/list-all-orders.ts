@@ -25,7 +25,7 @@ export const ListAllOrders = () => {
 
     const listOrders = async () => {
         try {
-            const result = await authenticatedRequest(LIST_ORDER_ALL_QUERY);
+            const result = await authenticatedRequest(LIST_ORDER_ALL_QUERY) as { data?: { listAllOrders: unknown[] }; errors?: Array<{ message: string }> };
             if (!result) return [];
 
             if (result.errors) {
@@ -33,7 +33,7 @@ export const ListAllOrders = () => {
                 return [];
             }
 
-            return result.data.listAllOrders;
+            return result.data?.listAllOrders ?? [];
         } catch (error) {
             toast.error("Erro ao buscar pedidos.");
             return [];

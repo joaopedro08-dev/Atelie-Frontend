@@ -22,7 +22,7 @@ export const RegisterClient = () => {
                 return { success: false };
             }
 
-            const response = result.data.registerClient;
+            const response = (result.data as { registerClient: { message: string; success: boolean } }).registerClient;
             if (response.success) {
                 toast.success(response.message);
             } else {

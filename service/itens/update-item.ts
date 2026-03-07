@@ -38,7 +38,7 @@ export const UpdateItem = () => {
                 return { success: false };
             }
 
-            const { success, message } = result.data.updateItem;
+            const { success, message } = (result.data as { updateItem: { success: boolean; message: string } }).updateItem;
 
             if (success) {
                 toast.success(message, { id: toastId });

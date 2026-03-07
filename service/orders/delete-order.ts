@@ -26,7 +26,7 @@ export const DeleteOrder = () => {
                 return { success: false };
             }
 
-            const response = result.data.deleteOrderGroup;
+            const response = (result.data as { deleteOrderGroup: { message: string; success: boolean } }).deleteOrderGroup;
             
             if (response.success) {
                 toast.success(response.message);

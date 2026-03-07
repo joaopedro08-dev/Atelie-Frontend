@@ -40,7 +40,7 @@ export const DashboardStats = () => {
                 return [];
             }
 
-            return result.data.getDashboardStats;
+            return (result as { data: { getDashboardStats: unknown } }).data.getDashboardStats;
         } catch (error) {
             toast.error("Erro ao buscar os status.");
             return [];

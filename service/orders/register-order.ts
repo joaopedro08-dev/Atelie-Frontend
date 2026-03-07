@@ -2,6 +2,13 @@ import { useAuth } from "@/contexts/auth-context";
 import { format, isValid, setHours, setMinutes, setSeconds, addMonths } from "date-fns";
 import { toast } from "sonner";
 
+interface RegisterOrderResponse {
+    registerOrder: {
+        message: string;
+        success: boolean;
+    };
+}
+
 export const RegisterOrder = () => {
     const { authenticatedRequest } = useAuth();
 
@@ -49,7 +56,7 @@ export const RegisterOrder = () => {
                 return { success: false };
             }
 
-            const result = await authenticatedRequest(REGISTER_ORDER_MUTATION, {
+            const result = await authenticatedRequest<RegisterOrderResponse>(REGISTER_ORDER_MUTATION, {
                 input: formattedInput
             });
 

@@ -28,7 +28,7 @@ export const listAllItens = () => {
                 return [];
             }
 
-            return result.data.listAllItems;
+            return (result.data as { listAllItems: unknown[] }).listAllItems;
         } catch (error) {
             toast.error("Erro ao buscar itens.");
             return [];

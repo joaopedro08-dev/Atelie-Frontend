@@ -27,7 +27,7 @@ export const ListAllClients = () => {
                 return [];
             }
 
-            return result.data.listAllClients;
+            return (result.data as { listAllClients: unknown[] }).listAllClients;
         } catch (error) {
             toast.error("Erro ao buscar clientes.");
             return [];

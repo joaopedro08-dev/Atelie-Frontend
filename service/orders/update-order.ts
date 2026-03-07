@@ -32,7 +32,7 @@ export const UpdateOrder = () => {
             dueDateTime.setDate(Number(data.dueDate));
             dueDateTime.setHours(12, 0, 0, 0);
 
-            const result = await authenticatedRequest(UPDATE_ORDER_GROUP_MUTATION, {
+            const result: { errors?: Array<{ message: string }>; data?: { updateOrderGroup?: { message: string; success: boolean } } | null } = await authenticatedRequest(UPDATE_ORDER_GROUP_MUTATION, {
                 clientId: String(clientId),
                 dateOrder: originalDateOrder,
                 input: {

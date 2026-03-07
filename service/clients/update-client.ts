@@ -25,7 +25,7 @@ export const UpdateClient = () => {
                 return { success: false };
             }
 
-            const response = result.data.updateClient;
+            const response = (result.data as { updateClient: { message: string; success: boolean } }).updateClient;
             if (response.success) {
                 toast.success(response.message);
             } else {

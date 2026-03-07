@@ -22,7 +22,7 @@ export const DeleteClient = () => {
                 return { success: false };
             }
 
-            const response = result.data.deleteClient;
+            const response = (result.data as { deleteClient: { message: string; success: boolean } }).deleteClient;
             if (response.success) {
                 toast.success(response.message);
             } else {

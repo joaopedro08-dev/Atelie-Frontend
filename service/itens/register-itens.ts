@@ -37,7 +37,7 @@ export const RegisterItems = () => {
         return { success: false };
       }
 
-      const { success, message } = result.data.registerItems;
+      const { success, message } = (result.data as { registerItems: { success: boolean; message: string } }).registerItems;
 
       if (success) {
         toast.success(message, { id: toastId });

@@ -26,7 +26,7 @@ export const DeleteItem = () => {
                 return { success: false };
             }
 
-            const { success, message } = result.data.deleteItem;
+            const { success, message } = (result.data as any).deleteItem;
 
             if (success) {
                 toast.success(message, { id: toastId });

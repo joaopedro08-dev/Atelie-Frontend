@@ -13,9 +13,9 @@ export const ListAllClientsMin = () => {
         }
     `;
 
-    const listClientsMin = async () => {
+    const listClientsMin = async (): Promise<Array<{ id: string; name: string }>> => {
         try {
-            const result = await authenticatedRequest(LIST_CLIENT_ALL_QUERY);
+            const result = await authenticatedRequest(LIST_CLIENT_ALL_QUERY) as { data?: { listAllClientsMin: Array<{ id: string; name: string }> }; errors?: Array<{ message: string }> } | null;
             if (!result) return [];
 
             if (result.errors) {
@@ -23,7 +23,7 @@ export const ListAllClientsMin = () => {
                 return [];
             }
 
-            return result.data.listAllClientsMin;
+            return result.data?.listAllClientsMin ?? [];
         } catch (error) {
             toast.error("Erro ao buscar clientes.");
             return [];
