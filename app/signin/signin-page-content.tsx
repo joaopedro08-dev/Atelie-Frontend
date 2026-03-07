@@ -5,19 +5,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StoreIcon, LockKeyhole, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useAuth } from "@/contexts/auth-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SignInType, ValidationInputs } from "@/service/validations/validation-inputs";
 import { SignIn } from "@/service/sign-in";
-import { FullScreenLoader } from "@/components/full-screen-loader";
 
 export function SignInPageContent() {
     const [isLoading, setIsLoading] = useState(false);
     const { signIn } = SignIn();
-    const { user, loading } = useAuth();
     
     const {
         register,
@@ -26,10 +23,6 @@ export function SignInPageContent() {
     } = useForm<SignInType>({
         resolver: zodResolver(ValidationInputs.signIn),
     });
-
-    if (loading || user) {
-        return <FullScreenLoader text="Verificando sua sessão..." />;
-    }
 
     const onSubmit = async (data: SignInType) => {
         setIsLoading(true);
@@ -147,7 +140,7 @@ export function SignInPageContent() {
                         </Button>
                     </form>
 
-                    {/* <div className="relative my-6">
+                    <div className="relative my-6">
                         <div className="absolute inset-0 flex items-center">
                             <span className="w-full border-t" />
                         </div>
@@ -159,11 +152,11 @@ export function SignInPageContent() {
                     <div className="flex justify-center">
                         <Link
                             href="/signup"
-                            className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                            className="text-sm text-muted-foreground"
                         >
-                            Não possui uma conta? <span className="text-primary font-medium hover:underline">Cadastre-se</span>
+                            Não possui uma conta? <span className="text-primary font-medium hover:underline transition-colors hover:text-primary/80">Cadastre-se</span>
                         </Link>
-                    </div> */}
+                    </div>
                 </motion.div>
 
                 <motion.p

@@ -76,7 +76,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const handleRefresh = async () => {
     if (isRefreshing.current) return refreshPromise.current;
-
     isRefreshing.current = true;
     refreshPromise.current = (async () => {
       try {
@@ -101,12 +100,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       let response = await baseFetch(query, variables);
       let result = await response.json();
 
-      const isUnauthorized =
-        response.status === 401 ||
-        result.errors?.some((err: any) =>
-          err.message?.includes("Unauthorized") ||
-          err.extensions?.code === "UNAUTHENTICATED"
-        );
+      const isUnauthorized = response.status === 401 || result.errors?.some((err: any) => 
+        err.message?.includes("Unauthorized") || err.extensions?.code === "UNAUTHENTICATED"
+      );
 
       if (isUnauthorized) {
         const refreshed = await handleRefresh();
@@ -147,11 +143,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const isPublicRoute = publicRoutes.includes(pathname);
 
     if (user && isPublicRoute) {
-      window.location.href = "/admin";
-    } else if (!user && pathname.startsWith("/admin")) {
+      const destination = user.role === "ADMIN" ? "/admin" : "/user";
+      router.replace(destination);
+    } else if (!user && (pathname.startsWith("/admin") || pathname.startsWith("/user"))) {
       router.replace("/signin");
     }
-  }, [user, loading, pathname]);
+  }, [user, loading, pathname, router]);
 
   const logout = async () => {
     try {

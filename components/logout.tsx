@@ -43,7 +43,7 @@ export default function Logout() {
                 <AlertDialogHeader>
                     <AlertDialogTitle>Deseja realmente sair?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        Sua sessão será encerrada e você precisará fazer login novamente para acessar o painel administrativo.
+                        Sua sessão será encerrada e você precisará fazer login novamente para acessar a plataforma.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
 

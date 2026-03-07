@@ -14,6 +14,9 @@ export const ValidationInputs = {
     email: z.string().min(1, "Dados não informados.").trim().email("E-mail em formato inválido."),
     password: z.string().regex(PASSWORD_PATTERN, "Mínimo 8 caracteres..."),
     confirmPassword: z.string().min(1, "Confirmação de senha é obrigatória."),
+    terms: z.boolean().refine((val) => val === true, {
+      message: "Você deve aceitar os termos para continuar",
+    }),
   }).refine((data) => data.password === data.confirmPassword, {
     message: "As senhas não conferem.",
     path: ["confirmPassword"],

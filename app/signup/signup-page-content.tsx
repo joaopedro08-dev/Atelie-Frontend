@@ -1,36 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form"; 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, StoreIcon, UserPlus } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { SignUpType, ValidationInputs } from "@/service/validations/validation-inputs";
 import { SignUp } from "@/service/sign-up";
-import { useAuth } from "@/contexts/auth-context";
-import { FullScreenLoader } from "@/components/full-screen-loader";
 
 export function SignUpPageContent() {
     const [isLoading, setIsLoading] = useState(false);
     const { signUp } = SignUp();
-    const { user, loading } = useAuth();
 
     const {
         register,
         handleSubmit,
+        control, 
         formState: { errors },
     } = useForm<SignUpType>({
         resolver: zodResolver(ValidationInputs.signUp),
-    });
-
-    if (loading || user) {
-            return <FullScreenLoader text="Verificando sua sessão..." />;
+        defaultValues: {
+            terms: false, 
         }
+    });
 
     const onSubmit = async (data: SignUpType) => {
         setIsLoading(true);
@@ -56,7 +53,7 @@ export function SignUpPageContent() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-muted/50 px-4 py-10">
+        <div className="flex min-h-dvh items-center justify-center bg-muted/50 px-4 py-10">
             <motion.div
                 initial="hidden"
                 animate="visible"
@@ -91,12 +88,7 @@ export function SignUpPageContent() {
                             />
                             <AnimatePresence mode="wait">
                                 {errors.name && (
-                                    <motion.p
-                                        initial={{ opacity: 0, height: 0 }}
-                                        animate={{ opacity: 1, height: "auto" }}
-                                        exit={{ opacity: 0, height: 0 }}
-                                        className="text-xs text-destructive"
-                                    >
+                                    <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="text-xs text-destructive">
                                         {errors.name.message}
                                     </motion.p>
                                 )}
@@ -114,12 +106,7 @@ export function SignUpPageContent() {
                             />
                             <AnimatePresence mode="wait">
                                 {errors.email && (
-                                    <motion.p
-                                        initial={{ opacity: 0, height: 0 }}
-                                        animate={{ opacity: 1, height: "auto" }}
-                                        exit={{ opacity: 0, height: 0 }}
-                                        className="text-xs text-destructive"
-                                    >
+                                    <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="text-xs text-destructive">
                                         {errors.email.message}
                                     </motion.p>
                                 )}
@@ -136,16 +123,10 @@ export function SignUpPageContent() {
                                     placeholder="********"
                                     className={errors.password ? "border-destructive focus-visible:ring-destructive" : ""}
                                 />
-                                <AnimatePresence mode="wait">
-                                    {errors.password && (
-                                        <motion.p className="text-xs text-destructive leading-tight">
-                                            {errors.password.message}
-                                        </motion.p>
-                                    )}
-                                </AnimatePresence>
+                                {errors.password && <p className="text-xs text-destructive">{errors.password.message}</p>}
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="confirmPassword">Confirmar Senha</Label>
+                                <Label htmlFor="confirmPassword">Confirmar</Label>
                                 <Input
                                     {...register("confirmPassword")}
                                     id="confirmPassword"
@@ -153,37 +134,55 @@ export function SignUpPageContent() {
                                     placeholder="********"
                                     className={errors.confirmPassword ? "border-destructive focus-visible:ring-destructive" : ""}
                                 />
-                                <AnimatePresence mode="wait">
-                                    {errors.confirmPassword && (
-                                        <motion.p className="text-xs text-destructive leading-tight">
-                                            {errors.confirmPassword.message}
-                                        </motion.p>
-                                    )}
-                                </AnimatePresence>
+                                {errors.confirmPassword && <p className="text-xs text-destructive">{errors.confirmPassword.message}</p>}
                             </div>
+                        </div>
+
+                        <div className="flex flex-col space-y-2 py-2">
+                            <div className="flex items-center space-x-2">
+                                <Controller
+                                    control={control}
+                                    name="terms"
+                                    render={({ field }) => (
+                                        <Checkbox
+                                            id="terms"
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                            className={errors.terms ? "border-destructive" : ""}
+                                        />
+                                    )}
+                                />
+                                <Label
+                                    htmlFor="terms"
+                                    className="text-xs font-medium text-muted-foreground leading-none cursor-pointer"
+                                >
+                                    Aceito os{" "}
+                                    <Link href="/terms" className="text-primary hover:underline">Termos de Serviço</Link>{" "}
+                                    e a{" "}
+                                    <Link href="/privacy" className="text-primary hover:underline">Política de Privacidade</Link>
+                                </Label>
+                            </div>
+                            <AnimatePresence mode="wait">
+                                {errors.terms && (
+                                    <motion.p 
+                                        initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }}
+                                        className="text-[10px] text-destructive font-medium"
+                                    >
+                                        {errors.terms.message}
+                                    </motion.p>
+                                )}
+                            </AnimatePresence>
                         </div>
 
                         <Button className="w-full relative overflow-hidden" type="submit" disabled={isLoading}>
                             <AnimatePresence mode="wait">
                                 {isLoading ? (
-                                    <motion.div
-                                        key="loader"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        className="flex items-center"
-                                    >
+                                    <motion.div key="loader" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center">
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                        Criando...
+                                        Criando conta...
                                     </motion.div>
                                 ) : (
-                                    <motion.div
-                                        key="content"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        className="flex items-center"
-                                    >
+                                    <motion.div key="content" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center">
                                         <UserPlus className="mr-2 h-4 w-4" />
                                         Criar conta
                                     </motion.div>
@@ -193,8 +192,8 @@ export function SignUpPageContent() {
                     </form>
 
                     <div className="flex mt-6 justify-center">
-                        <Link href="/signin" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                            Já possui uma conta? <span className="text-primary font-medium hover:underline">Fazer Login</span>
+                        <Link href="/signin" className="text-sm text-muted-foreground group">
+                            Já possui uma conta? <span className="text-primary font-medium group-hover:underline transition-colors">Fazer Login</span>
                         </Link>
                     </div>
                 </motion.div>

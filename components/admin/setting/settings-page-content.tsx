@@ -195,7 +195,7 @@ export function SettingsPageContent() {
                                 </Label>
                                 <InputGroup>
                                     <InputGroupInput
-                                        value={user?.role || ""}
+                                        value={user?.role ? "Administrador(a)" : "Usuário"}
                                         disabled
                                         className="bg-muted/30 font-mono text-[10px] tracking-widest uppercase cursor-not-allowed"
                                     />

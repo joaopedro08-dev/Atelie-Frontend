@@ -1,3 +1,5 @@
+"use client"
+
 import {
     Card,
     CardContent,
@@ -5,8 +7,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ShieldCheck } from "lucide-react";
+import Logout from "@/components/logout";
 
 export function SettingsPage() {
     return (
@@ -17,9 +18,7 @@ export function SettingsPage() {
                     <CardDescription>Ajustes de segurança</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <Button variant="outline" className="gap-2">
-                        <ShieldCheck className="size-4" /> Alterar Senha
-                    </Button>
+                    <Logout />
                 </CardContent>
             </Card>
         </div>

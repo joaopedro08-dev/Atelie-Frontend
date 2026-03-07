@@ -18,6 +18,8 @@ export const SignUp = () => {
     const signUp = async (data: z.infer<typeof validateSignUp>) => {
         const toastId = toast.loading("Criando sua conta...");
 
+        const { terms, ...inputData } = data;
+
         try {
             const response = await fetch(API_BASE, {
                 method: "POST",
@@ -28,12 +30,7 @@ export const SignUp = () => {
                 body: JSON.stringify({
                     query: SIGN_UP_MUTATION,
                     variables: {
-                        input: {
-                            name: data.name,
-                            email: data.email,
-                            password: data.password,
-                            confirmPassword: data.confirmPassword
-                        }
+                        input: inputData 
                     },
                 }),
             });
@@ -45,19 +42,24 @@ export const SignUp = () => {
                 return;
             }
 
+            if (!result.data || !result.data.signUp) {
+                throw new Error("Resposta inválida do servidor");
+            }
+
             const { success, message } = result.data.signUp;
 
             if (success) {
-                toast.success(message, { id: toastId });
+                toast.success(message || "Conta criada com sucesso!", { id: toastId });
+                
                 setTimeout(() => {
                     window.location.href = "/signin";
-                }, 1500);
+                }, 2000);
             } else {
                 toast.error(message || "Erro ao realizar cadastro", { id: toastId });
             }
 
         } catch (error) {
-            toast.error("Erro crítico de conexão.", { id: toastId });
+            toast.error("Erro ao conectar com o servidor.", { id: toastId });
             console.error("Erro no SignUp:", error);
         }
     };

@@ -1,18 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  const blockedRoutes = ["/signup", "/user"];
-
-  if (blockedRoutes.includes(pathname)) {
-    return NextResponse.redirect(new URL("/signin", request.url));
-  }
-
+export function proxy(_request: NextRequest) {
   const response = NextResponse.next();
   
   response.headers.set("x-middleware-cache", "no-cache");
+  response.headers.set("Cache-Control", "no-store, max-age=0");
 
   return response;
 }
