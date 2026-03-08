@@ -13,7 +13,7 @@ export const UpdateOrder = () => {
             status: string;
             installments: number;
             itemIds?: string[];
-            dateOrder: Date;
+            dateOrder: string | Date;
             discount: number;
             totalPrice: number;
             dueDate: string;
@@ -32,7 +32,7 @@ export const UpdateOrder = () => {
                     itemIds: data.itemIds ? data.itemIds.map(id => Number(id)) : [],
                     methodPayment: data.methodPayment,
                     status: data.status,
-                    dateOrder: data.dateOrder.toISOString(),
+                    dateOrder: data.dateOrder.toString(),
                     installments: Number(data.installments),
                     totalPrice: Number(data.totalPrice || 0),
                     discount: Number(data?.discount || 0),

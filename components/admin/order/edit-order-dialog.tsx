@@ -49,7 +49,7 @@ export function EditOrderDialog({ data, open, onOpenChange, onSuccess }: EditDia
                 dueDate: initialDay
             });
         }
-    }, [data, open]); 
+    }, [data, open]);
 
     const handleSave = async () => {
         if (!formData.clientId || !formData.dateOrder) {
@@ -59,16 +59,23 @@ export function EditOrderDialog({ data, open, onOpenChange, onSuccess }: EditDia
 
         setIsLoading(true);
         try {
-            const result = await updateOrderGroup(data.clientId, String(formData.dateOrder), formData);
+            const isoDateOrder = formData.dateOrder.toISOString();
+
+            const payload = {
+                ...formData,
+                dateOrder: isoDateOrder 
+            };
+
+            const result = await updateOrderGroup(data.clientId, data.dateOrder, payload);
 
             if (result?.success) {
                 onOpenChange(false);
                 onSuccess();
-                toast.success("Pedido atualizado!");
             } else {
                 toast.error((result as any)?.message || "Erro ao atualizar pedido.");
             }
         } catch (error) {
+            console.error(error);
             toast.error("Erro na comunicação com o servidor.");
         } finally {
             setIsLoading(false);
@@ -104,11 +111,11 @@ export function EditOrderDialog({ data, open, onOpenChange, onSuccess }: EditDia
 
                         <div className="space-y-2">
                             <Label className="text-xs font-semibold uppercase text-muted-foreground">Data do Pedido</Label>
-                            <DatePicker 
-                                date={formData.dateOrder} 
+                            <DatePicker
+                                date={formData.dateOrder}
                                 setDate={(newDate) => {
                                     if (newDate) setFormData({ ...formData, dateOrder: newDate });
-                                }} 
+                                }}
                             />
                         </div>
 
