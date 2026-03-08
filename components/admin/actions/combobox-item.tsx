@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Check, ChevronsUpDown, Package, X } from "lucide-react"
+import { Check, ChevronsUpDown, Package, X, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
@@ -11,7 +11,7 @@ import { ListAllItemMin } from "@/service/combobox/item"
 import { Badge } from "@/components/ui/badge"
 import { ItemMin } from "@/types/type"
 
-export function ComboboxItem({ selectedIds = [], onChange }: {selectedIds?: string[], onChange?: (values: string[]) => void}) {
+export function ComboboxItem({ selectedIds = [], onChange }: { selectedIds?: string[], onChange?: (values: string[]) => void }) {
     const [open, setOpen] = React.useState(false)
     const [items, setItems] = React.useState<ItemMin[]>([])
     const [loading, setLoading] = React.useState(true)
@@ -20,24 +20,25 @@ export function ComboboxItem({ selectedIds = [], onChange }: {selectedIds?: stri
     React.useEffect(() => {
         async function fetchItems() {
             setLoading(true)
-
             try {
                 const data = await listAllItemsByCode(selectedIds)
-
                 const transformed: ItemMin[] = data.map((item) => ({
                     id: item.id,
-                    code: item.code,
+                    itemCode: item.itemCode,
                     quantity: 1
                 }))
-
                 setItems(transformed)
             } finally {
                 setLoading(false)
             }
         }
-
         fetchItems()
-    }, [selectedIds])
+    }, [])
+
+    const itemsMap = React.useMemo(
+        () => new Map(items.map((i) => [i.id, i])),
+        [items]
+    )
 
     const handleSelect = (id: string) => {
         const newSelection = selectedIds.includes(id)
@@ -51,9 +52,8 @@ export function ComboboxItem({ selectedIds = [], onChange }: {selectedIds?: stri
         onChange?.(selectedIds.filter((item) => item !== id))
     }
 
-    const truncateCode = (code: string) => {
-        return code.length > 10 ? `${code.substring(0, 10)}...` : code;
-    }
+    const truncateCode = (code?: string) =>
+        code && code.length > 10 ? `${code.substring(0, 10)}...` : code ?? ""
 
     return (
         <div className="flex flex-col gap-2">
@@ -63,13 +63,12 @@ export function ComboboxItem({ selectedIds = [], onChange }: {selectedIds?: stri
                         variant="outline"
                         role="combobox"
                         className="w-full justify-between text-left"
-                        disabled={loading}
                     >
                         <div className="flex flex-wrap gap-1 items-center overflow-hidden">
                             {selectedIds.length > 0 ? (
                                 selectedIds.map((id) => {
-                                    const item = items.find((i) => String(i.id).trim() === String(id).trim())
-                                    const displayLabel = item ? truncateCode(item.code) : `ID: ${id}`
+                                    const item = itemsMap.get(id)
+                                    const displayLabel = truncateCode(item?.itemCode)
 
                                     return (
                                         <Badge
@@ -77,7 +76,10 @@ export function ComboboxItem({ selectedIds = [], onChange }: {selectedIds?: stri
                                             variant="secondary"
                                             className="flex items-center gap-1 max-w-37.5 truncate"
                                         >
-                                            <span className="truncate">{displayLabel}</span>
+                                            <span className="truncate flex items-center gap-1">
+                                                {loading && <Loader2 className="h-3 w-3 animate-spin" />}
+                                                {displayLabel}
+                                            </span>
                                             <X
                                                 className="h-3 w-3 shrink-0 cursor-pointer hover:text-destructive"
                                                 onClick={(e) => removeSelection(id, e)}
@@ -86,7 +88,7 @@ export function ComboboxItem({ selectedIds = [], onChange }: {selectedIds?: stri
                                     )
                                 })
                             ) : (
-                                <span className="text-muted-foreground">Selecione os itens...</span>
+                                <span className="text-foreground">Selecione os itens...</span>
                             )}
                         </div>
                         <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 ml-2" />
@@ -95,43 +97,62 @@ export function ComboboxItem({ selectedIds = [], onChange }: {selectedIds?: stri
                 <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
                     <Command>
                         <CommandInput placeholder="Buscar código..." />
+
                         <CommandList>
-                            <CommandEmpty>Nenhum item encontrado.</CommandEmpty>
-                            <ScrollArea className="max-h-64">
-                                <CommandGroup>
-                                    {items.map((item) => {
-                                        const itemId = item.id.toString()
-                                        const isSelected = selectedIds.includes(itemId)
-                                        return (
-                                            <CommandItem
-                                                key={item.id}
-                                                value={item.code}
-                                                onSelect={() => handleSelect(itemId)}
-                                                className="flex items-center justify-between py-2"
-                                            >
-                                                <div className="flex items-center min-w-0 flex-1 mr-2">
-                                                    <div className={cn(
-                                                        "mr-2 flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border border-primary",
-                                                        isSelected ? "bg-primary text-primary-foreground" : "opacity-50"
-                                                    )}>
-                                                        {isSelected && <Check className="h-3 w-3" />}
-                                                    </div>
-                                                    <Package className="mr-2 h-4 w-4 shrink-0 opacity-50" />
-                                                    <span className="truncate font-semibold text-sm">
-                                                        {item.code}
-                                                    </span>
-                                                </div>
-                                                <Badge
-                                                    variant="secondary"
-                                                    className="ml-auto shrink-0 bg-secondary/50 text-[10px] px-1.5 h-5 min-w-8 justify-center"
-                                                >
-                                                    x{item.quantity}
-                                                </Badge>
-                                            </CommandItem>
-                                        )
-                                    })}
-                                </CommandGroup>
-                            </ScrollArea>
+                            {loading ? (
+                                <div className="flex items-center justify-center py-6 text-sm text-muted-foreground">
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Carregando itens...
+                                </div>
+                            ) : (
+                                <>
+                                    <CommandEmpty>Nenhum item encontrado.</CommandEmpty>
+
+                                    <ScrollArea className="max-h-64">
+                                        <CommandGroup>
+                                            {items.map((item) => {
+                                                const itemId = item.id
+                                                const isSelected = selectedIds.includes(itemId)
+
+                                                return (
+                                                    <CommandItem
+                                                        key={item.id}
+                                                        value={item.itemCode}
+                                                        onSelect={() => handleSelect(itemId)}
+                                                        className="flex items-center justify-between py-2"
+                                                    >
+                                                        <div className="flex items-center min-w-0 flex-1 mr-2">
+                                                            <div
+                                                                className={cn(
+                                                                    "mr-2 flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border border-primary",
+                                                                    isSelected
+                                                                        ? "bg-primary text-primary-foreground"
+                                                                        : "opacity-50"
+                                                                )}
+                                                            >
+                                                                {isSelected && <Check className="h-3 w-3" />}
+                                                            </div>
+
+                                                            <Package className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+
+                                                            <span className="truncate font-semibold text-sm">
+                                                                {item.itemCode}
+                                                            </span>
+                                                        </div>
+
+                                                        <Badge
+                                                            variant="secondary"
+                                                            className="ml-auto shrink-0 bg-secondary/50 text-[10px] px-1.5 h-5 min-w-8 justify-center"
+                                                        >
+                                                            x{item.quantity}
+                                                        </Badge>
+                                                    </CommandItem>
+                                                )
+                                            })}
+                                        </CommandGroup>
+                                    </ScrollArea>
+                                </>
+                            )}
                         </CommandList>
                     </Command>
                 </PopoverContent>

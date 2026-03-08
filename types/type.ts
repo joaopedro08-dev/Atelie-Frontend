@@ -4,8 +4,8 @@ export type UserRole = "ADMIN" | "USER";
 
 export type ItemMin = {
     id: string;
-    code: string;
-    quantity?: number;
+    itemCode: string;
+    quantity: number;
 }
 
 export type AppSidebarProps = {
