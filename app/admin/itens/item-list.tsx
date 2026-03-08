@@ -10,27 +10,22 @@ import { motion, AnimatePresence } from "framer-motion";
 import { DeleteItem } from "@/service/itens/delete-item";
 import { EditItemDialog } from "@/components/admin/item/edit-item-dialog";
 import { ActionDelete } from "@/components/admin/actions/action-delete";
+import { TableListProps } from "@/types/interface";
 
-interface ItemListProps {
-    items: any[];
-    loading: boolean;
-    onRefresh: () => void;
-}
-
-export function ItemList({ items, loading, onRefresh }: ItemListProps) {
+export function ItemList({ datas = [], loading, onRefresh }: TableListProps) {
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedItem, setSelectedItem] = useState<any | null>(null);
     const [isEditOpen, setIsEditOpen] = useState(false);
-
     const [isRemoveOpen, setIsRemoveOpen] = useState(false);
     const [itemToRemove, setItemToRemove] = useState<any | null>(null);
 
     const { deleteItem } = DeleteItem();
 
     const itemsPerPage = 4;
-    const totalPages = Math.ceil(items.length / itemsPerPage);
+    const safeDatas = datas ?? [];
+    const totalPages = Math.max(1, Math.ceil(safeDatas.length / itemsPerPage));
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const visibleItems = items.slice(startIndex, startIndex + itemsPerPage);
+    const visibleItems = safeDatas.slice(startIndex, startIndex + itemsPerPage);
 
     const handleEditAction = (item: any) => {
         setSelectedItem(item);
@@ -44,9 +39,7 @@ export function ItemList({ items, loading, onRefresh }: ItemListProps) {
 
     const confirmDelete = async () => {
         if (!itemToRemove) return;
-
         const res = await deleteItem(itemToRemove.id);
-
         if (res.success) {
             setIsRemoveOpen(false);
             setItemToRemove(null);
@@ -86,7 +79,7 @@ export function ItemList({ items, loading, onRefresh }: ItemListProps) {
                     </TableHeader>
                     <TableBody>
                         <AnimatePresence mode="wait">
-                            {items.length === 0 ? (
+                            {visibleItems.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
                                         Nenhum item encontrado.
@@ -115,7 +108,7 @@ export function ItemList({ items, loading, onRefresh }: ItemListProps) {
                                             {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.totalPrice)}
                                         </TableCell>
                                         <TableCell className="text-right text-sm">
-                                            {new Date(item.createdAt).toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                                            {item.createdAt ? new Date(item.createdAt).toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '-'}
                                         </TableCell>
                                         <TableCell className="text-center">
                                             <DropdownMenu>
@@ -123,7 +116,7 @@ export function ItemList({ items, loading, onRefresh }: ItemListProps) {
                                                     <Button variant="ghost" className="h-8 w-8 p-0">
                                                         <MoreHorizontal className="h-4 w-4" />
                                                     </Button>
-                                                } />
+                                                } />                                                    
                                                 <DropdownMenuContent align="end" className="w-40">
                                                     <DropdownMenuGroup>
                                                         <DropdownMenuLabel>Gerenciar</DropdownMenuLabel>
@@ -149,7 +142,7 @@ export function ItemList({ items, loading, onRefresh }: ItemListProps) {
                 </Table>
             </div>
 
-            {items.length > itemsPerPage && (
+            {safeDatas.length > itemsPerPage && (
                 <div className="flex items-center justify-between px-2">
                     <p className="text-sm text-muted-foreground">
                         Página <span className="font-medium text-foreground">{currentPage}</span> de <span className="font-medium text-foreground">{totalPages}</span>
@@ -165,17 +158,15 @@ export function ItemList({ items, loading, onRefresh }: ItemListProps) {
                 </div>
             )}
 
-            {itemToRemove && (
-                <ActionDelete
-                    open={isRemoveOpen}
-                    onOpenChange={setIsRemoveOpen}
-                    itemName={itemToRemove.code}
-                    onConfirm={confirmDelete}
-                />
-            )}
+            <ActionDelete
+                open={isRemoveOpen}
+                onOpenChange={setIsRemoveOpen}
+                itemName={itemToRemove?.code || ""}
+                onConfirm={confirmDelete}
+            />
 
             <EditItemDialog
-                item={selectedItem}
+                data={selectedItem}
                 open={isEditOpen}
                 onOpenChange={setIsEditOpen}
                 onSuccess={onRefresh}

@@ -10,14 +10,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { DeleteClient } from "@/service/clients/delete-client";
 import { EditClientDialog } from "@/components/admin/client/edit-client-dialog";
 import { ActionDelete } from "@/components/admin/actions/action-delete";
+import { TableListProps } from "@/types/interface";
 
-interface ClientListProps {
-    clients: any[];
-    loading: boolean;
-    onRefresh: () => void;
-}
-
-export function ClientList({ clients, loading, onRefresh }: ClientListProps) {
+export function ClientList({ datas, loading, onRefresh }: TableListProps) {
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedClient, setSelectedClient] = useState<any | null>(null);
     const [isEditOpen, setIsEditOpen] = useState(false);
@@ -28,9 +23,9 @@ export function ClientList({ clients, loading, onRefresh }: ClientListProps) {
     const { deleteClient } = DeleteClient();
 
     const itemsPerPage = 4;
-    const totalPages = Math.ceil(clients.length / itemsPerPage);
+    const totalPages = Math.ceil(datas.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const visibleClients = clients.slice(startIndex, startIndex + itemsPerPage);
+    const visibleClients = datas.slice(startIndex, startIndex + itemsPerPage);
 
     const handleEditAction = (client: any) => {
         setSelectedClient(client);
@@ -86,7 +81,7 @@ export function ClientList({ clients, loading, onRefresh }: ClientListProps) {
                     </TableHeader>
                     <TableBody>
                         <AnimatePresence mode="wait">
-                            {clients.length === 0 ? (
+                            {datas.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
                                         Nenhum cliente encontrado.
@@ -104,7 +99,7 @@ export function ClientList({ clients, loading, onRefresh }: ClientListProps) {
                                     >
                                         <TableCell>
                                             <Badge variant="outline" className="font-mono text-xs">
-                                                #{client.id.slice(-6).toUpperCase()}
+                                                #{String(client.id).slice(-6).toUpperCase()}
                                             </Badge>
                                         </TableCell>
                                         <TableCell className="font-medium">
@@ -154,7 +149,7 @@ export function ClientList({ clients, loading, onRefresh }: ClientListProps) {
                 </Table>
             </div>
 
-            {clients.length > itemsPerPage && (
+            {datas.length > itemsPerPage && (
                 <div className="flex items-center justify-between px-2">
                     <p className="text-sm text-muted-foreground">
                         Página <span className="font-medium text-foreground">{currentPage}</span> de <span className="font-medium text-foreground">{totalPages}</span>
@@ -180,7 +175,7 @@ export function ClientList({ clients, loading, onRefresh }: ClientListProps) {
             )}
 
             <EditClientDialog
-                client={selectedClient}
+                data={selectedClient}
                 open={isEditOpen}
                 onOpenChange={setIsEditOpen}
                 onSuccess={onRefresh}

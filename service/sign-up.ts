@@ -1,19 +1,11 @@
-import { API_BASE } from "@/routes/api";
+import { API_BASE } from "@/api/api";
 import { ValidationInputs } from "./validations/validation-inputs";
 import { z } from "zod";
 import { toast } from "sonner";
+import { SIGN_UP_MUTATION } from "@/types/query"
 
 export const SignUp = () => {
     const validateSignUp = ValidationInputs.signUp;
-
-    const SIGN_UP_MUTATION = `
-        mutation SignUp($input: RegisterUserInput!) {
-            signUp(input: $input) {
-                message
-                success
-            }
-        }
-    `;
 
     const signUp = async (data: z.infer<typeof validateSignUp>) => {
         const toastId = toast.loading("Criando sua conta...");

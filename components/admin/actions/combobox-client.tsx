@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Check, ChevronsUpDown, Loader2 } from "lucide-react"
+import { Check, ChevronsUpDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
@@ -9,16 +9,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ListAllClientsMin } from "@/service/combobox/client"
 
-interface ComboboxClientProps {
-    value?: string;
-    onChange?: (value: string) => void;
-}
-
-export function ComboboxClient({ value, onChange }: ComboboxClientProps) {
-    const [open, setOpen] = React.useState(false)
-    const [clients, setClients] = React.useState<any[]>([])
-    const [loading, setLoading] = React.useState(true)
-    const { listClientsMin } = ListAllClientsMin()
+export function ComboboxClient({ value, onChange }: { value: string | undefined; onChange?: (value: string) => void }) {
+    const [open, setOpen] = React.useState(false);
+    const [clients, setClients] = React.useState<any[]>([]);
+    const [loading, setLoading] = React.useState(true);
+    const { listClientsMin } = ListAllClientsMin();
 
     React.useEffect(() => {
         async function fetchClients() {

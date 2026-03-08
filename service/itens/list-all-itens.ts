@@ -1,20 +1,9 @@
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
+import { LIST_ALL_ITENS } from "@/types/query";
 
 export const listAllItens = () => {
     const { authenticatedRequest } = useAuth();
-
-    const LIST_ALL_ITENS = `
-        query ListAllItems {
-            listAllItems {
-                id
-                code
-                unitPrice
-                totalPrice
-                createdAt
-            }
-        }
-    `;
 
     const listItens = async () => {
         try {

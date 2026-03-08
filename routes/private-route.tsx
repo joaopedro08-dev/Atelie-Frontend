@@ -4,15 +4,9 @@ import { useAuth } from "@/contexts/auth-context";
 import { FullScreenLoader } from "@/components/full-screen-loader";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { UserRole } from "@/types/type";
 
-type UserRole = "ADMIN" | "USER";
-
-interface PrivateRouteProps {
-  children: React.ReactNode;
-  allowedRoles?: UserRole[];
-}
-
-export function PrivateRoute({ children, allowedRoles }: PrivateRouteProps) {
+export function PrivateRoute({ children, allowedRoles }: { children: React.ReactNode, allowedRoles?: UserRole[]}) {
   const { user, loading } = useAuth();
   const router = useRouter();
 

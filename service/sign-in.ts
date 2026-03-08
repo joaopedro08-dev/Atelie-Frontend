@@ -1,21 +1,13 @@
-import { API_BASE } from "@/routes/api";
+import { API_BASE } from "@/api/api";
 import { ValidationInputs } from "./validations/validation-inputs";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/auth-context";
+import { SIGN_IN_MUTATION } from "@/types/query";
 
 export const SignIn = () => {
     const { refreshUser } = useAuth();
     const validateSignIn = ValidationInputs.signIn;
-
-    const SIGN_IN_MUTATION = `
-        mutation SignIn($input: LoginUserInput!) {
-            signIn(input: $input) {
-                message
-                success
-            }
-        }
-    `;
 
     const signIn = async (data: z.infer<typeof validateSignIn>) => {
         const toastId = toast.loading("Autenticando...");

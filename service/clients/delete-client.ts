@@ -1,17 +1,9 @@
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
+import { DELETE_CLIENT_MUTATION } from "@/types/query";
 
 export const DeleteClient = () => {
     const { authenticatedRequest } = useAuth();
-
-    const DELETE_CLIENT_MUTATION = `
-        mutation DeleteClient($id: ID!) {
-            deleteClient(id: $id) {
-                message
-                success
-            }
-        }
-    `;
 
     const deleteClient = async (id: string) => {
         try {

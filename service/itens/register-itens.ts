@@ -2,19 +2,11 @@ import { useAuth } from "@/contexts/auth-context";
 import { ValidationInputs } from "../validations/validation-inputs";
 import { z } from "zod";
 import { toast } from "sonner";
+import { REGISTER_ITEMS_MUTATION } from "@/types/query";
 
 export const RegisterItems = () => {
   const { authenticatedRequest } = useAuth();
   const validateItem = ValidationInputs.item;
-
-  const REGISTER_ITEMS_MUTATION = `
-    mutation RegisterItems($input: ItemInput!) {
-      registerItems(input: $input) {
-        message
-        success
-      }
-    }
-  `;
 
   const registerItems = async (data: z.infer<typeof validateItem>) => {
     const toastId = toast.loading("Cadastrando itens...");

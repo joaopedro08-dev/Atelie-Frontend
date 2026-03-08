@@ -12,29 +12,8 @@ import { exportOrdersToPDF } from "@/service/export/orders/order-pdf";
 import { exportOrdersToExcel } from "@/service/export/orders/order-excel";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-
-interface OrderModel {
-    id: number;
-    itemId: number;
-    clientId: number;
-    methodPayment: string;
-    status: string;
-    dateOrder: string;
-}
-
-const statusTranslations: Record<string, { label: string }> = {
-    PENDING: { label: "Pendente" },
-    IN_PROGRESS: { label: "Em Produção" },
-    COMPLETED: { label: "Concluído" },
-    CANCELED: { label: "Cancelado" },
-};
-
-const paymentTranslations: Record<string, string> = {
-    SYSTEM: "Pix",
-    CARD: "Cartão",
-    INSTALLMENT_PLAN: "Crediário",
-    LOYAL_CUSTOMER: "Cliente Fidelizado"
-};
+import { OrderModel } from "@/types/interface";
+import { paymentTranslations, statusTranslations } from "@/types/record";
 
 export function OrderPageContent() {
     const { listOrders } = ListAllOrders();
@@ -163,7 +142,7 @@ export function OrderPageContent() {
                 <TabsContent value="list" className="focus-visible:outline-none">
                     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
                         <OrderList
-                            orders={filteredOrders}
+                            datas={filteredOrders}
                             loading={isLoading}
                             onRefresh={fetchOrders}
                         />

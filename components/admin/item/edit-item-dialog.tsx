@@ -6,28 +6,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UpdateItem } from "@/service/itens/update-item";
+import { EditDialogProps } from "@/types/interface";
 
-interface EditItemDialogProps {
-    item: any | null;
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    onSuccess: () => void;
-}
-
-export function EditItemDialog({ item, open, onOpenChange, onSuccess }: EditItemDialogProps) {
+export function EditItemDialog({ data, open, onOpenChange, onSuccess }: EditDialogProps) {
     const { updateItem } = UpdateItem();
     const [formData, setFormData] = useState({ code: "", unitPrice: 0, totalPrice: 0 });
 
     useEffect(() => {
-        if (item) {
-            setFormData({ code: item.code, unitPrice: item.unitPrice, totalPrice: item.totalPrice });
+        if (data) {
+            setFormData({ code: data.code, unitPrice: data.unitPrice, totalPrice: data.totalPrice });
         }
-    }, [item]);
+    }, [data]);
 
     const handleSave = async () => {
-        if (!item) return;
+        if (!data) return;
 
-        const result = await updateItem(item.id, {
+        const result = await updateItem(data.id, {
             code: formData.code,
             unitPrice: formData.unitPrice,
             totalPrice: formData.totalPrice

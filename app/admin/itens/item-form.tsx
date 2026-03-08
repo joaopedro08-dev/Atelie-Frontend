@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { Save, Hash, DollarSign, Layers, Loader2, X } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,11 +11,7 @@ import { RegisterItems } from "@/service/itens/register-itens";
 import { ValidationInputs, ItemFormType } from "@/service/validations/validation-inputs";
 import { useState } from "react";
 
-interface ItemFormProps {
-    onSuccess?: () => void;
-}
-
-export function ItemForm({ onSuccess }: ItemFormProps) {
+export function ItemForm({ onSuccess }: { onSuccess?: () => void }) {
     const [isLoading, setIsLoading] = useState(false);
     const { registerItems } = RegisterItems();
 

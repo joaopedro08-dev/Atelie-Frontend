@@ -18,23 +18,11 @@ import {
   Sun
 } from "lucide-react";
 import { useTheme } from "next-themes";
-import { JSX } from "react";
+import { Categories } from "@/types/type";
 
-type Categories = {
-  name: string;
-  href: string;
-  icon: JSX.Element;
-};
-
-interface ToggleMenuProps {
-  categories: Categories[];
-}
-
-export default function ToggleMenu({ categories }: ToggleMenuProps) {
+export default function ToggleMenu({ categories }: { categories: Categories[] }) {
   const { theme, setTheme } = useTheme();
-
   const currentYear = new Date().getFullYear();
-
 
   return (
     <Sheet>

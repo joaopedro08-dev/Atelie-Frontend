@@ -1,21 +1,9 @@
 import { useAuth } from "@/contexts/auth-context";
+import { LIST_CLIENT_ALL_QUERY } from "@/types/query";
 import { toast } from "sonner";
 
 export const ListAllClients = () => {
     const { authenticatedRequest } = useAuth();
-
-    const LIST_CLIENT_ALL_QUERY = `
-        query ListAllClients {
-            listAllClients {
-                id
-                name
-                email
-                phone
-                createdAt
-                updatedAt
-            }
-        }
-    `;
 
     const listClients = async () => {
         try {

@@ -4,19 +4,11 @@ import { useAuth } from "@/contexts/auth-context";
 import { ValidationInputs } from "../validations/validation-inputs"; 
 import { z } from "zod";
 import { toast } from "sonner";
+import { UPDATE_ITEM_MUTATION } from "@/types/query";
 
 export const UpdateItem = () => {
     const { authenticatedRequest } = useAuth();
     const validateItem = ValidationInputs.itemUpdate;
-
-    const UPDATE_ITEM_MUTATION = `
-        mutation UpdateItem($id: ID!, $input: ItemInputUpdate!) {
-            updateItem(id: $id, input: $input) {
-                message
-                success
-            }
-        }
-    `;
 
     const updateItem = async (id: string, data: z.infer<typeof validateItem>) => {
         const toastId = toast.loading("Atualizando item...");

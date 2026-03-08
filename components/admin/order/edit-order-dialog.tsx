@@ -12,15 +12,9 @@ import { ComboboxClient } from "@/components/admin/actions/combobox-client";
 import { DatePicker } from "@/components/admin/actions/date-picker";
 import { Loader2, Save, X, Hash, DollarSign, CalendarRange } from "lucide-react";
 import { toast } from "sonner";
+import { EditDialogProps } from "@/types/interface";
 
-interface EditOrderDialogProps {
-    order: any | null;
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    onSuccess: () => void;
-}
-
-export function EditOrderDialog({ order, open, onOpenChange, onSuccess }: EditOrderDialogProps) {
+export function EditOrderDialog({ data, open, onOpenChange, onSuccess }: EditDialogProps) {
     const { updateOrderGroup } = UpdateOrder();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -37,25 +31,25 @@ export function EditOrderDialog({ order, open, onOpenChange, onSuccess }: EditOr
     });
 
     useEffect(() => {
-        if (order) {
-            const rawValue = String(order.itemIds || "");
+        if (data) {
+            const rawValue = String(data.itemIds || "");
             const cleanedValue = rawValue.replace(/[\[\]\s]/g, "");
             const idsArray = cleanedValue ? cleanedValue.split(",") : [];
-            const initialDay = order.dueDate ? new Date(order.dueDate).getDate().toString() : "10";
+            const initialDay = data.dueDate ? new Date(data.dueDate).getDate().toString() : "10";
 
             setFormData({
-                clientId: String(order.clientId || ""),
+                clientId: String(data.clientId || ""),
                 itemIds: idsArray,
-                methodPayment: order.methodPayment || "SYSTEM",
-                status: order.status || "PENDING",
-                installments: order.installments || 1,
-                dateOrder: order.dateOrder ? new Date(order.dateOrder) : new Date(),
-                totalPrice: Number(order.totalPrice || 0),
-                discount: Number(order.discount || 0),
+                methodPayment: data.methodPayment || "SYSTEM",
+                status: data.status || "PENDING",
+                installments: data.installments || 1,
+                dateOrder: data.datedata ? new Date(data.datedata) : new Date(),
+                totalPrice: Number(data.totalPrice || 0),
+                discount: Number(data.discount || 0),
                 dueDate: initialDay
             });
         }
-    }, [order]);
+    }, [data]);
 
     const handleSave = async () => {
         if (!formData.clientId || !formData.dateOrder) {
@@ -65,7 +59,7 @@ export function EditOrderDialog({ order, open, onOpenChange, onSuccess }: EditOr
 
         setIsLoading(true);
         try {
-            const result = await updateOrderGroup(order.clientId, order.dateOrder, formData);
+            const result = await updateOrderGroup(data.clientId, data.dateOrder, formData);
 
             if (result?.success) {
                 onOpenChange(false);
@@ -90,7 +84,7 @@ export function EditOrderDialog({ order, open, onOpenChange, onSuccess }: EditOr
             <DialogContent className="sm:max-w-4xl p-0 overflow-hidden border-none shadow-2xl bg-card flex flex-col max-h-[90vh]">
                 <DialogHeader className="p-6 bg-muted/20 border-b shrink-0">
                     <DialogTitle className="text-xl flex items-center gap-2">
-                        Editar Pedido <span className="text-primary">#{String(order?.clientId).slice(-5)}</span>
+                        Editar Pedido <span className="text-primary">#{String(data?.clientId).slice(-5)}</span>
                     </DialogTitle>
                     <DialogDescription>Ajuste as informações abaixo para atualizar o registro.</DialogDescription>
                 </DialogHeader>

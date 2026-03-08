@@ -9,11 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RegisterClient } from "@/service/clients/register-client";
 
-interface ClientFormProps {
-    onSuccess?: () => void;
-}
-
-export function ClientForm({ onSuccess }: ClientFormProps) {
+export function ClientForm({ onSuccess }: { onSuccess?: () => void }) {
     const [isLoading, setIsLoading] = useState(false);
     const { registerClient } = RegisterClient();
 

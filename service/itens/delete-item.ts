@@ -1,17 +1,9 @@
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
+import { DELETE_ITEM_MUTATION } from "@/types/query";
 
 export const DeleteItem = () => {
     const { authenticatedRequest } = useAuth();
-
-    const DELETE_ITEM_MUTATION = `
-        mutation DeleteItem($id: ID!) {
-            deleteItem(id: $id) {
-                message
-                success
-            }
-        }
-    `;
 
     const deleteItem = async (id: string) => {
         const toastId = toast.loading("Removendo item...");

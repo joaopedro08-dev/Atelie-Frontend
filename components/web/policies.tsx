@@ -32,8 +32,16 @@ const policies = [
   }
 ]
 
-export default function Policies() {
+const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 }
+    }
+  }
 
+export default function Policies() {
   const currentMonth = new Date().getMonth()
   const currentYear = new Date().getFullYear()
 
@@ -43,15 +51,6 @@ export default function Policies() {
       "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
     ]
     return months[month]
-  }
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 }
-    }
   }
 
   return (

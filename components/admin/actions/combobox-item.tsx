@@ -9,19 +9,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ListAllItemMin } from "@/service/combobox/item"
 import { Badge } from "@/components/ui/badge"
+import { ItemMin } from "@/types/type"
 
-interface ItemMin {
-    id: number;
-    itemCode: string;
-    quantity: number;
-}
-
-interface ComboboxItemProps {
-    selectedIds?: string[];
-    onChange?: (values: string[]) => void;
-}
-
-export function ComboboxItem({ selectedIds = [], onChange }: ComboboxItemProps) {
+export function ComboboxItem({ selectedIds = [], onChange }: { selectedIds: string[], onChange?: (values: string[]) => void}) {
     const [open, setOpen] = React.useState(false)
     const [items, setItems] = React.useState<ItemMin[]>([])
     const [loading, setLoading] = React.useState(true)
@@ -91,7 +81,7 @@ export function ComboboxItem({ selectedIds = [], onChange }: ComboboxItemProps) 
                                     )
                                 })
                             ) : (
-                                <span className="text-muted-foreground">Selecione os itens...</span>
+                                <span>Selecione os itens...</span>
                             )}
                         </div>
                         <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 ml-2" />

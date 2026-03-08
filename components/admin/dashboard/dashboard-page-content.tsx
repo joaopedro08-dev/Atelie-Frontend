@@ -35,6 +35,7 @@ import { DashboardStats } from "@/service/dashboard/dashboard-stats";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { exportDashboardToExcel } from "@/service/export/dashboard/dashboard-xlsx";
 import { exportDashboardToPDF } from "@/service/export/dashboard/dashboard-pdf";
+import { paymentTranslations, statusTranslations } from "@/types/record";
 
 const chartConfig = {
     count: { label: "Pedidos", color: "var(--primary)" },
@@ -43,20 +44,6 @@ const chartConfig = {
     outros: { label: "Outros", color: "var(--chart-1)" },
     ni: { label: "N/I", color: "var(--muted)" },
 } satisfies ChartConfig;
-
-const paymentTranslations: Record<string, string> = {
-    SYSTEM: "Pix",
-    CARD: "Cartão",
-    INSTALLMENT_PLAN: "Crediário",
-    LOYAL_CUSTOMER: "Cliente Fidelizado"
-};
-
-const statusTranslations: Record<string, { label: string; color: string }> = {
-    PENDING: { label: "Pendente", color: "bg-yellow-500/10 text-yellow-600 border-yellow-200" },
-    IN_PROGRESS: { label: "Em Produção", color: "bg-blue-500/10 text-blue-600 border-blue-200" },
-    COMPLETED: { label: "Concluído", color: "bg-green-500/10 text-green-600 border-green-200" },
-    CANCELED: { label: "Cancelado", color: "bg-red-500/10 text-red-600 border-red-200" },
-};
 
 const formatDateBR = (dateString: string) => {
     if (!dateString) return "";

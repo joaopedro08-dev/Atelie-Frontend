@@ -1,11 +1,12 @@
 "use client";
 
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
-import { ChevronsUpDown, User2Icon, LayoutDashboard, Gem, ShoppingCart, Users, Settings, StoreIcon, ChevronDown } from "lucide-react";
+import { User2Icon, LayoutDashboard, Gem, ShoppingCart, Users, Settings, StoreIcon, ChevronDown } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Logout from "../logout";
+import { AppSidebarProps } from "@/types/type";
 
 const navigation = [
     {
@@ -29,11 +30,6 @@ const navigation = [
         ]
     }
 ];
-
-interface AppSidebarProps {
-    username: string;
-    role: string;
-}
 
 export function AppSidebar({ username, role }: AppSidebarProps) {
     const { isMobile, setOpenMobile } = useSidebar();

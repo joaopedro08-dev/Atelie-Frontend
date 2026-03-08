@@ -1,22 +1,7 @@
 import { StoreIcon, UserIcon, BellIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SetStateAction, Dispatch } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
-type NavItem = {
-    id: string;
-    label: string;
-}
-
-interface HeaderUserProps {
-    navItems: NavItem[]
-    activeTab: string;
-    setActiveTab: Dispatch<SetStateAction<string>>;
-    user?: {
-        name: string;
-        image?: string;
-    };
-}
+import { HeaderUserProps } from "@/types/interface";
 
 export function HeaderUser({ navItems, activeTab, setActiveTab, user }: HeaderUserProps) {
     const getInitials = (name: string) => {

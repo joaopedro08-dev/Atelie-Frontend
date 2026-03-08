@@ -17,19 +17,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { exportClientsToPDF } from "@/service/export/clients/client-pdf";
 import { exportClientsToExcel } from "@/service/export/clients/client-excel";
+import { ClientModel } from "@/types/interface";
 
 export function ClientPageContent() {
     const { listClients } = ListAllClients();
     const [activeTab, setActiveTab] = useState("list");
     const [searchTerm, setSearchTerm] = useState("");
-    const [clients, setClients] = useState<any[]>([]);
+    const [clients, setClients] = useState<ClientModel[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const fetchClients = async () => {
         setIsLoading(true);
         try {
             const data = await listClients();
-            setClients(Array.isArray(data) ? data : []);
+            setClients(Array.isArray(data) ? (data as ClientModel[]) : []);
         } catch (error) {
             console.error(error);
         } finally {
@@ -117,7 +118,7 @@ export function ClientPageContent() {
 
                 <TabsContent value="list" className="outline-none">
                     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-                        <ClientList clients={filteredClients} loading={isLoading} onRefresh={fetchClients} />
+                        <ClientList datas={filteredClients} loading={isLoading} onRefresh={fetchClients} />
                     </motion.div>
                 </TabsContent>
 

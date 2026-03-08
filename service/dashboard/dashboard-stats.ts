@@ -1,34 +1,9 @@
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
+import { DASHBOARD_STATS_QUERY } from "@/types/query"
 
 export const DashboardStats = () => {
     const { authenticatedRequest } = useAuth();
-
-    const DASHBOARD_STATS_QUERY = `
-        query GetDashboardStats {
-            getDashboardStats {
-                totalRevenue
-                totalClients
-                pendingOrders
-                totalItemsProduced
-                salesChartData {
-                    date
-                    count
-                }
-                listAllRecentyActivity {
-                      name
-                      itemId
-                      methodPayment
-                      status
-                      dateOrder
-                }
-                listAllCategory {
-                     category
-                     quantity
-                }
-            }
-        }
-    `;
 
     const dashboardStats = async () => {
         try {

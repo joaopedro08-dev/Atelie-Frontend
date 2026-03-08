@@ -1,24 +1,16 @@
-"use client"; 
+"use client";
 
 import { usePathname } from "next/navigation";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { ModeToggle } from "@/components/mode-toggle"; 
-
-const routeNames: Record<string, string> = {
-  "/admin": "Início",
-  "/admin/dashboard": "Dashboard",
-  "/admin/clients": "Clientes",
-  "/admin/itens": "Gerenciar Itens",
-  "/admin/orders": "Pedidos",
-  "/admin/settings": "Configurações",
-};
+import { ModeToggle } from "@/components/mode-toggle";
+import { routeNames } from "@/types/record";
 
 export default function HeaderNavbar() {
     const pathname = usePathname();
-    
-    const linkName = routeNames[pathname] || 
-                     pathname.split('/').pop()?.replace(/-/g, ' ') || 
-                     "Ateliê";
+
+    const linkName = routeNames[pathname] ||
+        pathname.split('/').pop()?.replace(/-/g, ' ') ||
+        "Ateliê";
 
     return (
         <header className="w-full h-16 bg-background border-b border-border flex items-center justify-between px-4 sticky top-0 z-30">

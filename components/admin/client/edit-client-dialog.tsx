@@ -6,15 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { UpdateClient } from "@/service/clients/update-client"; 
+import { EditDialogProps } from "@/types/interface";
 
-interface EditClientDialogProps {
-    client: any | null;
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    onSuccess: () => void;
-}
-
-export function EditClientDialog({ client, open, onOpenChange, onSuccess }: EditClientDialogProps) {
+export function EditClientDialog({ data, open, onOpenChange, onSuccess }: EditDialogProps) {
     const { updateClient } = UpdateClient();
     const [formData, setFormData] = useState({ 
         name: "", 
@@ -23,19 +17,19 @@ export function EditClientDialog({ client, open, onOpenChange, onSuccess }: Edit
     });
 
     useEffect(() => {
-        if (client) {
+        if (data) {
             setFormData({ 
-                name: client.name, 
-                email: client.email, 
-                phone: client.phone 
+                name: data.name, 
+                email: data.email, 
+                phone: data.phone 
             });
         }
-    }, [client]);
+    }, [data]);
 
     const handleSave = async () => {
-        if (!client) return;
+        if (!data) return;
 
-        const result = await updateClient(client.id, {
+        const result = await updateClient(data.id, {
             name: formData.name,
             email: formData.email,
             phone: formData.phone

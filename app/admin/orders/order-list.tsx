@@ -19,21 +19,10 @@ import { ptBR } from "date-fns/locale";
 import { EditOrderDialog } from "@/components/admin/order/edit-order-dialog";
 import { ActionDelete } from "@/components/admin/actions/action-delete";
 import { DeleteOrder } from "@/service/orders/delete-order";
+import { TableListProps } from "@/types/interface";
+import { statusTranslations } from "@/types/record";
 
-interface OrderListProps {
-    orders: any[];
-    loading: boolean;
-    onRefresh: () => void;
-}
-
-const statusTranslations: Record<string, { label: string; color: string }> = {
-    PENDING: { label: "Pendente", color: "bg-yellow-500/10 text-yellow-600 border-yellow-200" },
-    IN_PROGRESS: { label: "Em Produção", color: "bg-blue-500/10 text-blue-600 border-blue-200" },
-    COMPLETED: { label: "Concluído", color: "bg-green-500/10 text-green-600 border-green-200" },
-    CANCELED: { label: "Cancelado", color: "bg-red-500/10 text-red-600 border-red-200" },
-};
-
-export function OrderList({ orders, loading, onRefresh }: OrderListProps) {
+export function OrderList({ datas, loading, onRefresh }: TableListProps) {
     const [currentPage, setCurrentPage] = useState(1);
     const [isRemoveOpen, setIsRemoveOpen] = useState(false);
     const [orderToRemove, setOrderToRemove] = useState<any | null>(null);
@@ -43,9 +32,9 @@ export function OrderList({ orders, loading, onRefresh }: OrderListProps) {
     const { deleteOrder } = DeleteOrder();
 
     const itemsPerPage = 4;
-    const totalPages = Math.ceil(orders.length / itemsPerPage);
+    const totalPages = Math.ceil(datas.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const visibleOrders = orders.slice(startIndex, startIndex + itemsPerPage);
+    const visibleOrders = datas.slice(startIndex, startIndex + itemsPerPage);
 
     const currencyFormatter = new Intl.NumberFormat("pt-BR", {
         style: "currency",
@@ -99,7 +88,7 @@ export function OrderList({ orders, loading, onRefresh }: OrderListProps) {
                     </TableHeader>
                     <TableBody>
                         <AnimatePresence mode="wait">
-                            {orders.length === 0 ? (
+                            {datas.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
                                         Nenhum pedido encontrado.
@@ -176,7 +165,7 @@ export function OrderList({ orders, loading, onRefresh }: OrderListProps) {
                 </Table>
             </div>
 
-            {orders.length > itemsPerPage && (
+            {datas.length > itemsPerPage && (
                 <div className="flex items-center justify-between px-2">
                     <p className="text-sm text-muted-foreground">
                         Página <span className="font-medium text-foreground">{currentPage}</span> de <span className="font-medium text-foreground">{totalPages}</span>
@@ -195,7 +184,7 @@ export function OrderList({ orders, loading, onRefresh }: OrderListProps) {
             <EditOrderDialog
                 open={isEditOpen}
                 onOpenChange={setIsEditOpen}
-                order={orderToEdit}
+                data={orderToEdit}
                 onSuccess={onRefresh}
             />
 

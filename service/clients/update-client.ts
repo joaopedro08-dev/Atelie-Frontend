@@ -1,17 +1,9 @@
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
+import { UPDATE_CLIENT_MUTATION } from "@/types/query"
 
 export const UpdateClient = () => {
     const { authenticatedRequest } = useAuth();
-
-    const UPDATE_CLIENT_MUTATION = `
-        mutation UpdateClient($id: ID!, $input: ClientInput!) {
-            updateClient(id: $id, input: $input) {
-                message
-                success
-            }
-        }
-    `;
 
     const updateClient = async (id: string, data: { name: string; email: string; phone: string }) => {
         try {

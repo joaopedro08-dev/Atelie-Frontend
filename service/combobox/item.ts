@@ -1,37 +1,13 @@
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
-
-interface ItemData {
-    id: string;
-    itemCode: string;
-    quantity: number;
-}
-
-interface QueryResult {
-    data?: {
-        listAllItemsByCode: ItemData[];
-    };
-    errors?: Array<{ message: string }>;
-}
+import { LIST_ITEM_COMBOBOX_QUERY } from "@/types/query";
 
 export const ListAllItemMin = () => {
     const { authenticatedRequest } = useAuth();
 
-    const LIST_ITEM_ALL_QUERY = `
-        query ListAllItemsByCode($currentItemIds: [ID]) {
-            listAllItemsByCode(currentItemIds: $currentItemIds) {
-                id
-                itemCode
-                quantity
-            }
-        }
-    `;
-
     const listAllItemsByCode = async (currentItemIds: string[] = []) => {
         try {
-            const result = await authenticatedRequest(LIST_ITEM_ALL_QUERY, {
-                currentItemIds: currentItemIds.length > 0 ? currentItemIds : null
-            }) as QueryResult;
+            const result = await authenticatedRequest(LIST_ITEM_COMBOBOX_QUERY, { currentItemIds: currentItemIds.length > 0 ? currentItemIds : null }) as { data?: { listAllItemsByCode: Array<{ id: string; code: string }> }; errors?: Array<{ message: string }> } | null;
 
             if (!result) return [];
             if (result.errors) {

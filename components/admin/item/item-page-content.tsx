@@ -12,14 +12,7 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { exportItemsToPDF } from "@/service/export/itens/item-pdf";
 import { exportItemsToExcel } from "@/service/export/itens/item-excel";
-
-interface ItemModel {
-    id: string;
-    code: string;
-    unitPrice: number;
-    totalPrice: number;
-    createdAt: string;
-}
+import { ItemModel } from "@/types/interface";
 
 export function ItemPageContent() {
     const [activeTab, setActiveTab] = useState("list");
@@ -127,7 +120,7 @@ export function ItemPageContent() {
 
                 <TabsContent value="list" className="mt-0 outline-none">
                     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="w-full">
-                        <ItemList items={filteredItems} loading={isLoading} onRefresh={fetchItems} />
+                        <ItemList datas={filteredItems} loading={isLoading} onRefresh={fetchItems} />
                     </motion.div>
                 </TabsContent>
 

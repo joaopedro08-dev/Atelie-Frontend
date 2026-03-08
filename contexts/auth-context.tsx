@@ -1,89 +1,13 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  ReactNode,
-  useCallback,
-  useRef,
-} from "react";
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { API_BASE } from "@/routes/api";
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  statusSystem: boolean;
-  createdAt: string;
-  lastLogin: string;
-}
-
-interface GraphQLError {
-  message: string;
-  extensions?: {
-    code: string;
-    [key: string]: unknown;
-  };
-}
-
-interface GraphQLResponse<T = unknown> {
-  data: T | null;
-  errors?: GraphQLError[];
-}
-
-interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  logout: () => Promise<void>;
-  refreshUser: () => Promise<void>;
-  authenticatedRequest: <T = unknown>(
-    query: string,
-    variables?: Record<string, unknown>
-  ) => Promise<GraphQLResponse<T>>;
-}
-
-const GET_USER_INFO = `
-  query GetUserInfo {
-    getUserInfo {
-      id
-      name
-      email
-      role
-      statusSystem
-      createdAt
-      lastLogin
-    }
-  }
-`;
-
-const REFRESH_TOKEN_MUTATION = `
-  mutation RefreshToken {
-    refreshToken {
-      message
-      success
-    }
-  }
-`;
-
-const LOGOUT_MUTATION = `
-  mutation Logout {
-    logout {
-      message
-      success
-    }
-  }
-`;
+import { API_BASE } from "@/api/api";
+import { User, AuthContextType, GraphQLResponse } from "@/types/interface"
+import { LOGOUT_MUTATION, REFRESH_TOKEN_MUTATION, GET_USER_INFO } from "@/types/query";
+import { ROLE_REDIRECT } from "@/types/record";
 
 const PUBLIC_ROUTES = ["/signin", "/signup"];
-
-const ROLE_REDIRECT: Record<string, string> = {
-  ADMIN: "/admin",
-  USER: "/user",
-};
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

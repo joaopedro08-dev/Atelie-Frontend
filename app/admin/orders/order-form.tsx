@@ -15,11 +15,7 @@ import { ComboboxItem } from "@/components/admin/actions/combobox-item";
 import { ComboboxClient } from "@/components/admin/actions/combobox-client";
 import { DatePicker } from "@/components/admin/actions/date-picker";
 
-interface OrderFormProps {
-    onSuccess?: () => void;
-}
-
-export function OrderForm({ onSuccess }: OrderFormProps) {
+export function OrderForm({ onSuccess }: { onSuccess?: () => void }) {
     const [isLoading, setIsLoading] = useState(false);
     const { registerOrder } = RegisterOrder();
 

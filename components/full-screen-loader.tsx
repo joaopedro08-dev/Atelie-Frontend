@@ -1,16 +1,9 @@
 import { motion } from "framer-motion"
 import { Spinner } from "@/components/ui/spinner"
 
-interface FullScreenLoaderProps {
-    text?: string
-}
-
-export function FullScreenLoader({
-    text = "Carregando..."
-}: FullScreenLoaderProps) {
+export function FullScreenLoader({ text = "Carregando..." }: { text?: string }) {
     return (
         <div className="flex h-dvh flex-col items-center justify-center gap-4">
-
             <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -33,8 +26,6 @@ export function FullScreenLoader({
             >
                 {text}
             </motion.span>
-
-
         </div>
     )
 }

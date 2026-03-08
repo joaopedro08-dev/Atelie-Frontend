@@ -2,23 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-    User, Save, Loader2, Circle, Mail, User2Icon,
-    ShieldCheckIcon, Lock, KeyRound, Shield, Info
-} from "lucide-react";
-
+import { User, Save, Loader2, Circle, Mail, User2Icon, ShieldCheckIcon, Lock, KeyRound, Shield, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import {
-    InputGroup,
-    InputGroupAddon,
-    InputGroupInput
-} from "@/components/ui/input-group";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
+import { CHANGE_PASSWORD, UPDATE_PROFILE } from "@/types/query"
 
 export function SettingsPageContent() {
     const { user, authenticatedRequest, refreshUser } = useAuth();
@@ -44,15 +37,6 @@ export function SettingsPageContent() {
 
         setIsPending(true);
         try {
-            const UPDATE_PROFILE = `
-                mutation UpdateProfileAdmin($input: ProfileInput!) {
-                    updateProfileAdmin(input: $input) {
-                        success
-                        message
-                    }
-                }
-            `;
-
             const result = await authenticatedRequest(UPDATE_PROFILE, {
                 input: {
                     id: user.id,
@@ -83,15 +67,6 @@ export function SettingsPageContent() {
 
         setIsChangingPass(true);
         try {
-            const CHANGE_PASSWORD = `
-                mutation ChangePasswordAdmin($email: String!, $input: ChangePasswordAdmin!) {
-                    changePasswordAdmin(email: $email, input: $input) {
-                        success
-                        message
-                    }
-                }
-            `;
-
             const result = await authenticatedRequest(CHANGE_PASSWORD, {
                 email: user?.email,
                 input: {

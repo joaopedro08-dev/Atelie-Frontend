@@ -14,12 +14,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
-interface DatePickerProps {
-    date: Date | undefined
-    setDate: (date: Date | undefined) => void
-}
-
-export function DatePicker({ date, setDate }: DatePickerProps) {
+export function DatePicker({ date, setDate }: { date: Date | undefined; setDate: (date: Date | undefined) => void }) {
     const [open, setOpen] = React.useState(false)
     const currentYear = new Date().getFullYear();
 

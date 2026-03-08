@@ -10,13 +10,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-
-interface ActionDeleteProps {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    onConfirm: () => void;
-    itemName?: string;
-}
+import { ActionDeleteProps } from "@/types/interface";
 
 export function ActionDelete({ open, onOpenChange, onConfirm, itemName }: ActionDeleteProps) {
     return (

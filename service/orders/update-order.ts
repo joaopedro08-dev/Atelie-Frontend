@@ -1,17 +1,9 @@
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
+import { UPDATE_ORDER_GROUP_MUTATION } from "@/types/query";
 
 export const UpdateOrder = () => {
     const { authenticatedRequest } = useAuth();
-
-    const UPDATE_ORDER_GROUP_MUTATION = `
-        mutation UpdateOrderGroup($clientId: ID!, $dateOrder: String!, $input: OrderInput!) {
-            updateOrderGroup(clientId: $clientId, dateOrder: $dateOrder, input: $input) {
-                message
-                success
-            }
-        }
-    `;
 
     const updateOrderGroup = async (
         clientId: string | number,

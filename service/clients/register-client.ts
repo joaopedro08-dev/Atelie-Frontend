@@ -1,17 +1,9 @@
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
+import { REGISTER_CLIENT_MUTATION } from "@/types/query"
 
 export const RegisterClient = () => {
     const { authenticatedRequest } = useAuth();
-
-    const REGISTER_CLIENT_MUTATION = `
-        mutation RegisterClient($input: ClientInput!) {
-            registerClient(input: $input) {
-                message
-                success
-            }
-        }
-    `;
 
     const registerClient = async (data: { name: string; email: string; phone: string }) => {
         try {

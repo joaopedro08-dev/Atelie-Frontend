@@ -1,18 +1,9 @@
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
+import { DELETE_ORDER_GROUP_MUTATION } from "@/types/query";
 
 export const DeleteOrder = () => {
     const { authenticatedRequest } = useAuth();
-
-    // Atualizado para usar a mutation de grupo
-    const DELETE_ORDER_GROUP_MUTATION = `
-        mutation DeleteOrderGroup($clientId: ID!, $dateOrder: String!) {
-            deleteOrderGroup(clientId: $clientId, dateOrder: $dateOrder) {
-                message
-                success
-            }
-        }
-    `;
 
     const deleteOrder = async (clientId: number | string, dateOrder: string) => {
         try {

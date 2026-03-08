@@ -1,16 +1,8 @@
 import { TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { NavItem } from "@/types/type";
 import { HomeIcon, PackageIcon, Settings, ShoppingBagIcon } from "lucide-react";
 
-type NavItem = {
-  id: string;
-  label: string;
-}
-
-interface TabsLinkProps {
-  navItems: NavItem[]
-}
-
-export function TabsLink({ navItems }: TabsLinkProps) {
+export function TabsLink({ navItems }: { navItems: NavItem[] }) {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-t border-white/10 py-4 md:hidden">
       <TabsList className="flex h-20 w-full items-center justify-around px-4 bg-transparent border-none shadow-none">

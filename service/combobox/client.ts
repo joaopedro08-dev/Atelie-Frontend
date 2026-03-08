@@ -1,21 +1,13 @@
 import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
+import { LIST_CLIENT_COMBOBOX_QUERY } from "@/types/query";
 
 export const ListAllClientsMin = () => {
     const { authenticatedRequest } = useAuth();
 
-    const LIST_CLIENT_ALL_QUERY = `
-        query ListAllClientsMin {
-            listAllClientsMin {
-                id
-                name
-            }
-        }
-    `;
-
     const listClientsMin = async (): Promise<Array<{ id: string; name: string }>> => {
         try {
-            const result = await authenticatedRequest(LIST_CLIENT_ALL_QUERY) as { data?: { listAllClientsMin: Array<{ id: string; name: string }> }; errors?: Array<{ message: string }> } | null;
+            const result = await authenticatedRequest(LIST_CLIENT_COMBOBOX_QUERY) as { data?: { listAllClientsMin: Array<{ id: string; name: string }> }; errors?: Array<{ message: string }> } | null;
             if (!result) return [];
 
             if (result.errors) {

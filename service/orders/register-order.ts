@@ -1,25 +1,10 @@
 import { useAuth } from "@/contexts/auth-context";
 import { format, isValid, setHours, setMinutes, setSeconds, addMonths } from "date-fns";
 import { toast } from "sonner";
-
-interface RegisterOrderResponse {
-    registerOrder: {
-        message: string;
-        success: boolean;
-    };
-}
+import { REGISTER_ORDER_MUTATION } from "@/types/query";
 
 export const RegisterOrder = () => {
     const { authenticatedRequest } = useAuth();
-
-    const REGISTER_ORDER_MUTATION = `
-        mutation RegisterOrder($input: OrderInput!) {
-            registerOrder(input: $input) {
-                message
-                success
-            }
-        }
-    `;
 
     const registerOrder = async (data: any) => {
         try {
@@ -56,7 +41,7 @@ export const RegisterOrder = () => {
                 return { success: false };
             }
 
-            const result = await authenticatedRequest<RegisterOrderResponse>(REGISTER_ORDER_MUTATION, {
+            const result: { errors?: Array<{ message: string }>; data?: { registerOrder?: { message: string; success: boolean } } | null } = await authenticatedRequest(REGISTER_ORDER_MUTATION, {
                 input: formattedInput
             });
 
