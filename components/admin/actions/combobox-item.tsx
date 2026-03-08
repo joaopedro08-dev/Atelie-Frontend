@@ -1,17 +1,17 @@
 "use client"
 
 import * as React from "react"
-import { Check, ChevronsUpDown, Package, X } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { ListAllItemMin } from "@/service/combobox/item";
-import { Badge } from "@/components/ui/badge";
-import { ItemMin } from "@/types/type";
+import { Check, ChevronsUpDown, Package, X } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { ListAllItemMin } from "@/service/combobox/item"
+import { Badge } from "@/components/ui/badge"
+import { ItemMin } from "@/types/type"
 
-export function ComboboxItem({ selectedIds = [], onChange }: { selectedIds?: string[], onChange?: (values: string[]) => void }) {
+export function ComboboxItem({ selectedIds = [], onChange }: {selectedIds?: string[], onChange?: (values: string[]) => void}) {
     const [open, setOpen] = React.useState(false)
     const [items, setItems] = React.useState<ItemMin[]>([])
     const [loading, setLoading] = React.useState(true)
@@ -20,21 +20,24 @@ export function ComboboxItem({ selectedIds = [], onChange }: { selectedIds?: str
     React.useEffect(() => {
         async function fetchItems() {
             setLoading(true)
+
             try {
                 const data = await listAllItemsByCode(selectedIds)
-                const transformedData: ItemMin[] = Array.isArray(data) ? data.map(item => ({
-                    id: typeof item.id === 'string' ? parseInt(item.id, 10) : item.id,
-                    code: item.code || '',
-                    itemCode: item.code || '',
-                    quantity: (item as any).quantity || 0
-                })) : []
-                setItems(transformedData)
+
+                const transformed: ItemMin[] = data.map((item) => ({
+                    id: item.id,
+                    code: item.code,
+                    quantity: 1
+                }))
+
+                setItems(transformed)
             } finally {
                 setLoading(false)
             }
         }
+
         fetchItems()
-    }, [selectedIds.length]);
+    }, [selectedIds])
 
     const handleSelect = (id: string) => {
         const newSelection = selectedIds.includes(id)
@@ -66,7 +69,7 @@ export function ComboboxItem({ selectedIds = [], onChange }: { selectedIds?: str
                             {selectedIds.length > 0 ? (
                                 selectedIds.map((id) => {
                                     const item = items.find((i) => String(i.id).trim() === String(id).trim())
-                                    const displayLabel = item ? truncateCode(item.itemCode) : `ID: ${id}`
+                                    const displayLabel = item ? truncateCode(item.code) : `ID: ${id}`
 
                                     return (
                                         <Badge
@@ -102,7 +105,7 @@ export function ComboboxItem({ selectedIds = [], onChange }: { selectedIds?: str
                                         return (
                                             <CommandItem
                                                 key={item.id}
-                                                value={item.itemCode}
+                                                value={item.code}
                                                 onSelect={() => handleSelect(itemId)}
                                                 className="flex items-center justify-between py-2"
                                             >
@@ -115,7 +118,7 @@ export function ComboboxItem({ selectedIds = [], onChange }: { selectedIds?: str
                                                     </div>
                                                     <Package className="mr-2 h-4 w-4 shrink-0 opacity-50" />
                                                     <span className="truncate font-semibold text-sm">
-                                                        {item.itemCode}
+                                                        {item.code}
                                                     </span>
                                                 </div>
                                                 <Badge

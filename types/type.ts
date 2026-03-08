@@ -3,9 +3,9 @@ import { JSX } from "react";
 export type UserRole = "ADMIN" | "USER";
 
 export type ItemMin = {
-    id: number;
-    itemCode: string;
-    quantity: number;
+    id: string;
+    code: string;
+    quantity?: number;
 }
 
 export type AppSidebarProps = {
@@ -14,9 +14,9 @@ export type AppSidebarProps = {
 }
 
 export type Categories = {
-  name: string;
-  href: string;
-  icon: JSX.Element;
+    name: string;
+    href: string;
+    icon: JSX.Element;
 };
 
 export type NavItem = {
