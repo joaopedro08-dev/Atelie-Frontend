@@ -1,17 +1,17 @@
 "use client"
 
 import * as React from "react"
-import { Check, ChevronsUpDown, Package, X } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { ListAllItemMin } from "@/service/combobox/item"
-import { Badge } from "@/components/ui/badge"
-import { ItemMin } from "@/types/type"
+import { Check, ChevronsUpDown, Package, X } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { ListAllItemMin } from "@/service/combobox/item";
+import { Badge } from "@/components/ui/badge";
+import { ItemMin } from "@/types/type";
 
-export function ComboboxItem({ selectedIds = [], onChange }: { selectedIds: string[], onChange?: (values: string[]) => void}) {
+export function ComboboxItem({ selectedIds = [], onChange }: { selectedIds?: string[], onChange?: (values: string[]) => void }) {
     const [open, setOpen] = React.useState(false)
     const [items, setItems] = React.useState<ItemMin[]>([])
     const [loading, setLoading] = React.useState(true)
@@ -22,9 +22,11 @@ export function ComboboxItem({ selectedIds = [], onChange }: { selectedIds: stri
             setLoading(true)
             try {
                 const data = await listAllItemsByCode(selectedIds)
-                const transformedData = Array.isArray(data) ? data.map(item => ({
-                    ...item,
-                    id: typeof item.id === 'string' ? parseInt(item.id, 10) : item.id
+                const transformedData: ItemMin[] = Array.isArray(data) ? data.map(item => ({
+                    id: typeof item.id === 'string' ? parseInt(item.id, 10) : item.id,
+                    code: item.code || '',
+                    itemCode: item.code || '',
+                    quantity: (item as any).quantity || 0
                 })) : []
                 setItems(transformedData)
             } finally {
@@ -81,7 +83,7 @@ export function ComboboxItem({ selectedIds = [], onChange }: { selectedIds: stri
                                     )
                                 })
                             ) : (
-                                <span>Selecione os itens...</span>
+                                <span className="text-muted-foreground">Selecione os itens...</span>
                             )}
                         </div>
                         <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 ml-2" />
@@ -102,7 +104,7 @@ export function ComboboxItem({ selectedIds = [], onChange }: { selectedIds: stri
                                                 key={item.id}
                                                 value={item.itemCode}
                                                 onSelect={() => handleSelect(itemId)}
-                                                className="flex items-center justify-between py-2" 
+                                                className="flex items-center justify-between py-2"
                                             >
                                                 <div className="flex items-center min-w-0 flex-1 mr-2">
                                                     <div className={cn(
