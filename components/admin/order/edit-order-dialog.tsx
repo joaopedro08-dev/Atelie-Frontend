@@ -43,13 +43,13 @@ export function EditOrderDialog({ data, open, onOpenChange, onSuccess }: EditDia
                 methodPayment: data.methodPayment || "SYSTEM",
                 status: data.status || "PENDING",
                 installments: data.installments || 1,
-                dateOrder: data.datedata ? new Date(data.datedata) : new Date(),
+                dateOrder: data.dateOrder ? new Date(data.dateOrder) : data.datedata ? new Date(data.datedata) : new Date(),
                 totalPrice: Number(data.totalPrice || 0),
                 discount: Number(data.discount || 0),
                 dueDate: initialDay
             });
         }
-    }, [data]);
+    }, [data, open]); 
 
     const handleSave = async () => {
         if (!formData.clientId || !formData.dateOrder) {
@@ -59,11 +59,12 @@ export function EditOrderDialog({ data, open, onOpenChange, onSuccess }: EditDia
 
         setIsLoading(true);
         try {
-            const result = await updateOrderGroup(data.clientId, data.dateOrder, formData);
+            const result = await updateOrderGroup(data.clientId, String(formData.dateOrder), formData);
 
             if (result?.success) {
                 onOpenChange(false);
                 onSuccess();
+                toast.success("Pedido atualizado!");
             } else {
                 toast.error((result as any)?.message || "Erro ao atualizar pedido.");
             }
@@ -103,7 +104,12 @@ export function EditOrderDialog({ data, open, onOpenChange, onSuccess }: EditDia
 
                         <div className="space-y-2">
                             <Label className="text-xs font-semibold uppercase text-muted-foreground">Data do Pedido</Label>
-                            <DatePicker date={formData.dateOrder} setDate={(date) => setFormData({ ...formData, dateOrder: date || new Date() })} />
+                            <DatePicker 
+                                date={formData.dateOrder} 
+                                setDate={(newDate) => {
+                                    if (newDate) setFormData({ ...formData, dateOrder: newDate });
+                                }} 
+                            />
                         </div>
 
                         <div className="space-y-2">
