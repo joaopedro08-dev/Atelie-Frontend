@@ -235,3 +235,16 @@ export const UPDATE_PROFILE = `
         }
     }
 `;
+
+export const LIST_ALL_USERS = `
+    query FindAllByUsers {
+        findAllByUsers {
+            id
+            name
+            email
+            role
+            statusSystem
+            createdAt
+    }
+}
+`;

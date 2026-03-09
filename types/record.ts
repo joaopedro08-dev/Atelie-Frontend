@@ -16,6 +16,7 @@ export const routeNames: Record<string, string> = {
     "/admin": "Início",
     "/admin/dashboard": "Dashboard",
     "/admin/clients": "Clientes",
+    "/admin/users": "Usuários",
     "/admin/itens": "Gerenciar Itens",
     "/admin/orders": "Pedidos",
     "/admin/settings": "Configurações",

@@ -14,13 +14,14 @@ const navigation = [
         items: [
             { label: "Dashboard", link: "/admin/dashboard", icon: LayoutDashboard },
             { label: "Gerenciar Itens", link: "/admin/itens", icon: Gem },
+            { label: "Pedidos", link: "/admin/orders", icon: ShoppingCart },
         ]
     },
     {
-        category: "Vendas",
+        category: "Usuários",
         items: [
-            { label: "Pedidos", link: "/admin/orders", icon: ShoppingCart },
             { label: "Clientes", link: "/admin/clients", icon: Users },
+            { label: "Usuários (Ateliê)", link: "/admin/users", icon: Users },
         ]
     },
     {

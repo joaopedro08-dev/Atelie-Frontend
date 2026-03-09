@@ -44,7 +44,7 @@ export function AdminHomeContent() {
         <motion.div className="flex flex-col gap-8" variants={containerVariants} initial="hidden" animate="visible">
             <motion.header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4" variants={itemVariants}>
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">
+                    <h1 className="text-3xl font-bold tracking-tight ">
                         {getGreeting()}, {user?.name?.split(" ")[0] || "Admin"}! 👋
                     </h1>
                     <p className="text-muted-foreground mt-1 flex items-center capitalize gap-2 text-sm md:text-base">

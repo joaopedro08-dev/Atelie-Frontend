@@ -2,63 +2,72 @@ import { NavItem } from "./type";
 import { SetStateAction, Dispatch } from "react";
 
 export interface ActionDeleteProps {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    onConfirm: () => void;
-    itemName?: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onConfirm: () => void;
+  itemName?: string;
 }
 
 export interface EditDialogProps {
-    data: any | null;
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    onSuccess: () => void;
+  data: any | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSuccess: () => void;
 }
 
 export interface ItemModel {
-    id: string;
-    code: string;
-    unitPrice: number;
-    totalPrice: number;
-    createdAt: string;
+  id: string;
+  code: string;
+  unitPrice: number;
+  totalPrice: number;
+  createdAt: string;
 }
 
 export interface ClientModel {
-    id: number;
-    name: string;
-    email: string;
-    phone: string;
-    createdAt: string;
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  createdAt: string;
 }
 
 export interface OrderModel {
-    id: number;
-    clientId: number;
-    itemId: number;
-    name: string;
-    email: string;
-    methodPayment: string;
-    itemsCount: number;
-    totalPrice: string;
-    status: string;
-    dueDate: string;
-    dateOrder: string;
+  id: number;
+  clientId: number;
+  itemId: number;
+  name: string;
+  email: string;
+  methodPayment: string;
+  itemsCount: number;
+  totalPrice: string;
+  status: string;
+  dueDate: string;
+  dateOrder: string;
+}
+
+export interface UsersModel {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  statusSystem: boolean;
+  createdAt: string;
 }
 
 export interface HeaderUserProps {
-    navItems: NavItem[]
-    activeTab: string;
-    setActiveTab: Dispatch<SetStateAction<string>>;
-    user?: {
-        name: string;
-        image?: string;
-    };
+  navItems: NavItem[]
+  activeTab: string;
+  setActiveTab: Dispatch<SetStateAction<string>>;
+  user?: {
+    name: string;
+    image?: string;
+  };
 }
 
 export interface TableListProps {
-    datas: any[];
-    loading: boolean;
-    onRefresh: () => void;
+  datas: any[];
+  loading: boolean;
+  onRefresh: () => void;
 }
 
 // Auth Context Types
