@@ -1,3 +1,5 @@
+// Authentication Queries 
+
 export const GET_USER_INFO = `
   query GetUserInfo {
     getUserInfo {
@@ -30,6 +32,8 @@ export const LOGOUT_MUTATION = `
   }
 `;
 
+// Authentication Mutations
+
 export const SIGN_IN_MUTATION = `
     mutation SignIn($input: LoginUserInput!) {
         signIn(input: $input) {
@@ -47,6 +51,8 @@ export const SIGN_UP_MUTATION = `
         }
     }
 `;
+
+// Client Management Crud
 
 export const DELETE_CLIENT_MUTATION = `
     mutation DeleteClient($id: ID!) {
@@ -88,6 +94,8 @@ export const UPDATE_CLIENT_MUTATION = `
     }
 `;
 
+// Combobox Queries
+
 export const LIST_CLIENT_COMBOBOX_QUERY = `
     query ListAllClientsMin {
         listAllClientsMin {
@@ -106,6 +114,8 @@ export const LIST_ITEM_COMBOBOX_QUERY = `
         }
     }
 `;
+
+// Dashboard Stats for Admin
 
 export const DASHBOARD_STATS_QUERY = `
     query GetDashboardStats {
@@ -132,6 +142,8 @@ export const DASHBOARD_STATS_QUERY = `
          }
     }
 `;
+
+// Order Management Crud
 
 export const DELETE_ORDER_GROUP_MUTATION = `
     mutation DeleteOrderGroup($clientId: ID!, $dateOrder: String!) {
@@ -179,6 +191,8 @@ export const UPDATE_ORDER_GROUP_MUTATION = `
     }
 `;
 
+// Item Management Crud
+
 export const DELETE_ITEM_MUTATION = `
     mutation DeleteItem($id: ID!) {
         deleteItem(id: $id) {
@@ -218,6 +232,8 @@ export const UPDATE_ITEM_MUTATION = `
     }
 `;
 
+// User Configuration
+
 export const CHANGE_PASSWORD = `
     mutation ChangePasswordAdmin($email: String!, $input: ChangePasswordAdmin!) {
         changePasswordAdmin(email: $email, input: $input) {
@@ -236,6 +252,7 @@ export const UPDATE_PROFILE = `
     }
 `;
 
+// User Management Historic
 export const LIST_ALL_USERS = `
     query FindAllByUsers {
         findAllByUsers {

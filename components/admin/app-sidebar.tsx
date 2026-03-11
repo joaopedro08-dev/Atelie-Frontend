@@ -1,20 +1,21 @@
 "use client";
 
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
-import { User2Icon, LayoutDashboard, Gem, ShoppingCart, Users, Settings, StoreIcon, ChevronDown } from "lucide-react";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
+import { LayoutDashboard, Gem, ShoppingCart, Users, Settings, StoreIcon, ChevronDown } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
 import Logout from "../logout";
 import { AppSidebarProps } from "@/types/type";
+import { NavGroup } from "./nav-group";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
-const navigation = [
+export const navigation = [
     {
         category: "Principal",
         items: [
             { label: "Dashboard", link: "/admin/dashboard", icon: LayoutDashboard },
             { label: "Gerenciar Itens", link: "/admin/itens", icon: Gem },
-            { label: "Pedidos", link: "/admin/orders", icon: ShoppingCart },
+            { label: "Pedidos", link: "/admin/orders", icon: ShoppingCart, badge: 0 },
         ]
     },
     {
@@ -32,22 +33,29 @@ const navigation = [
     }
 ];
 
+const getInitials = (name: string) =>
+    name.trim().split(/\s+/).slice(0, 2).map(n => n[0].toUpperCase()).join("");
+
+const getAvatarColor = (name: string) => {
+    const colors = ["bg-rose-500", "bg-violet-500", "bg-amber-500", "bg-teal-500", "bg-blue-500"];
+    
+    const hash = name.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    
+    return colors[hash % colors.length];
+};
+
+const getFormattedName = (fullName: string) => {
+    if (!fullName) return "Usuário";
+    const parts = fullName.trim().split(/\s+/);
+    if (parts.length <= 2) return parts.join(" ");
+    const initials = parts.slice(2).map(n => `${n[0].toUpperCase()}.`).join(" ");
+    return `${parts.slice(0, 2).join(" ")} ${initials}`;
+};
+
 export function AppSidebar({ username, role }: AppSidebarProps) {
     const { isMobile, setOpenMobile } = useSidebar();
     const pathname = usePathname();
-
-    const closeSidebar = () => {
-        if (isMobile) setOpenMobile(false);
-    };
-
-    const getFormattedName = (fullName: string) => {
-        if (!fullName) return "Usuário";
-        const nameParts = fullName.trim().split(/\s+/);
-        if (nameParts.length <= 2) return nameParts.join(" ");
-        const firstTwo = nameParts.slice(0, 2).join(" ");
-        const initials = nameParts.slice(2).map(n => `${n.charAt(0).toUpperCase()}.`).join(" ");
-        return `${firstTwo} ${initials}`;
-    };
+    const closeSidebar = () => { if (isMobile) setOpenMobile(false); };
 
     return (
         <Sidebar variant="sidebar" collapsible="icon">
@@ -69,31 +77,15 @@ export function AppSidebar({ username, role }: AppSidebarProps) {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent>
-                {navigation.map((group) => (
-                    <SidebarGroup key={group.category}>
-                        <SidebarGroupLabel>{group.category}</SidebarGroupLabel>
-                        <SidebarMenu>
-                            {group.items.map((item) => {
-                                const Icon = item.icon;
-                                const isActive = pathname === item.link;
-                                return (
-                                    <SidebarMenuItem className="mb-1" key={item.link}>
-                                        <SidebarMenuButton tooltip={item.label} isActive={isActive}>
-                                            <Link
-                                                href={item.link}
-                                                onClick={closeSidebar}
-                                                className="flex items-center flex-row justify-start gap-2 w-full"
-                                            >
-                                                {Icon && <Icon className="size-4" />}
-                                                <span>{item.label}</span>
-                                            </Link>
-                                        </SidebarMenuButton>
-                                    </SidebarMenuItem>
-                                );
-                            })}
-                        </SidebarMenu>
-                    </SidebarGroup>
+            <SidebarContent className="overflow-y-auto">
+                {navigation.map((group, groupIndex) => (
+                    <NavGroup
+                        key={group.category}
+                        group={group}
+                        groupIndex={groupIndex}
+                        pathname={pathname}
+                        closeSidebar={closeSidebar}
+                    />
                 ))}
             </SidebarContent>
 
@@ -102,13 +94,19 @@ export function AppSidebar({ username, role }: AppSidebarProps) {
                     <SidebarMenuItem>
                         <DropdownMenu>
                             <DropdownMenuTrigger render={
-                                <SidebarMenuButton className="py-6">
-                                    <User2Icon className="size-6" />
-                                    <div className="flex flex-col ml-2">
-                                        <span className="text-sm font-medium">{getFormattedName(username)}</span>
-                                        <span className="text-xs text-muted-foreground">{role === "ADMIN" ? "Administrador(a)" : "Usuário"}</span>
+                                <SidebarMenuButton className="hover:bg-muted/60 h-12 group-data-[collapsible=icon]:justify-center">
+                                    <div className={`size-7 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0 ${getAvatarColor(username)}`}>
+                                        {getInitials(username)}
                                     </div>
-                                    <ChevronDown className="ml-auto opacity-50" />
+                                    <div className="flex flex-col ml-2 min-w-0 group-data-[collapsible=icon]:hidden">
+                                        <span className="text-sm font-medium truncate leading-tight">
+                                            {getFormattedName(username)}
+                                        </span>
+                                        <span className="text-xs text-muted-foreground leading-tight">
+                                            {role === "ADMIN" ? "Administrador(a)" : "Usuário"}
+                                        </span>
+                                    </div>
+                                    <ChevronDown className="ml-auto opacity-50 shrink-0 group-data-[collapsible=icon]:hidden" />
                                 </SidebarMenuButton>
                             } />
                             <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">

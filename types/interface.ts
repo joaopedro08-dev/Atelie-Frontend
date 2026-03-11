@@ -1,6 +1,8 @@
 import { NavItem } from "./type";
 import { SetStateAction, Dispatch } from "react";
 
+// Actions of edit and delete
+
 export interface ActionDeleteProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -15,8 +17,10 @@ export interface EditDialogProps {
   onSuccess: () => void;
 }
 
+// Models
+
 export interface ItemModel {
-  id: string;
+  id: number;
   code: string;
   unitPrice: number;
   totalPrice: number;
@@ -53,6 +57,8 @@ export interface UsersModel {
   statusSystem: boolean;
   createdAt: string;
 }
+
+// Header User Configuration
 
 export interface HeaderUserProps {
   navItems: NavItem[]

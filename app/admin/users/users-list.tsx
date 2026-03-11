@@ -36,7 +36,7 @@ export function UsersList({ data, isLoading }: { data: UsersModel[], isLoading: 
                             <TableHead className="w-32"><div className="flex items-center gap-2"><Hash className="h-4 w-4" /> ID</div></TableHead>
                             <TableHead><div className="flex items-center gap-2"><User className="h-4 w-4" /> Nome</div></TableHead>
                             <TableHead><div className="flex items-center gap-2"><Mail className="h-4 w-4" /> E-mail</div></TableHead>
-                            <TableHead><div className="flex items-center gap-2"><User2 className="h-4 w-4" /> Role</div></TableHead>
+                            <TableHead><div className="flex items-center gap-2"><User2 className="h-4 w-4" /> Papel</div></TableHead>
                             <TableHead className="text-center"><div className="flex items-center justify-center gap-2"><Activity className="h-4 w-4" /> Status</div></TableHead>
                             <TableHead className="text-right"><div className="flex items-center justify-end gap-2"><CalendarIcon className="h-4 w-4" /> Cadastro</div></TableHead>
                         </TableRow>

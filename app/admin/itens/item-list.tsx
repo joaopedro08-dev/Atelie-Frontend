@@ -71,7 +71,7 @@ export function ItemList({ datas = [], loading, onRefresh }: TableListProps) {
                         <TableRow className="bg-muted/50">
                             <TableHead className="w-40"><div className="flex items-center gap-2"><Hash className="h-4 w-4" /> ID</div></TableHead>
                             <TableHead className="w-40"><div className="flex items-center gap-2"><Hash className="h-4 w-4" /> Código</div></TableHead>
-                            <TableHead className="text-right"><div className="flex items-center justify-end gap-2"><DollarSign className="h-4 w-4" /> Preço Unit</div></TableHead>
+                            <TableHead className="text-right"><div className="flex items-center justify-end gap-2"><DollarSign className="h-4 w-4" /> Preço Parcelado</div></TableHead>
                             <TableHead className="text-right"><div className="flex items-center justify-end gap-2"><DollarSign className="h-4 w-4" /> Preço Total</div></TableHead>
                             <TableHead className="text-right"><div className="flex items-center justify-end gap-2"><CalendarIcon className="h-4 w-4" />Data Cadastro</div></TableHead>
                             <TableHead className="w-24 text-center">Ações</TableHead>

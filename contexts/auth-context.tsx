@@ -34,22 +34,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const handleRefresh = useCallback(async (): Promise<boolean> => {
-    if (isRefreshing.current) return refreshPromise.current!;
-
-    isRefreshing.current = true;
+    if (refreshPromise.current) return refreshPromise.current;
 
     refreshPromise.current = (async () => {
       try {
         const response = await baseFetch(REFRESH_TOKEN_MUTATION);
+
+        if (!response.ok) {
+          setUser(null);
+          return false;
+        }
+
         const result = await response.json();
         const success = !!result.data?.refreshToken?.success;
+
         if (!success) setUser(null);
         return success;
       } catch {
         setUser(null);
         return false;
       } finally {
-        isRefreshing.current = false;
         refreshPromise.current = null;
       }
     })();
@@ -70,19 +74,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           response.status === 401 ||
           result.errors?.some(
             (err) =>
-              err.message?.includes("Unauthorized") ||
-              err.extensions?.code === "UNAUTHENTICATED"
+              err.message?.toLowerCase().includes("unauthorized") ||
+              err.message?.toLowerCase().includes("unauthenticated") ||
+              err.extensions?.code === "UNAUTHENTICATED" ||
+              err.extensions?.code === "UNAUTHORIZED"
           );
 
         if (isUnauthorized) {
           const refreshed = await handleRefresh();
 
           if (refreshed) {
+            await new Promise((resolve) => setTimeout(resolve, 50));
+
             const retryResponse = await baseFetch(query, variables);
-            return retryResponse.json();
+            const retryResult: GraphQLResponse<T> = await retryResponse.json();
+
+            const retryUnauthorized =
+              retryResponse.status === 401 ||
+              retryResult.errors?.some(
+                (err) =>
+                  err.message?.toLowerCase().includes("unauthorized") ||
+                  err.extensions?.code === "UNAUTHENTICATED"
+              );
+
+            if (retryUnauthorized) {
+              setUser(null);
+              return {
+                data: null,
+                errors: [{ message: "Sessão expirada. Faça login novamente." }],
+              };
+            }
+
+            return retryResult;
           }
 
           setUser(null);
+          router.replace("/signin");
           return {
             data: null,
             errors: [{ message: "Sessão expirada. Faça login novamente." }],
@@ -97,7 +124,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         };
       }
     },
-    [baseFetch, handleRefresh]
+    [baseFetch, handleRefresh, router]
   );
 
   const fetchUser = useCallback(
