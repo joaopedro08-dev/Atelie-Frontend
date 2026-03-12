@@ -26,3 +26,5 @@ export const ROLE_REDIRECT: Record<string, string> = {
   ADMIN: "/admin",
   USER: "/user",
 };
+
+export const DEFAULT_REDIRECT = "/signin";

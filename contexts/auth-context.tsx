@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { API_BASE } from "@/api/api";
 import { User, AuthContextType, GraphQLResponse } from "@/types/interface"
 import { LOGOUT_MUTATION, REFRESH_TOKEN_MUTATION, GET_USER_INFO } from "@/types/query";
-import { ROLE_REDIRECT } from "@/types/record";
+import { ROLE_REDIRECT, DEFAULT_REDIRECT } from "@/types/record";
 
 const PUBLIC_ROUTES = ["/signin", "/signup"];
 
@@ -158,9 +158,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (loading) return;
 
     const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+    const isTauri = '__TAURI_INTERNALS__' in window;
+
+    if (isTauri && pathname.startsWith("/user")) {
+      router.replace("/signin");
+      return;
+    }
 
     if (user && isPublicRoute) {
-      const destination = ROLE_REDIRECT[user.role] ?? "/";
+      const destination = ROLE_REDIRECT[user.role] ?? DEFAULT_REDIRECT;
       router.replace(destination);
       return;
     }

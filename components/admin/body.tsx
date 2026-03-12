@@ -27,8 +27,8 @@ export default function Body({ children }: { children: React.ReactNode }) {
     if (loading) return null;
 
     return (
-        <SidebarProvider defaultOpen={defaultOpen}>
-            <div className="flex min-h-dvh w-full bg-background">
+        <SidebarProvider defaultOpen={defaultOpen} className="h-full">
+            <div className="flex h-full w-full bg-background">
                 <motion.div
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
@@ -48,7 +48,7 @@ export default function Body({ children }: { children: React.ReactNode }) {
                     />
                 </div>
 
-                <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+                <main className="flex-1 flex flex-col min-w-0 overflow-hidden min-h-0 mb-5">
                     <motion.div
                         initial={{ y: -20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}

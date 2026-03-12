@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StoreIcon, LockKeyhole, Loader2, Mail, Eye, EyeOff } from "lucide-react";
@@ -26,8 +26,14 @@ const itemVariants = {
 export function SignInPageContent() {
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [isTauri, setIsTauri] = useState(false);
+
     const { signIn } = SignIn();
     const router = useRouter();
+
+    useEffect(() => {
+        setIsTauri('__TAURI_INTERNALS__' in window)
+    }, []);
 
     const {
         register,
@@ -42,6 +48,7 @@ export function SignInPageContent() {
         await signIn(data);
         setIsLoading(false);
     };
+
 
     return (
         <div className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-background px-4 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
@@ -80,7 +87,7 @@ export function SignInPageContent() {
 
                     <div>
                         <h1 className="text-2xl font-bold tracking-tight">Ateliê</h1>
-                        <p className="text-sm text-muted-foreground mt-0.5">Loja Virtual de Peças Artesanais</p>
+                        <p className="text-sm text-muted-foreground mt-0.5">{!isTauri ? "Loja Virtual de Peças Artesanais" : "Painel Desktop para Administrador(a)"}</p>
                     </div>
                 </motion.div>
 
@@ -201,17 +208,19 @@ export function SignInPageContent() {
                             </Button>
                         </form>
 
-                        <div className="flex justify-center">
-                            <p className="text-sm text-muted-foreground">
-                                Não possui uma conta?{" "}
-                                <Link
-                                    href="/signup"
-                                    className="text-primary font-medium hover:underline transition-colors hover:text-primary/80"
-                                >
-                                    Cadastre-se
-                                </Link>
-                            </p>
-                        </div>
+                        {!isTauri && (
+                            <div className="flex justify-center">
+                                <p className="text-sm text-muted-foreground">
+                                    Não possui uma conta?{" "}
+                                    <Link
+                                        href="/signup"
+                                        className="text-primary font-medium hover:underline transition-colors hover:text-primary/80"
+                                    >
+                                        Cadastre-se
+                                    </Link>
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </motion.div>
 

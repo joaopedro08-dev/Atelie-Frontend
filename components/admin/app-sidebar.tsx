@@ -38,9 +38,9 @@ const getInitials = (name: string) =>
 
 const getAvatarColor = (name: string) => {
     const colors = ["bg-rose-500", "bg-violet-500", "bg-amber-500", "bg-teal-500", "bg-blue-500"];
-    
+
     const hash = name.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    
+
     return colors[hash % colors.length];
 };
 
@@ -58,7 +58,14 @@ export function AppSidebar({ username, role }: AppSidebarProps) {
     const closeSidebar = () => { if (isMobile) setOpenMobile(false); };
 
     return (
-        <Sidebar variant="sidebar" collapsible="icon">
+        <Sidebar
+            variant="sidebar"
+            collapsible="icon"
+            style={{
+                top: 'var(--titlebar-height, 0px)',
+                height: 'calc(100vh - var(--titlebar-height, 0px))'
+            }}
+        >
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>

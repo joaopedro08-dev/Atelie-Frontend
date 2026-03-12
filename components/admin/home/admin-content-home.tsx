@@ -150,7 +150,7 @@ export function AdminHomeContent() {
                         className="gap-2 shadow-sm w-full md:w-auto shrink-0"
                     >
                         <UserCircle className="size-4" />
-                        Ver Perfil Completo
+                        <span className="lg:block hidden">Ver Perfil Completo</span>
                     </Button>
                 </div>
             </motion.header>
