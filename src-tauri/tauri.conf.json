@@ -21,13 +21,14 @@
         "fullscreen": false,
         "visible": false,
         "decorations": false,
+        "devtools": true,
         "backgroundColor": "#1a1a1a"
       }
     ],
     "security": {
       "csp": {
         "default-src": "'self' customprotocol: asset:",
-        "connect-src": "ipc: http://ipc.localhost https://atelie-backend-ii34.onrender.com",
+        "connect-src": "ipc: http://ipc.localhost http://tauri.localhost https://atelie-backend-ii34.onrender.com",
         "font-src": [
           "'self' data:"
         ],

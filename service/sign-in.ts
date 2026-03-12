@@ -42,6 +42,7 @@ export const SignIn = () => {
             }
 
         } catch (error) {
+            console.error("Erro detalhado:", JSON.stringify(error), String(error))
             toast.error("Erro de rede.", { id: toastId });
         }
     };
