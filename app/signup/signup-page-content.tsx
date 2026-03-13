@@ -46,7 +46,7 @@ export function SignUpPageContent() {
     };
 
     return (
-        <div className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-background px-4 py-16 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
+        <div className="relative flex min-h-full items-center justify-center overflow-y-auto bg-background px-4 py-16 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
             <div className="pointer-events-none absolute inset-0 overflow-hidden">
                 <div className="absolute -top-40 left-1/2 -translate-x-1/2 h-80 w-80 rounded-full bg-primary/8 blur-3xl" />
                 <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-primary/5 blur-3xl" />

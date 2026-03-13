@@ -2,14 +2,12 @@ import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
-import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
+import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
 import { ChevronDown } from "lucide-react";
 import { navigation } from "./app-sidebar";
-import { useRouter } from "next/navigation";
 
 export function NavGroup({ group, groupIndex, pathname, closeSidebar, }: { group: typeof navigation[0]; groupIndex: number; pathname: string; closeSidebar: () => void; }) {
     const [open, setOpen] = useState(true);
-    const router = useRouter();
 
     return (
         <Collapsible open={open} onOpenChange={setOpen}>
@@ -46,32 +44,22 @@ export function NavGroup({ group, groupIndex, pathname, closeSidebar, }: { group
                                     const Icon = item.icon;
                                     return (
                                         <SidebarMenuItem className="mb-0.5" key={item.link}>
-                                            <SidebarMenuButton
-                                                tooltip={item.label}
-                                                isActive={isActive}
-                                                onClick={() => {
-                                                    closeSidebar()
-                                                    router.push(item.link)
-                                                }}
-                                                className={`group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:border-none ${isActive
-                                                        ? "bg-primary/10 text-primary border-l-2 border-primary font-medium rounded-md"
-                                                        : "border-l-2 border-transparent hover:bg-muted/60"
-                                                    }`}
+                                            <Link
+                                                href={item.link}
+                                                onClick={() => closeSidebar()}
+                                                className={`flex items-center gap-2 w-full px-2 py-2 rounded-md text-sm transition-colors ${isActive
+                                                    ? "bg-primary/10 text-primary border-primary font-medium"
+                                                    : "border-transparent text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                                                }`}
                                             >
-                                                <Link
-                                                    href={item.link}
-                                                    onClick={closeSidebar}
-                                                    className="flex items-center flex-row justify-start w-full"
-                                                >
-                                                    {item.icon && <Icon className="size-4 mr-2" />}
-                                                    <span className="truncate">{item.label}</span>
-                                                    {(item.badge ?? 0) > 0 && (
-                                                        <span className="ml-auto text-xs bg-primary text-white rounded-full px-1.5 min-w-4.5 text-center leading-5">
-                                                            {item.badge}
-                                                        </span>
-                                                    )}
-                                                </Link>
-                                            </SidebarMenuButton>
+                                                {Icon && <Icon className="size-4 shrink-0" />}
+                                                <span className="truncate">{item.label}</span>
+                                                {(item.badge ?? 0) > 0 && (
+                                                    <span className="ml-auto text-xs bg-primary text-white rounded-full px-1.5 min-w-4.5 text-center leading-5">
+                                                        {item.badge}
+                                                    </span>
+                                                )}
+                                            </Link>
                                         </SidebarMenuItem>
                                     );
                                 })}

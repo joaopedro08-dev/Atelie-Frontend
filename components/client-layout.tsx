@@ -7,7 +7,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { SplashScreen } from "./tauri/splash-screen"
 import { Titlebar } from "./tauri/titlebar"
 import { OfflineBanner } from "./offline-banner"
-import { Updater } from "./tauri/updater"
+// import { Updater } from "./tauri/updater"
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const [showSplash, setShowSplash] = useState(false)
@@ -47,7 +47,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         disableTransitionOnChange
       >
         {showSplash && <SplashScreen onFinish={handleSplashFinish} />}
-        {isTauri && <Updater />}
+        {/* {isTauri && <Updater />} */}
 
         <div
           className="flex flex-col h-screen overflow-hidden"

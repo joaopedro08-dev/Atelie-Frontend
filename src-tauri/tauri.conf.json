@@ -21,7 +21,7 @@
         "fullscreen": false,
         "visible": false,
         "decorations": false,
-        "devtools": true,
+        "devtools": false,
         "backgroundColor": "#1a1a1a"
       }
     ],

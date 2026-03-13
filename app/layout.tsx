@@ -3,9 +3,9 @@ import { Geist, Geist_Mono, Roboto } from "next/font/google";
 import "./globals.css";
 import { ClientLayout } from "@/components/client-layout";
 
-const roboto = Roboto({ subsets: ['latin'], variable: '--font-sans' });
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const roboto = Roboto({ subsets: ['latin'], variable: '--font-sans', preload: false });
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"], preload: false });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], preload: false });
 
 export const metadata: Metadata = {
   title: {
