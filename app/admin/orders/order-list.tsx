@@ -21,6 +21,7 @@ import { ActionDelete } from "@/components/admin/actions/action-delete";
 import { DeleteOrder } from "@/service/orders/delete-order";
 import { TableListProps } from "@/types/interface";
 import { statusTranslations } from "@/types/record";
+import { TableSkeleton } from "@/components/skeletons/table-skeleton";
 
 export function OrderList({ datas, loading, onRefresh }: TableListProps) {
     const [currentPage, setCurrentPage] = useState(1);
@@ -64,11 +65,7 @@ export function OrderList({ datas, loading, onRefresh }: TableListProps) {
     };
 
     if (loading) {
-        return (
-            <div className="flex h-40 items-center justify-center border rounded-md">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            </div>
-        );
+        return <TableSkeleton rows={4} cols={7} />
     }
 
     return (

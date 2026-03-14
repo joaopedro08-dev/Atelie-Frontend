@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { UsersModel } from "@/types/interface";
+import { TableSkeleton } from "@/components/skeletons/table-skeleton";
 
 export function UsersList({ data, isLoading }: { data: UsersModel[], isLoading: boolean }) {
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 4; 
+    const itemsPerPage = 4;
 
     const totalPages = Math.ceil(data.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -20,11 +21,7 @@ export function UsersList({ data, isLoading }: { data: UsersModel[], isLoading: 
     const goToPreviousPage = () => { if (currentPage > 1) setCurrentPage(prev => prev - 1); };
 
     if (isLoading) {
-        return (
-            <div className="flex h-40 items-center justify-center border rounded-md bg-card/50">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            </div>
-        );
+        return <TableSkeleton rows={4} cols={6} />
     }
 
     return (
@@ -68,7 +65,7 @@ export function UsersList({ data, isLoading }: { data: UsersModel[], isLoading: 
                                         <TableCell className="text-muted-foreground">{user.email}</TableCell>
                                         <TableCell>{user.role ? "Usuário" : "N/A"}</TableCell>
                                         <TableCell className="text-center">
-                                            <Badge 
+                                            <Badge
                                                 variant={user.statusSystem ? "default" : "secondary"}
                                                 className={user.statusSystem ? "bg-green-500/10 text-green-600 hover:bg-green-500/20 border-green-200" : ""}
                                             >

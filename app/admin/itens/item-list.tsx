@@ -11,6 +11,7 @@ import { DeleteItem } from "@/service/itens/delete-item";
 import { EditItemDialog } from "@/components/admin/item/edit-item-dialog";
 import { ActionDelete } from "@/components/admin/actions/action-delete";
 import { TableListProps } from "@/types/interface";
+import { TableSkeleton } from "@/components/skeletons/table-skeleton";
 
 export function ItemList({ datas = [], loading, onRefresh }: TableListProps) {
     const [currentPage, setCurrentPage] = useState(1);
@@ -56,11 +57,7 @@ export function ItemList({ datas = [], loading, onRefresh }: TableListProps) {
     };
 
     if (loading) {
-        return (
-            <div className="flex h-40 items-center justify-center border rounded-md">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            </div>
-        );
+        return <TableSkeleton rows={4} cols={6} />
     }
 
     return (
@@ -116,7 +113,7 @@ export function ItemList({ datas = [], loading, onRefresh }: TableListProps) {
                                                     <Button variant="ghost" className="h-8 w-8 p-0">
                                                         <MoreHorizontal className="h-4 w-4" />
                                                     </Button>
-                                                } />                                                    
+                                                } />
                                                 <DropdownMenuContent align="end" className="w-40">
                                                     <DropdownMenuGroup>
                                                         <DropdownMenuLabel>Gerenciar</DropdownMenuLabel>

@@ -11,7 +11,6 @@ import {
     FileDown,
     FileText,
     Table as TableIcon,
-    Loader2,
     CreditCard
 } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis, Pie, PieChart, Cell, Label } from "recharts";
@@ -19,6 +18,7 @@ import { Bar, BarChart, CartesianGrid, XAxis, Pie, PieChart, Cell, Label } from 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -108,6 +108,126 @@ function CategoryPieChart({ data }: { data: any[] }) {
     );
 }
 
+// Skeletons
+function StatCardSkeleton() {
+    return (
+        <Card className="bg-card/10 border-muted/20">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <Skeleton className="h-4 w-28" />
+                <Skeleton className="size-5 rounded-full" />
+            </CardHeader>
+            <CardContent>
+                <Skeleton className="h-8 w-24 mb-2" />
+                <Skeleton className="h-3 w-36" />
+            </CardContent>
+        </Card>
+    )
+}
+
+function ChartSkeleton() {
+    const heights = [45, 70, 55, 80, 40, 65, 50]
+    return (
+        <div className="h-75 flex items-end gap-3 px-4 pb-4">
+            {heights.map((h, i) => (
+                <Skeleton key={i} className="flex-1 rounded-t-md" style={{ height: `${h}%` }} />
+            ))}
+        </div>
+    )
+}
+
+function ActivitySkeleton() {
+    return (
+        <div className="space-y-6">
+            {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-4 py-2">
+                    <Skeleton className="size-9 rounded-full shrink-0" />
+                    <div className="flex-1 space-y-2">
+                        <Skeleton className="h-4 w-32" />
+                        <Skeleton className="h-3 w-24" />
+                    </div>
+                    <div className="flex flex-col items-end gap-1">
+                        <Skeleton className="h-5 w-16 rounded-full" />
+                        <Skeleton className="h-3 w-14" />
+                    </div>
+                </div>
+            ))}
+        </div>
+    )
+}
+
+function PieSkeleton() {
+    return (
+        <div className="flex justify-center items-center h-64">
+            <Skeleton className="size-48 rounded-full" />
+        </div>
+    )
+}
+
+function DashboardSkeleton() {
+    return (
+        <div className="space-y-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="space-y-2">
+                    <Skeleton className="h-8 w-64" />
+                    <Skeleton className="h-4 w-48" />
+                </div>
+                <Skeleton className="h-9 w-28" />
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                {Array.from({ length: 4 }).map((_, i) => <StatCardSkeleton key={i} />)}
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+                <Card className="col-span-4 bg-card/10 border-muted/20">
+                    <CardHeader>
+                        <Skeleton className="h-5 w-36" />
+                        <Skeleton className="h-3 w-52" />
+                    </CardHeader>
+                    <CardContent className="pt-2">
+                        <ChartSkeleton />
+                    </CardContent>
+                </Card>
+
+                <Card className="col-span-4 lg:col-span-3 bg-card/10 border-muted/20">
+                    <CardHeader>
+                        <Skeleton className="h-5 w-36" />
+                        <Skeleton className="h-3 w-52" />
+                    </CardHeader>
+                    <CardContent>
+                        <ActivitySkeleton />
+                    </CardContent>
+                </Card>
+
+                <Card className="col-span-4 lg:col-span-3 bg-card/10 border-muted/20">
+                    <CardHeader className="items-center">
+                        <Skeleton className="h-5 w-40" />
+                        <Skeleton className="h-3 w-56" />
+                    </CardHeader>
+                    <CardContent>
+                        <PieSkeleton />
+                    </CardContent>
+                </Card>
+            </div>
+        </div>
+    )
+}
+
+function StatCard({ title, icon, value, sub }: any) {
+    return (
+        <Card className="bg-card/10 border-muted/20">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
+                {icon}
+            </CardHeader>
+            <CardContent>
+                <div className="text-2xl font-bold text-foreground">{value}</div>
+                <p className="text-xs text-muted-foreground">{sub}</p>
+            </CardContent>
+        </Card>
+    );
+}
+
 export function DashboardPageContent() {
     const { dashboardStats } = DashboardStats();
     const [stats, setStats] = useState<any>(null);
@@ -133,6 +253,8 @@ export function DashboardPageContent() {
             : exportDashboardToExcel(stats, paymentTranslations, statusTranslations);
     };
 
+    if (loading) return <DashboardSkeleton />
+
     return (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -143,7 +265,7 @@ export function DashboardPageContent() {
                 <div className="flex items-center gap-2">
                     <DropdownMenu>
                         <DropdownMenuTrigger render={
-                            <Button disabled={loading || !stats} variant="outline" className="gap-2">
+                            <Button variant="outline" className="gap-2">
                                 <FileDown className="size-4" /> Exportar
                             </Button>
                         } />
@@ -160,10 +282,10 @@ export function DashboardPageContent() {
             </div>
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <StatCard title="Receita Estimada" icon={<DollarSign className="text-green-500" />} value={loading ? "..." : formatCurrency(stats?.totalRevenue)} sub="Soma total de todos os itens" loading={loading} />
-                <StatCard title="Total de Clientes" icon={<Users className="text-blue-500" />} value={loading ? "..." : stats?.totalClients} sub="Clientes cadastrados" loading={loading} />
-                <StatCard title="Pedidos Pendentes" icon={<Clock className="text-orange-500" />} value={loading ? "..." : stats?.pendingOrders} sub="Aguardando processamento" loading={loading} />
-                <StatCard title="Itens Produzidos" icon={<Package className="text-purple-500" />} value={loading ? "..." : stats?.totalItemsProduced} sub="Volume total de peças" loading={loading} />
+                <StatCard title="Receita Estimada" icon={<DollarSign className="text-green-500" />} value={formatCurrency(stats?.totalRevenue)} sub="Soma total de todos os itens" />
+                <StatCard title="Total de Clientes" icon={<Users className="text-blue-500" />} value={stats?.totalClients} sub="Clientes cadastrados" />
+                <StatCard title="Pedidos Pendentes" icon={<Clock className="text-orange-500" />} value={stats?.pendingOrders} sub="Aguardando processamento" />
+                <StatCard title="Itens Produzidos" icon={<Package className="text-purple-500" />} value={stats?.totalItemsProduced} sub="Volume total de peças" />
             </div>
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
@@ -173,7 +295,7 @@ export function DashboardPageContent() {
                         <CardDescription>Volume de pedidos nos últimos 7 dias</CardDescription>
                     </CardHeader>
                     <CardContent className="pt-2">
-                        {loading ? <div className="h-75 flex items-center justify-center"><Loader2 className="animate-spin text-primary" /></div> : <OrderChart data={stats?.salesChartData || []} />}
+                        <OrderChart data={stats?.salesChartData || []} />
                     </CardContent>
                 </Card>
 
@@ -190,15 +312,10 @@ export function DashboardPageContent() {
                     <CardContent className="w-full">
                         <ScrollArea className="h-77.5 pr-4">
                             <div className="space-y-6">
-                                {loading ? (
-                                    <div className="flex justify-center py-4">
-                                        <Loader2 className="animate-spin size-6 text-primary" />
-                                    </div>
-                                ) : stats?.listAllRecentyActivity?.length > 0 ? (
+                                {stats?.listAllRecentyActivity?.length > 0 ? (
                                     stats.listAllRecentyActivity.map((activity: any, index: number) => {
                                         const statusInfo = statusTranslations[activity.status] || { label: activity.status, color: "" };
                                         const paymentLabel = paymentTranslations[activity.methodPayment] || activity.methodPayment;
-
                                         return (
                                             <div key={index} className="flex items-start sm:items-center gap-4 py-2">
                                                 <div className="size-9 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
@@ -208,31 +325,21 @@ export function DashboardPageContent() {
                                                         <CreditCard className="size-4 text-primary" />
                                                     )}
                                                 </div>
-
                                                 <div className="flex-1 min-w-0 space-y-1">
-                                                    <p className="text-sm font-medium leading-none text-foreground truncate">
-                                                        {activity.name}
-                                                    </p>
-                                                    <p className="text-xs text-muted-foreground">
-                                                        Pedido #{activity.itemId} • {paymentLabel}
-                                                    </p>
+                                                    <p className="text-sm font-medium leading-none text-foreground truncate">{activity.name}</p>
+                                                    <p className="text-xs text-muted-foreground">Pedido #{activity.itemId} • {paymentLabel}</p>
                                                 </div>
-
                                                 <div className="flex flex-col items-end gap-1 shrink-0">
                                                     <Badge variant="outline" className={`${statusInfo.color} text-[10px] sm:text-xs whitespace-nowrap`}>
                                                         {statusInfo.label}
                                                     </Badge>
-                                                    <p className="text-[10px] text-muted-foreground whitespace-nowrap">
-                                                        {formatDateBR(activity.dateOrder)}
-                                                    </p>
+                                                    <p className="text-[10px] text-muted-foreground whitespace-nowrap">{formatDateBR(activity.dateOrder)}</p>
                                                 </div>
                                             </div>
                                         );
                                     })
                                 ) : (
-                                    <p className="text-sm text-muted-foreground italic text-center py-4">
-                                        Nenhuma atividade encontrada.
-                                    </p>
+                                    <p className="text-sm text-muted-foreground italic text-center py-4">Nenhuma atividade encontrada.</p>
                                 )}
                             </div>
                         </ScrollArea>
@@ -247,11 +354,7 @@ export function DashboardPageContent() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="flex-1 pb-0">
-                        {loading ? (
-                            <div className="h-64 flex items-center justify-center">
-                                <Loader2 className="animate-spin size-6 text-primary" />
-                            </div>
-                        ) : stats?.listAllCategory?.length > 0 ? (
+                        {stats?.listAllCategory?.length > 0 ? (
                             <CategoryPieChart data={stats.listAllCategory} />
                         ) : (
                             <div className="h-64 flex items-center justify-center border-2 border-dashed border-zinc-800 rounded-lg m-4">
@@ -282,20 +385,5 @@ export function DashboardPageContent() {
                 </Card>
             </div>
         </motion.div>
-    );
-}
-
-function StatCard({ title, icon, value, sub, loading }: any) {
-    return (
-        <Card className="bg-card/10 border-muted/20">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
-                {icon}
-            </CardHeader>
-            <CardContent>
-                <div className="text-2xl font-bold text-foreground">{loading ? <Loader2 className="animate-spin size-6 text-primary" /> : value}</div>
-                <p className="text-xs text-muted-foreground">{sub}</p>
-            </CardContent>
-        </Card>
     );
 }

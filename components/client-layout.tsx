@@ -1,13 +1,14 @@
 'use client'
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useLayoutEffect } from "react"
 import { AuthProvider } from "@/contexts/auth-context"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { SplashScreen } from "./tauri/splash-screen"
 import { Titlebar } from "./tauri/titlebar"
 import { OfflineBanner } from "./offline-banner"
-// import { Updater } from "./tauri/updater"
+
+const useSafeLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const [showSplash, setShowSplash] = useState(false)
@@ -24,10 +25,11 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     setShowSplash(false)
   }
 
-  useEffect(() => {
+  useSafeLayoutEffect(() => {
     const tauri = '__TAURI_INTERNALS__' in window
     if (tauri) {
       setIsTauri(true)
+      document.documentElement.style.setProperty('--titlebar-height', '32px')
       const shown = sessionStorage.getItem('splash-shown')
       if (!shown) {
         setShowSplash(true)
@@ -47,12 +49,8 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         disableTransitionOnChange
       >
         {showSplash && <SplashScreen onFinish={handleSplashFinish} />}
-        {/* {isTauri && <Updater />} */}
 
-        <div
-          className="flex flex-col h-screen overflow-hidden"
-          style={isTauri ? { '--titlebar-height': '32px' } as React.CSSProperties : {}}
-        >
+        <div className="flex flex-col h-screen overflow-hidden">
           {isTauri && <Titlebar />}
           <div className={`flex-1 overflow-hidden ${isTauri && !splashDone ? 'invisible' : 'visible'}`}>
             {children}
