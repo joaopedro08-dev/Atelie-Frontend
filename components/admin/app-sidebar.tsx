@@ -1,7 +1,7 @@
 "use client";
 
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
-import { LayoutDashboard, Gem, ShoppingCart, Users, Settings, StoreIcon, ChevronDown } from "lucide-react";
+import { LayoutDashboard, Gem, ShoppingCart, Users, Settings, StoreIcon, ChevronDown, CircleQuestionMark } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Logout from "../logout";
 import { AppSidebarProps } from "@/types/type";
@@ -29,6 +29,7 @@ export const navigation = [
         category: "Sistema",
         items: [
             { label: "Configurações", link: "/admin/settings", icon: Settings },
+            { label: "Sobre o Sistema", link: "/admin/about", icon: CircleQuestionMark },
         ]
     }
 ];

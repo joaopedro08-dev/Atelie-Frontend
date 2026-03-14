@@ -20,6 +20,7 @@ export const routeNames: Record<string, string> = {
     "/admin/itens": "Gerenciar Itens",
     "/admin/orders": "Pedidos",
     "/admin/settings": "Configurações",
+    "/admin/about": "Sobre o Sistema",
 };
 
 export const ROLE_REDIRECT: Record<string, string> = {
