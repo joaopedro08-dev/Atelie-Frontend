@@ -3,13 +3,13 @@ import { StoreIcon, SprayCanIcon, Building2Icon, ShieldAlertIcon } from "lucide-
 import ToggleMenu from "./toggle-menu";
 import { ModeToggle } from "../mode-toggle";
 
-export default function Header() {
-    const categories = [
-        { name: "Produtos", href: "#produtos-categoria", icon: <SprayCanIcon size={18} className="text-muted-foreground" /> },
-        { name: "Quem Somos", href: "#quem-somos", icon: <Building2Icon size={18} className="text-muted-foreground" /> },
-        { name: "Política e Trocas", href: "#politica-trocas", icon: <ShieldAlertIcon size={18} className="text-muted-foreground" /> },
-    ];
+const categories = [
+    { name: "Produtos", href: "#produtos-categoria", icon: <SprayCanIcon size={18} className="text-muted-foreground" /> },
+    { name: "Quem Somos", href: "#quem-somos", icon: <Building2Icon size={18} className="text-muted-foreground" /> },
+    { name: "Política e Trocas", href: "#politica-trocas", icon: <ShieldAlertIcon size={18} className="text-muted-foreground" /> },
+];
 
+export default function Header() {
     return (
         <header className="w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 sticky top-0 z-50">
             <div className="container mx-auto px-4">
@@ -42,12 +42,11 @@ export default function Header() {
                         <div className="hidden md:block">
                             <ModeToggle />
                         </div>
-                        
+
                         <div className="md:hidden">
                             <ToggleMenu categories={categories} />
                         </div>
                     </div>
-
                 </div>
             </div>
         </header>
