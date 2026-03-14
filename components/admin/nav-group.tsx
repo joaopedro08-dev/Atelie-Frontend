@@ -1,13 +1,19 @@
 import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import Link from "next/link";
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
 import { ChevronDown } from "lucide-react";
 import { navigation } from "./app-sidebar";
+import { useRouter } from "next/navigation";
 
 export function NavGroup({ group, groupIndex, pathname, closeSidebar, }: { group: typeof navigation[0]; groupIndex: number; pathname: string; closeSidebar: () => void; }) {
     const [open, setOpen] = useState(true);
+    const router = useRouter();
+
+    const handleNavigate = (link: string) => {
+        closeSidebar()
+        router.replace(link)
+    }
 
     return (
         <Collapsible open={open} onOpenChange={setOpen}>
@@ -44,13 +50,12 @@ export function NavGroup({ group, groupIndex, pathname, closeSidebar, }: { group
                                     const Icon = item.icon;
                                     return (
                                         <SidebarMenuItem className="mb-0.5" key={item.link}>
-                                            <Link
-                                                href={item.link}
-                                                onClick={() => closeSidebar()}
+                                            <button
+                                                onClick={() => handleNavigate(item.link)}
                                                 className={`flex items-center gap-2 w-full px-2 py-2 rounded-md text-sm transition-colors ${isActive
-                                                    ? "bg-primary/10 text-primary border-primary font-medium"
-                                                    : "border-transparent text-muted-foreground hover:bg-muted/60 hover:text-foreground"
-                                                }`}
+                                                    ? "bg-primary/10 text-primary font-medium"
+                                                    : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                                                    }`}
                                             >
                                                 {Icon && <Icon className="size-4 shrink-0" />}
                                                 <span className="truncate">{item.label}</span>
@@ -59,7 +64,7 @@ export function NavGroup({ group, groupIndex, pathname, closeSidebar, }: { group
                                                         {item.badge}
                                                     </span>
                                                 )}
-                                            </Link>
+                                            </button>
                                         </SidebarMenuItem>
                                     );
                                 })}

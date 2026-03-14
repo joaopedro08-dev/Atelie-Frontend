@@ -77,8 +77,8 @@ export function ItemPageContent() {
             </div>
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
-                    <TabsList className="w-full md:w-auto grid grid-cols-2">
+                <div className="flex flex-col md:flex-row items-center justify-between mb-4 gap-4">
+                    <TabsList className="w-full md:w-auto">
                         <TabsTrigger value="list" className="flex items-center gap-2">
                             <List className="h-4 w-4" /> Listagem
                         </TabsTrigger>
@@ -87,8 +87,8 @@ export function ItemPageContent() {
                         </TabsTrigger>
                     </TabsList>
 
-                    <div className="w-full md:max-w-sm">
-                        <InputGroup className={activeTab !== "list" ? "opacity-50 cursor-not-allowed" : ""}>
+                    <div className="w-full max-w-sm">
+                        <InputGroup className={activeTab !== "list" ? "opacity-50" : ""}>
                             <InputGroupAddon align="inline-start">
                                 <Search size={18} className="text-muted-foreground" />
                             </InputGroupAddon>
@@ -107,7 +107,7 @@ export function ItemPageContent() {
                                             animate={{ opacity: 1, scale: 1 }}
                                             exit={{ opacity: 0, scale: 0.8 }}
                                             onClick={clearSearch}
-                                            className="hover:text-foreground transition-colors outline-none p-1 rounded-full hover:bg-muted"
+                                            className="hover:bg-muted p-1 rounded-full transition-colors"
                                         >
                                             <X size={16} className="text-muted-foreground" />
                                         </motion.button>
@@ -118,14 +118,16 @@ export function ItemPageContent() {
                     </div>
                 </div>
 
-                <TabsContent value="list" className="mt-0 outline-none">
-                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="w-full">
+                <TabsContent value="list" className="focus-visible:outline-none">
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
                         <ItemList datas={filteredItems} loading={isLoading} onRefresh={fetchItems} />
                     </motion.div>
                 </TabsContent>
 
-                <TabsContent value="add" className="mt-0 outline-none">
-                    <ItemForm onSuccess={() => { fetchItems(); setActiveTab("list"); }} />
+                <TabsContent value="add" className="focus-visible:outline-none">
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                        <ItemForm onSuccess={() => { fetchItems(); setActiveTab("list"); }} />
+                    </motion.div>
                 </TabsContent>
             </Tabs>
         </div>

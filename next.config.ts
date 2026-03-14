@@ -11,7 +11,6 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['@tauri-apps/api'],
   },
-  trailingSlash: true,
 };
 
 export default nextConfig;

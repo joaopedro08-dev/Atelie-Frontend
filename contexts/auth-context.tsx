@@ -12,8 +12,15 @@ const PUBLIC_ROUTES = ["/signin", "/signup"];
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(() => {
+    if (typeof window === 'undefined') return null
+    const cached = sessionStorage.getItem('cached-user')
+    return cached ? JSON.parse(cached) : null
+  })
+  const [loading, setLoading] = useState(() => {
+    if (typeof window === 'undefined') return true
+    return !sessionStorage.getItem('cached-user')
+  })
 
   const isRefreshing = useRef(false);
   const refreshPromise = useRef<Promise<boolean> | null>(null);
@@ -129,26 +136,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchUser = useCallback(
     async (silent = false) => {
-      if (!silent) setLoading(true);
+      if (!silent) setLoading(true)
       try {
-        const result = await authenticatedRequest<{ getUserInfo: User }>(
-          GET_USER_INFO
-        );
-        setUser(result?.data?.getUserInfo ?? null);
+        const result = await authenticatedRequest<{ getUserInfo: User }>(GET_USER_INFO)
+        const fetchedUser = result?.data?.getUserInfo ?? null
+        setUser(fetchedUser)
+        if (fetchedUser) {
+          sessionStorage.setItem('cached-user', JSON.stringify(fetchedUser))
+        } else {
+          sessionStorage.removeItem('cached-user')
+        }
       } catch {
-        setUser(null);
+        setUser(null)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
     },
     [authenticatedRequest]
-  );
+  )
 
   const logout = useCallback(async () => {
     try {
       await baseFetch(LOGOUT_MUTATION);
     } finally {
       setUser(null);
+      sessionStorage.removeItem('cached-user') 
       setLoading(false);
       router.replace("/signin");
     }
