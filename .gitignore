@@ -31,8 +31,16 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files 
+.env
+.env.local
+.env.production
+
+# tauri - desktop
+src-tauri/target/
+src-tauri/icons/installer-sidebar.bmp
+src-tauri/icons/installer-header.bmp
+~/.tauri/*.key
 
 # vercel
 .vercel
