@@ -46,9 +46,19 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          name: 'Ateliê v${{ github.ref_name }}'
-          body: 'See CHANGELOG.md for details.'
-          draft: true
+          name: 'Ateliê ${{ github.ref_name }}'
+          body: |
+            Confira o [CHANGELOG.md](https://github.com/joaopedro08-dev/Atelie-Frontend/blob/master/CHANGELOG.md) para detalhes completos desta versão.
+
+            ### Download
+
+            | Instalador | Formato | Descrição |
+            |---|---|---|
+            | `Atelie-Admin_x64-setup.exe` | NSIS `.exe` | Recomendado para a maioria dos usuários |
+            | `Atelie-Admin_x64_en-US.msi` | WiX `.msi` | Para ambientes corporativos ou Group Policy |
+
+            > Usuários com versão anterior serão atualizados automaticamente.
+          draft: false
           prerelease: false
           files: |
             src-tauri/target/release/bundle/nsis/*.exe
