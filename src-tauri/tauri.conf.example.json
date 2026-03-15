@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Atelie-Admin",
-  "version": "0.1.0",
+  "version": "1.0.6",
   "identifier": "com.atelie.arcanjo",
   "build": {
     "frontendDist": "../out",
@@ -29,7 +29,9 @@
       "csp": {
         "default-src": "'self' customprotocol: asset:",
         "connect-src": "ipc: http://ipc.localhost http://tauri.localhost https://your-backend-url.com",
-        "font-src": ["'self' data:"],
+        "font-src": [
+          "'self' data:"
+        ],
         "img-src": "'self' asset: http://asset.localhost blob: data:",
         "style-src": "'unsafe-inline' 'self'",
         "script-src": "'self' 'unsafe-inline'"
@@ -48,7 +50,9 @@
     ],
     "windows": {
       "nsis": {
-        "languages": ["PortugueseBR"],
+        "languages": [
+          "PortugueseBR"
+        ],
         "displayLanguageSelector": false,
         "installerIcon": "icons/icon.ico",
         "sidebarImage": "icons/installer-sidebar.bmp",
@@ -57,6 +61,15 @@
         "startMenuFolder": "Atelie Admin",
         "compression": "lzma"
       }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "endpoints": [
+        "https://github.com/joaopedro08-dev/Atelie-Frontend/releases/latest/download/latest.json"
+      ],
+      "dialog": false,
+      "pubkey": "your-pub-key"
     }
   }
 }
