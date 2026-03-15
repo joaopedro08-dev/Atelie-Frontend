@@ -4,6 +4,7 @@ import { config } from 'dotenv'
 config({ path: '.env.local' })
 
 const backendUrl = process.env.NEXT_PUBLIC_PRODUCTION_API || 'https://your-backend-url.com'
+const pubkey = process.env.TAURI_SIGNING_PUBLIC_KEY || ''
 
 const tauriConfig = {
   $schema: "../node_modules/@tauri-apps/cli/config.schema.json",
@@ -38,7 +39,8 @@ const tauriConfig = {
   },
   bundle: {
     active: true, targets: "all",
-    icon: ["icons/32x32.png","icons/128x128.png","icons/128x128@2x.png","icons/icon.icns","icons/icon.ico"],
+    createUpdaterArtifacts: true,
+    icon: ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
     windows: {
       nsis: {
         languages: ["PortugueseBR"],
@@ -50,6 +52,15 @@ const tauriConfig = {
         startMenuFolder: "Atelie Admin",
         compression: "lzma"
       }
+    }
+  },
+  plugins: {
+    updater: {
+      endpoints: [
+        "https://github.com/joaopedro08-dev/atelie-frontend/releases/latest/download/latest.json"
+      ],
+      dialog: false,
+      pubkey
     }
   }
 }
