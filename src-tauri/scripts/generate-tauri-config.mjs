@@ -1,7 +1,4 @@
 import { writeFileSync } from 'fs'
-import { config } from 'dotenv'
-
-config({ path: '.env.local' })
 
 const backendUrl = process.env.NEXT_PUBLIC_PRODUCTION_API || 'https://your-backend-url.com'
 const pubkey = process.env.TAURI_SIGNING_PUBLIC_KEY || ''
