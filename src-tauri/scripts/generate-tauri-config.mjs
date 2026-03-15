@@ -55,7 +55,7 @@ const tauriConfig = {
   plugins: {
     updater: {
       endpoints: [
-        "https://github.com/joaopedro08-dev/atelie-frontend/releases/latest/download/latest.json"
+        "https://github.com/joaopedro08-dev/Atelie-Frontend/releases/latest/download/latest.json"
       ],
       dialog: false,
       pubkey
