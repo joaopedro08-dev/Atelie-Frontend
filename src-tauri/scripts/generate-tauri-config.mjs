@@ -35,7 +35,8 @@ const tauriConfig = {
     }
   },
   bundle: {
-    active: true, targets: "all",
+    active: true,
+    targets: "all",
     createUpdaterArtifacts: true,
     icon: ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
     windows: {
@@ -48,6 +49,11 @@ const tauriConfig = {
         installMode: "currentUser",
         startMenuFolder: "Atelie Admin",
         compression: "lzma"
+      },
+      wix: {
+        language: ["pt-BR"],
+        bannerImage: "icons/installer-header.bmp",
+        dialogImage: "icons/installer-sidebar.bmp"
       }
     }
   },
