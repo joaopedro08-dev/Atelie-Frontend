@@ -20,7 +20,7 @@ export function ProjectInfo() {
                     </div>
                     <div className="space-y-0.5">
                         <p className="text-xs text-muted-foreground uppercase tracking-wider">Versão</p>
-                        <p className="font-mono font-medium text-primary">1.0.5-stable</p>
+                        <p className="font-mono font-medium text-primary">1.0.6</p>
                     </div>
                     <div className="space-y-0.5">
                         <p className="text-xs text-muted-foreground uppercase tracking-wider">Desenvolvedor</p>

@@ -21,7 +21,7 @@ const tauriConfig = {
       minWidth: 800, minHeight: 600,
       resizable: true, fullscreen: false,
       visible: false, decorations: false,
-      devtools: false, backgroundColor: "#1a1a1a"
+      backgroundColor: "#1a1a1a"
     }],
     security: {
       csp: {
