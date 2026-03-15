@@ -9,6 +9,7 @@ import { SplashScreen } from "./tauri/splash-screen"
 import { Titlebar } from "./tauri/titlebar"
 import { OfflineBanner } from "./offline-banner"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
+import { Updater } from "./tauri/updater"
 
 const useSafeLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
@@ -94,6 +95,7 @@ function ClientLayoutInner({ children }: { children: React.ReactNode }) {
 
       <div className="flex flex-col h-screen overflow-hidden">
         {mounted && isTauri && <Titlebar />}
+        {mounted && isTauri && <Updater />}
         <div className={`flex-1 overflow-hidden ${mounted && isTauri && !splashDone ? 'invisible' : 'visible'}`}>
           {children}
         </div>
