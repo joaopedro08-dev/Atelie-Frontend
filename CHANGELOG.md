@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.0.5-beta] — 2026-03-14
+## [1.0.5-beta] — 2026-03-15
 
 ### Added
 - Initial public release of the Ateliê management platform
@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Breadcrumb navigation in the admin header
 - About system page with tech stack and project information
 - Dark/light/system theme support via Shadcn/UI
+- Auto updater via GitHub Releases with signed binaries
 
 ### Desktop (Tauri)
 - Custom titlebar integrated with the app theme
@@ -29,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Window state persistence (size and position)
 - NSIS installer in Portuguese (BR) with custom branding images
 - CSP configuration for secure backend communication
+- GitHub Actions CI/CD pipeline for automated builds and releases
 
 ### Security
 - JWT token rotation with Silent Refresh
@@ -41,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Auto updater via GitHub Releases
+- System Tray support with native notifications
 - User-facing public interface improvements
 - Expanded test coverage
 

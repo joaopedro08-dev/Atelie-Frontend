@@ -6,7 +6,7 @@ const pubkey = process.env.TAURI_SIGNING_PUBLIC_KEY || ''
 const tauriConfig = {
   $schema: "../node_modules/@tauri-apps/cli/config.schema.json",
   productName: "Atelie-Admin",
-  version: "0.1.0",
+  version: "1.0.6",
   identifier: "com.atelie.arcanjo",
   build: {
     frontendDist: "../out",
