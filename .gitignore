@@ -40,6 +40,7 @@ yarn-error.log*
 src-tauri/target/
 src-tauri/icons/installer-sidebar.bmp
 src-tauri/icons/installer-header.bmp
+src-tauri/tauri.conf.json
 ~/.tauri/*.key
 
 # vercel
