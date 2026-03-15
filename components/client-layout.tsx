@@ -96,7 +96,9 @@ function ClientLayoutInner({ children }: { children: React.ReactNode }) {
       <div className="flex flex-col h-screen overflow-hidden">
         {mounted && isTauri && <Titlebar />}
         {mounted && isTauri && <Updater />}
-        <div className={`flex-1 overflow-hidden ${mounted && isTauri && !splashDone ? 'invisible' : 'visible'}`}>
+        <div className={`flex-1 ${mounted && isTauri && !splashDone ? 'invisible' : 'visible'
+          } ${mounted && isTauri ? 'overflow-hidden' : 'overflow-y-auto'
+          }`}>
           {children}
         </div>
       </div>

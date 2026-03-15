@@ -5,7 +5,7 @@ import ProductGrid from "./main/products-grid"
 
 export default function Main() {
     return (
-        <main className="relative min-h-dvh overflow-hidden flex items-center justify-center flex-col">
+        <main className="relative flex items-center justify-center flex-col">
             <HeroSection />
             <ProductGrid />
             <AboutUs />
