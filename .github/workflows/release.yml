@@ -57,6 +57,8 @@ jobs:
             | `Atelie-Admin_x64-setup.exe` | NSIS `.exe` | Recomendado para a maioria dos usuários |
             | `Atelie-Admin_x64_en-US.msi` | WiX `.msi` | Para ambientes corporativos ou Group Policy |
 
+            > ⚠️ **Aviso do Windows:** Clique em "Mais informações" → "Executar assim mesmo" para instalar.
+
             > Usuários com versão anterior serão atualizados automaticamente.
           draft: false
           prerelease: false
