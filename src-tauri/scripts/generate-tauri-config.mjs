@@ -49,11 +49,6 @@ const tauriConfig = {
         installMode: "currentUser",
         startMenuFolder: "Atelie Admin",
         compression: "lzma"
-      },
-      wix: {
-        language: ["pt-BR"],
-        bannerImage: "icons/installer-header.bmp",
-        dialogImage: "icons/installer-sidebar.bmp"
       }
     }
   },
