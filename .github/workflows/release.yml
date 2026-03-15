@@ -46,7 +46,7 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          name: 'Ateliê v${{ github.ref_name }}'
+          name: 'Ateliê ${{ github.ref_name }}'
           body: 'See CHANGELOG.md for details.'
           draft: true
           prerelease: false
