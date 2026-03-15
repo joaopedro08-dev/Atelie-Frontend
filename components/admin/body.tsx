@@ -4,27 +4,27 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./app-sidebar";
 import HeaderNavbar from "./header-navbar";
 import { useAuth } from "@/contexts/auth-context";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Template from "@/app/admin/template";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 
-const readSidebarCookie = (): boolean => {
-    if (typeof document === "undefined") return true;
-    const value = document.cookie
-        .split("; ")
-        .find(row => row.startsWith(SIDEBAR_COOKIE_NAME + "="))
-        ?.split("=")[1];
-
-    return value !== undefined ? value === "true" : true;
-};
-
 export default function Body({ children }: { children: React.ReactNode }) {
     const { user, loading } = useAuth();
-    const [defaultOpen] = useState(() => readSidebarCookie());
+    const [defaultOpen, setDefaultOpen] = useState(true)
+    const [mounted, setMounted] = useState(false)
 
-    if (loading) return null;
+    useEffect(() => {
+        const value = document.cookie
+            .split("; ")
+            .find(row => row.startsWith(SIDEBAR_COOKIE_NAME + "="))
+            ?.split("=")[1];
+        setDefaultOpen(value !== undefined ? value === "true" : true)
+        setMounted(true)
+    }, [])
+
+    if (loading || !mounted) return null;
 
     return (
         <SidebarProvider defaultOpen={defaultOpen} className="h-full">

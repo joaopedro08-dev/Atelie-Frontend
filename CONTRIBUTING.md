@@ -59,8 +59,8 @@ Thank you for your interest in contributing to the **Atelie-Frontend** project! 
 
 4. **Test your changes**
    ```bash
-   npm test
-   npm run build
+   pnpm test
+   pnpm run build
    ```
 
 5. **Commit and push**
@@ -92,8 +92,8 @@ Thank you for your interest in contributing to the **Atelie-Frontend** project! 
 ### General
 - Keep functions small and single-purpose
 - Write meaningful commit messages following [Conventional Commits](https://www.conventionalcommits.org/)
-- Lint your code: `npm run lint`
-- Format code: `npm run format`
+- Lint your code: `pnpm run lint`
+- Format code: `pnpm run format`
 
 ## Pull Request Process
 
@@ -108,19 +108,19 @@ Thank you for your interest in contributing to the **Atelie-Frontend** project! 
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Start development server
-npm run dev
+pnpm run dev
 
 # Run tests
-npm test
+pnpm test
 
 # Build for production
-npm run build
+pnpm run build
 
 # Lint code
-npm run lint
+pnpm run lint
 ```
 
 ## Questions or Need Help?

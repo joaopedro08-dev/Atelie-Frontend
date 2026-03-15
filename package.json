@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:desktop": "pnpm build && pnpm tauri build",
-    "dev:desktop": "pnpm tauri dev",
+    "tauri:config": "node scripts/generate-tauri-config.mjs",
+    "build:desktop": "pnpm tauri:config && pnpm tauri build",
+    "dev:desktop": "pnpm tauri:config && pnpm tauri dev",
     "start": "next start",
     "lint": "eslint"
   },

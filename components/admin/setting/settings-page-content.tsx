@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { User, ShieldCheckIcon } from "lucide-react";
+import { User, ShieldCheckIcon, Keyboard } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
-import { ProfileAdmin } from "./profile/profile-admin";
-import { ChangePassword } from "./profile/change-password";
+import { ProfileAdmin } from "./settings/profile-admin";
+import { ChangePassword } from "./settings/change-password";
+import { AccessibilitySystem } from "./settings/accessibility-system";
 
 const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -17,11 +18,12 @@ const itemVariants: Variants = {
     visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100, damping: 18 } },
 };
 
-type TabId = "profile" | "security";
+type TabId = "profile" | "security" | "accessibility";
 
 const TABS: { id: TabId; label: string; icon: React.ReactNode }[] = [
     { id: "profile", label: "Perfil", icon: <User className="size-4" /> },
     { id: "security", label: "Segurança", icon: <ShieldCheckIcon className="size-4" /> },
+    { id: "accessibility", label: "Acessibilidade", icon: <Keyboard className="size-4" /> },
 ];
 
 export function SettingsPageContent() {
@@ -87,6 +89,10 @@ export function SettingsPageContent() {
 
                 {activeTab === "security" && (
                     <ChangePassword />
+                )}
+
+                {activeTab === "accessibility" && (
+                    <AccessibilitySystem />
                 )}
             </AnimatePresence>
         </motion.div>

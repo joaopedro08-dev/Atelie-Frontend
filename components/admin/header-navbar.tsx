@@ -13,6 +13,7 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { useRouter } from "next/navigation";
+import { Fragment } from "react/jsx-runtime";
 
 export default function HeaderNavbar() {
     const pathname = usePathname();
@@ -39,8 +40,8 @@ export default function HeaderNavbar() {
                 <Breadcrumb>
                     <BreadcrumbList>
                         {crumbs.map((crumb) => (
-                            <>
-                                <BreadcrumbItem key={crumb.path}>
+                            <Fragment key={crumb.path}>
+                                <BreadcrumbItem>
                                     {crumb.isLast ? (
                                         <BreadcrumbPage className="capitalize">
                                             {crumb.name}
@@ -55,7 +56,7 @@ export default function HeaderNavbar() {
                                     )}
                                 </BreadcrumbItem>
                                 {!crumb.isLast && <BreadcrumbSeparator key={`sep-${crumb.path}`} />}
-                            </>
+                            </Fragment>
                         ))}
                     </BreadcrumbList>
                 </Breadcrumb>

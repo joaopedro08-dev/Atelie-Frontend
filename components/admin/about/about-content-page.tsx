@@ -30,7 +30,7 @@ const item = {
 const stack = [
     { category: "Frontend", icon: <Globe className="size-4" />, color: "text-blue-400", items: ["Next.js 16", "TypeScript", "Tailwind CSS"] },
     { category: "Componentes", icon: <Layers className="size-4" />, color: "text-violet-400", items: ["Shadcn/UI", "Framer Motion"] },
-    { category: "Backend", icon: <Server className="size-4" />, color: "text-emerald-400", items: ["Java", "Spring Boot", "Microserviços"] },
+    { category: "Backend", icon: <Server className="size-4" />, color: "text-emerald-400", items: ["Java", "Spring Boot", "Docker"] },
     { category: "API", icon: <Code2 className="size-4" />, color: "text-orange-400", items: ["GraphQL"] },
     { category: "Plataforma", icon: <Cpu className="size-4" />, color: "text-pink-400", items: ["Next.js (Web)", "Tauri (Desktop)"] },
 ];
